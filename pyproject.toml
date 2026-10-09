@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "linux-control"
+version = "0.1.0"
+description = "Native Linux hardware, racing wheel and diagnostics control center"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "GPL-3.0-or-later"
+license-files = ["COPYING", "licenses/*.txt"]
+authors = [{name = "Tubix777 and contributors"}]
+dependencies = ["pyudev>=0.24"]
+
+[project.urls]
+Homepage = "https://github.com/Tubix777/linux-control"
+Source = "https://github.com/Tubix777/linux-control"
+Issues = "https://github.com/Tubix777/linux-control/issues"
+
+[project.scripts]
+linux-control = "linux_control.app:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+linux_control = ["resources/*.svg"]
+wheel_control = ["resources/*.css", "resources/*.svg"]
