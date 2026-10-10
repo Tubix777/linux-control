@@ -1,3 +1,7 @@
+## 0.1.2 — donanım animasyonları
+
+Donanım sayfasına devre ışıkları, yumuşak bir CPU halesi ve güncel pozitif RPM okumasıyla dönen temsili fan eklendi. 30 FPS sınırı, eski/başarısız ölçümde durma, gizli bölüm/pencere ve hareket azaltma kontrolleri vardır. Donanım yazma davranışı değişmedi. İzole GTK/Wayland ortamında 183 test geçti; fiziksel fan doğrulaması değildir.
+
 # Linux Control 0.1.1 — genel animasyon güncellemesi
 
 Animasyonlar Donanım, Direksiyon ve Sorun Teşhisi bölümlerinin tamamına yayıldı.

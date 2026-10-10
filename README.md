@@ -10,6 +10,8 @@ Bu ilk birleşik sürüm ön sürümdür. Donanım verileri gerçek yerel kaynak
 
 ## Özellikler
 
+0.1.2: Donanım başlığında hareketli devre ışıkları ve fan etkinlik görseli vardır. Fan yalnız güncel pozitif RPM okumasında döner; dönüş hızı temsili olup gerçek RPM ölçeği değildir. Pencere/bölüm gizlenince, ölçüm eskiyince veya izleme duraklatılınca animasyon durur.
+
 | Bölüm | İşlevler |
 | --- | --- |
 | Donanım | CPU/GPU kullanımı ve sıcaklık, RAM ve disk kullanımı, canlı geçmiş grafiği, sensör arama, oturum minimum/maksimum değerleri, CSV/JSON dışa aktarma, isteğe bağlı sıcaklık bildirimi |

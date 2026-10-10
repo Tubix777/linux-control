@@ -1,5 +1,13 @@
 # Validation
 
+## 0.1.2 hardware motion
+
+183 tests passed in the isolated Fedora 44 GTK/Wayland suite. Added cases cover
+zero, missing, invalid and positive RPM readings; active/hidden/reduced-motion
+frame callback lifecycle; and stale/error readback cancellation. Existing
+navigation, language, layout and explicit hardware-write boundaries still pass.
+No physical fan, power-profile or RGB changes were performed.
+
 The test suite distinguishes pure parsing/safety tests, embedded GTK lifecycle tests and real hardware observations. Demo telemetry is never treated as physical force-feedback validation.
 
 | Area | Automated checks |

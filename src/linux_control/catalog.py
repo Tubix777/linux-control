@@ -1,6 +1,7 @@
 """Known Turkish/English UI messages. Hardware identifiers and logs stay intact."""
 
 TRANSLATIONS = dict(line.split("\t", 1) for line in """
+Devre hareketi görseldir; fan yalnız pozitif, güncel RPM okumasında döner. Hızı ölçekli değildir.	Circuit activity is decorative; the fan rotates only with a positive, fresh RPM reading. Rotation is not to scale.
 Donanım	Hardware
 Direksiyon	Racing wheel
 Sorun Teşhisi	Diagnostics

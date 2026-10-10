@@ -1,5 +1,5 @@
 Name:           linux-control
-Version:        0.1.1
+Version:        0.1.2
 Release:        1%{?dist}
 Summary:        Native hardware, racing wheel and diagnostics control center
 License:        GPL-3.0-or-later AND MIT
@@ -54,6 +54,10 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/io.github.Tubix777.Li
 %{_datadir}/icons/hicolor/scalable/apps/io.github.Tubix777.LinuxControl.svg
 
 %changelog
+* Sat Oct 10 2026 Linux Control contributors - 0.1.2-1
+- Add read-only circuit/fan activity illustration with bounded visible-only motion
+- Stop activity on stale readings, polling errors, pause, page hide and reduced motion
+
 * Sat Oct 10 2026 Tubix777 and contributors - 0.1.1-1
 - Add shared card, menu, control and expansion animations
 - Follow desktop reduced-motion changes immediately

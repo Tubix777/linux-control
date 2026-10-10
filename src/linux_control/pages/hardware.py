@@ -27,6 +27,7 @@ from anvil.fans import FAN_PRESETS, channels, fan_result, preset_points
 from anvil.insights import SensorStats, ThermalAlerts
 from anvil.fan_history import FanRpmHistory
 from anvil.rgb import parse_devices
+from linux_control.motion import HardwareSignal
 
 HELPER = Path("/usr/libexec/anvil-fan-helper")
 
@@ -243,7 +244,15 @@ class HardwarePage(Gtk.Box):
                                margin_top=30, margin_bottom=30, margin_start=28, margin_end=28)
         scroll.set_child(self.content)
         self.content.append(self.label("DONANIM · ANVIL CONTROL", "eyebrow"))
-        self.content.append(self.label("Bilgisayarının nabzı.", "hero"))
+        hero = Gtk.Box(spacing=12)
+        heading = self.label("Bilgisayarının nabzı.", "hero")
+        heading.set_hexpand(True)
+        hero.append(heading)
+        self.signal = HardwareSignal(self._animations_enabled)
+        self.signal.set_hexpand(False)
+        self.signal.set_tooltip_text(self.tr("Devre hareketi görseldir; fan yalnız pozitif, güncel RPM okumasında döner. Hızı ölçekli değildir."))
+        hero.append(self.signal)
+        self.content.append(hero)
         self.identity_label = self.label("Donanım bilgileri okunuyor…", "muted")
         self.content.append(self.identity_label)
         toolbar = Gtk.Box(spacing=8)
@@ -401,6 +410,8 @@ class HardwarePage(Gtk.Box):
         if self._closed:
             return
         self._active = bool(active)
+        self.signal.active = bool(active) and not self._paused
+        self.signal.sync()
         if active and not self._source:
             self._source = GLib.timeout_add(2000, self._tick)
         if active and not self._paused:
@@ -443,6 +454,7 @@ class HardwarePage(Gtk.Box):
 
     def _sample_failed(self):
         self._polling = False
+        self.signal.invalidate()
         if not self._closed:
             self._message(self.live_label, "Ölçüm okunamadı; yeniden denenecek.")
             self._last_fan_success = 0
@@ -458,6 +470,7 @@ class HardwarePage(Gtk.Box):
                 self._request_sample()
             return GLib.SOURCE_REMOVE
         self._identity, self._sample = identity, sample
+        self.signal.readings(sample)
         self._last_success = time.monotonic()
         self._last_fan_success = 0 if fan_error else self._last_success
         self._fan_channels = fan_channels
@@ -633,6 +646,8 @@ class HardwarePage(Gtk.Box):
 
     def _toggle_pause(self, *_):
         self._paused = not self._paused
+        self.signal.active = not self._paused and self._active
+        self.signal.invalidate()
         self.pause_button.set_label(self.tr("Sürdür" if self._paused else "Duraklat"))
         if self._paused:
             self._last_fan_success = 0
@@ -771,6 +786,7 @@ class HardwarePage(Gtk.Box):
     def retranslate(self):
         if self._closed:
             return
+        self.signal.set_tooltip_text(self.tr("Devre hareketi görseldir; fan yalnız pozitif, güncel RPM okumasında döner. Hızı ölçekli değildir."))
         self.pause_button.set_label(self.tr("Sürdür" if self._paused else "Duraklat"))
         preset_index = self.preset_selector.get_selected()
         profile_index = self.profile_selector.get_selected()
@@ -793,6 +809,7 @@ class HardwarePage(Gtk.Box):
         return not self.settings.reduced_motion and (gtk_settings is None or gtk_settings.get_property("gtk-enable-animations"))
 
     def sync_motion(self):
+        self.signal.sync()
         if not self._animations_enabled():
             self._cancel_motion()
             self._set_metric_values(self._targets)
@@ -800,6 +817,8 @@ class HardwarePage(Gtk.Box):
     def close(self):
         self._closed = True
         self._active = False
+        self.signal.active = False
+        self.signal.invalidate()
         if self._source:
             GLib.source_remove(self._source)
             self._source = 0

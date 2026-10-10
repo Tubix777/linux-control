@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "linux-control"
-version = "0.1.1"
+version = "0.1.2"
 description = "Native Linux hardware, racing wheel and diagnostics control center"
 readme = "README.md"
 requires-python = ">=3.11"
