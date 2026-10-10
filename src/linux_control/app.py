@@ -13,6 +13,7 @@ from doctor.app import CSS as DOCTOR_CSS, box, label
 from . import __version__
 from .i18n import Translator
 from .settings import Settings
+from .interactions import CSS as MOTION_CSS, MotionController
 from .pages.doctor import DoctorPage
 from .pages.wheel import CSS as WHEEL_CSS
 
@@ -48,7 +49,7 @@ switch:checked { background: #aaaaaa; color: #080808; }
 button.suggested-action { background: #363636; color: #ffffff; border: 1px solid #6b6b6b; }
 entry, searchentry { background: #202020; border-color: #414141; color: #f5f5f5; }
 .heading { color: #f5f5f5; }
-"""
+""" + MOTION_CSS
 
 MODULES = (
     ("hardware", "Donanım", "Sıcaklık, fan ve performans", "computer-symbolic"),
@@ -60,6 +61,7 @@ MODULES = (
 class MainWindow(Adw.ApplicationWindow):
     def __init__(self, application, preferences=None, page_factories=None, initial="hardware", wheel_demo=False):
         super().__init__(application=application, title="Linux Control")
+        self.add_css_class("linux-control-window")
         self.set_default_size(1260, 880)
         self.set_size_request(960, 620)
         self.preferences = preferences or Settings()
@@ -70,6 +72,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.current_page = None
         self.pages = {}
         self.nav_buttons = {}
+        self.motion = MotionController(self, self.animations_enabled())
         root = box(0)
         header = Adw.HeaderBar()
         self.page_title = label("", "page-header", False)
@@ -80,7 +83,7 @@ class MainWindow(Adw.ApplicationWindow):
         root.append(header)
         body = box(0, True)
         body.set_vexpand(True)
-        sidebar = box(12)
+        sidebar = box(10)
         sidebar.set_size_request(228, -1)
         sidebar.set_hexpand(False)
         sidebar.add_css_class("sidebar")
@@ -165,7 +168,14 @@ class MainWindow(Adw.ApplicationWindow):
             self.pages[name] = page
             self.stack.add_named(page, name)
             page.set_active(False)
+            self.motion.decorate(page)
         self.tr.connect(self.retranslate)
+        self._gtk_settings = Gtk.Settings.get_default()
+        self._animation_signal = (
+            self._gtk_settings.connect("notify::gtk-enable-animations", self.sync_motion)
+            if self._gtk_settings else None
+        )
+        self.sync_motion()
         self.select_page(initial)
         self.connect("close-request", self.on_close)
         for index, (name, *_rest) in enumerate(MODULES, 1):
@@ -183,6 +193,7 @@ class MainWindow(Adw.ApplicationWindow):
             self.nav_buttons[self.current_page].remove_css_class("selected")
         self.current_page = name
         self.nav_buttons[name].add_css_class("selected")
+        self.stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
         self.stack.set_visible_child_name(name)
         self.pages[name].set_active(True)
         self.retranslate()
@@ -194,15 +205,20 @@ class MainWindow(Adw.ApplicationWindow):
 
     def motion_changed(self, switch, *_):
         self.preferences.reduced_motion = switch.get_active()
-        if self.preferences.reduced_motion:
+        self.sync_motion()
+        self.save_preferences()
+
+    def sync_motion(self, *_):
+        enabled = self.animations_enabled()
+        if not enabled:
             self.add_css_class("reduce-motion")
         else:
             self.remove_css_class("reduce-motion")
-        self.stack.set_transition_duration(240 if self.animations_enabled() else 0)
+        self.motion.set_enabled(enabled)
+        self.stack.set_transition_duration(240 if enabled else 0)
         for page in self.pages.values():
             if hasattr(page, "sync_motion"):
                 page.sync_motion()
-        self.save_preferences()
 
     def save_preferences(self):
         try:
@@ -218,6 +234,10 @@ class MainWindow(Adw.ApplicationWindow):
     def on_close(self, *_):
         if not self._closed:
             self._closed = True
+            self.motion.close()
+            if self._animation_signal is not None:
+                self._gtk_settings.disconnect(self._animation_signal)
+                self._animation_signal = None
             for page in self.pages.values():
                 page.close()
         return False

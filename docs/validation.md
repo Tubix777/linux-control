@@ -23,3 +23,9 @@ The compositor test runner requires Weston and `dbus-run-session`, in addition t
 Release validation should include opening all three pages, switching languages with unsaved values, starting a real diagnostic scan, manually interrupting automatic scrolling, and checking the package's desktop entry. Physical wheel force feedback, every recognized wheel model, every GPU driver and unsupported motherboard fans require separate hardware validation.
 
 The source packager uses an explicit allowlist and excludes working directories, bytecode, local measurement files and VCS data. Release artifacts include SHA-256 checksums. Existing source repositories are preserved.
+
+## 0.1.1 interaction coverage
+
+The isolated GTK suite has 180 tests. New cases cover finite card entrance callbacks, expanded/collapsed content with unsaved entry values, cancellation on reduced motion and close, diagnostic-card animation ownership, CSS parsing and desktop animation-preference changes while the window is open. The supported-size layout check covers both 960 × 620 and 1280 × 900.
+
+The original minimum-size test also failed on the unchanged 0.1.0 source in this Fedora test environment. Reducing sidebar spacing restored the supported minimum size; the assertion was preserved. Shared animations do not interpolate wheel telemetry or execute hardware writes.

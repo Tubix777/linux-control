@@ -84,9 +84,10 @@ class ShellTests(unittest.TestCase):
         self.assertEqual(Settings(self.settings.path).language, "en")
 
     def test_reduced_motion_applies_to_all_modules_without_navigation(self):
+        before = {name: page.motion_syncs for name, page in self.window.pages.items()}
         self.window.motion_switch.set_active(True)
         self.assertEqual(self.window.stack.get_transition_duration(), 0)
-        self.assertTrue(all(page.motion_syncs == 1 for page in self.window.pages.values()))
+        self.assertTrue(all(page.motion_syncs == before[name] + 1 for name, page in self.window.pages.items()))
         self.assertTrue(Settings(self.settings.path).reduced_motion)
         self.assertEqual(self.window.current_page, "hardware")
 

@@ -4,6 +4,8 @@ Anvil Control, Wheel Control ve Fedora Doctor tek bir yerel GTK 4 / libadwaita p
 
 Siyah, gri ve beyaz arayüz; akıcı bölüm geçişleri; tarama sonrası sonuçlara yumuşak kaydırma; ekrana giren bulgu kartlarında kademeli belirme. Türkçe ve İngilizce arasında uygulamayı yeniden başlatmadan geçiş yapılır. **Hareketi azalt** tercihi geçişleri ve kaydırma animasyonlarını kapatır; canlı giriş verileri anında güncellenir.
 
+0.1.1 ile animasyonlar üç bölüme de yayıldı: bölüm geçişlerinde kayma, kartlarda kısa ve kademeli belirme, düğme/simge/kaydırıcı/arama alanlarında hover ve odak tepkileri, menülerde belirme ve ayrıntılarda akıcı açılıp kapanma. Masaüstünün animasyon tercihi uygulama açıkken değiştirildiğinde anında izlenir. Animasyonlar sona erince kare geri çağrıları bırakılır; direksiyon ölçümleri anlık kalır. Klavyeyle kullanılan kontrollerin odak çerçevesi korunur.
+
 Bu ilk birleşik sürüm ön sürümdür. Donanım verileri gerçek yerel kaynaklardan okunur; demo direksiyon yalnızca kullanıcı açıkça seçtiğinde gösterilir. Desteklenmeyen veya erişilemeyen veri yerine uydurma sayı gösterilmez.
 
 ## Özellikler

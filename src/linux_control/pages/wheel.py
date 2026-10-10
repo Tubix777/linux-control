@@ -480,8 +480,7 @@ class WheelPage(WheelControlsMixin, Gtk.Box):
     def retranslate(self):
         if self._closed:
             return
-        self.reduced_motion = self.settings.reduced_motion
-        self._sync_motion()
+        self.sync_motion()
         self._update_telemetry(self._last_telemetry)
         if self._device_loading:
             self.device_status.set_label(self._tr("Reading device settings…"))
@@ -502,13 +501,15 @@ class WheelPage(WheelControlsMixin, Gtk.Box):
             self._poll_ffb_meter()
 
     def sync_motion(self):
-        self.reduced_motion = self.settings.reduced_motion
+        desktop = Gtk.Settings.get_default()
+        self.reduced_motion = self.settings.reduced_motion or bool(
+            desktop and not desktop.get_property("gtk-enable-animations")
+        )
         self._sync_motion()
 
     def set_active(self, active):
         self._active = bool(active) and not self._closed
-        self.reduced_motion = self.settings.reduced_motion
-        self._sync_motion()
+        self.sync_motion()
         if not self._active and self._demo_source:
             GLib.source_remove(self._demo_source)
             self._demo_source = 0

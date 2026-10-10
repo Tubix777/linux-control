@@ -1,5 +1,5 @@
 Name:           linux-control
-Version:        0.1.0
+Version:        0.1.1
 Release:        1%{?dist}
 Summary:        Native hardware, racing wheel and diagnostics control center
 License:        GPL-3.0-or-later AND MIT
@@ -54,6 +54,11 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/io.github.Tubix777.Li
 %{_datadir}/icons/hicolor/scalable/apps/io.github.Tubix777.LinuxControl.svg
 
 %changelog
+* Sat Oct 10 2026 Tubix777 and contributors - 0.1.1-1
+- Add shared card, menu, control and expansion animations
+- Follow desktop reduced-motion changes immediately
+- Keep compact sidebar within the supported minimum window size
+
 * Fri Oct 09 2026 Tubix777 and contributors - 0.1.0-1
 - Integrate hardware, wheel and diagnostics in a single native window
 - Add shared Turkish/English language selection and reduced motion

@@ -1,10 +1,23 @@
-Linux Control brings Anvil hardware monitoring, Wheel Control and Fedora Doctor into one native GTK 4 window.
+# Linux Control 0.1.1 — genel animasyon güncellemesi
 
-- Three large left-side navigation buttons, shared black/gray/white styling and smooth page transitions.
-- Real hardware readings with live history, sensors, CSV/JSON exports, explicit power/RGB controls and optional existing safe Anvil fan support.
-- Embedded racing-wheel discovery, live inputs, driver-supported settings and game-profile management.
-- Read-only Linux/Flatpak diagnostics with clear evidence, next steps and cached NVMe remaining-endurance estimates.
-- Smooth scrolling to scan results, staggered card reveals, manual interruption and reduced-motion support.
-- Live Turkish/English language selection; saved preferences and existing wheel profiles.
+Animasyonlar Donanım, Direksiyon ve Sorun Teşhisi bölümlerinin tamamına yayıldı.
 
-This initial combined release is a preview. SSD endurance is not a general health guarantee. Fan writes remain restricted to the original verified Anvil helper/board/channels. Recognized wheel models and physical force-feedback effects do not all have physical validation. See the README for supported boundaries.
+- Bölümler arasında yönüne göre kayan geçiş.
+- Kartlarda kısa, kademeli belirme ve hover vurgusu.
+- Düğme simgelerinde hafif büyüme/basma tepkisi; düğmeler, seçim listeleri, kaydırıcılar, anahtarlar ve arama alanlarında yumuşak geri bildirim.
+- Ayrıntı bölümlerinde hem açılış hem kapanış geçişi. Kaydedilmemiş kontrol değerleri korunur.
+- Açılır menülerde kısa belirme ve klavye kullanımında belirgin odak.
+- Hareket azaltma ve masaüstünün animasyon tercihi, devam eden geçişleri sonlandırır. Masaüstü tercihi değişimi uygulama açıkken izlenir.
+- Desteklenen küçük pencere boyutuna sığan daha kompakt yan panel.
+
+Kart animasyonları tamamlanınca kare geri çağrıları kaldırılır. Canlı direksiyon ve pedal değerleri geciktirilmez. Donanım okumaları, profil akışları ve açık Uygula işlemleri korunur.
+
+180 test izole Fedora 44/Wayland ortamında geçti. Otomatik testler sahte cihazlar kullanır; fiziksel kuvvet geri bildirimi doğrulaması değildir. Fedora RPM, kaynak RPM, kaynak arşivi ve SHA-256 sağlama toplamları sağlanır.
+
+## English
+
+Animation coverage now spans all three pages: directional navigation, staggered card entrances, card hover feedback, subtle icon hover/press responses, control focus transitions, popover fades and smoothly opening/closing details.
+
+Unsaved values survive expansion and navigation. Reduce Motion and live desktop preference changes finish decorative transitions immediately. Completed entrances release their frame callbacks. Wheel telemetry remains immediate. The sidebar now fits the supported minimum window size.
+
+The isolated Fedora 44 GTK suite contains 180 passing tests using simulated devices. Physical force-feedback and unsupported hardware coverage remain as described in the README.

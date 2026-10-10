@@ -169,6 +169,8 @@ class DoctorPage(Gtk.Box):
 
     def show_findings(self, findings):
         self.cancel_motion()
+        if hasattr(self.host, "motion"):
+            self.host.motion.forget(self.results)
         self.busy(False)
         while self.results.get_first_child():
             self.results.remove(self.results.get_first_child())
@@ -188,6 +190,7 @@ class DoctorPage(Gtk.Box):
         for item in sorted(findings, key=finding_order):
             card = box(9)
             card.add_css_class("card")
+            card.add_css_class("scan-result")
             heading = box(10, True)
             title = label(item.title, "card-title")
             title.set_hexpand(True)
@@ -219,6 +222,8 @@ class DoctorPage(Gtk.Box):
             card.append(expander)
             self.results.append(card)
             self._cards.append(card)
+        if hasattr(self.host, "motion"):
+            self.host.motion.decorate(self.results)
         if self.animations_enabled():
             for card in self._cards:
                 card.set_opacity(0)
@@ -349,7 +354,7 @@ class DoctorPage(Gtk.Box):
             self.scroll.get_vadjustment().set_value(scroll_value)
 
     def sync_motion(self):
-        if self.preferences.reduced_motion and self._active:
+        if not self.animations_enabled() and self._active:
             self.queue_motion()
 
     def close(self):
