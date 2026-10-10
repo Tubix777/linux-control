@@ -2,6 +2,12 @@ name: Publish verified release
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag to verify or resume
+        required: true
+        type: string
 permissions:
   contents: write
 jobs:
@@ -12,18 +18,19 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
+          ref: ${{ inputs.tag || github.ref }}
       - name: Test and build release assets
         run: |
           docker run --rm -v "$PWD:/workspace" -w /workspace registry.fedoraproject.org/fedora:44 bash -euc '
             dnf -y install python3 python3-gobject python3-cairo python3-pyudev gtk4 libadwaita weston dbus-daemon rpm-build desktop-file-utils tar gzip findutils
             packaging/run_checks.sh
             python3 packaging/build_rpm.py --output dist
+            cd dist
+            sha256sum -- *.rpm *.tar.gz > SHA256SUMS
           '
-          cd dist
-          sha256sum -- *.rpm *.tar.gz > SHA256SUMS
       - name: Publish source and RPM assets
         env:
           GH_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
         run: python3 packaging/publish_release.py "$RELEASE_TAG" --assets dist
