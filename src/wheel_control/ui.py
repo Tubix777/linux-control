@@ -276,17 +276,17 @@ class WheelControlsMixin:
         return page
 
     def _build_device_page(self) -> Gtk.Widget:
-        clamp = Adw.Clamp(maximum_size=980, tightening_threshold=760)
+        clamp = Adw.Clamp(maximum_size=1180, tightening_threshold=1050)
         scrolled = Gtk.ScrolledWindow(vexpand=True)
         scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         clamp.set_child(scrolled)
         content = Gtk.Box(
             orientation=Gtk.Orientation.VERTICAL,
-            spacing=12,
-            margin_top=16,
-            margin_bottom=16,
-            margin_start=16,
-            margin_end=16,
+            spacing=20,
+            margin_top=8,
+            margin_bottom=28,
+            margin_start=28,
+            margin_end=28,
         )
         scrolled.set_child(content)
 
@@ -330,6 +330,8 @@ class WheelControlsMixin:
         columns = Gtk.Box(spacing=18, homogeneous=True)
         self.telemetry_columns = columns
         columns.set_orientation(Gtk.Orientation.HORIZONTAL)
+        columns.set_spacing(20)
+        self.control_columns = columns
         content.append(columns)
 
         telemetry_card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)

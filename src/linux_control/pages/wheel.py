@@ -20,6 +20,7 @@ from wheel_control.model import demo_g29
 from wheel_control.profiles import ProfileStore
 from wheel_control.telemetry import Telemetry
 from wheel_control.ui import WheelControlsMixin
+from linux_control.design import heading, icon, text
 
 
 CSS = """
@@ -112,17 +113,14 @@ class WheelPage(WheelControlsMixin, Gtk.Box):
         self._refresh_source = GLib.idle_add(self.refresh_devices)
 
     def _page_header(self):
-        row = Gtk.Box(spacing=12, margin_top=20, margin_bottom=16,
-                      margin_start=24, margin_end=24)
-        text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4, hexpand=True)
-        title = Gtk.Label(label="Wheel Control", xalign=0)
-        title.add_css_class("title-1")
-        subtitle = Gtk.Label(label="Live input, wheel settings and game profiles",
-                             xalign=0, wrap=True)
-        subtitle.add_css_class("dim-label")
-        text.append(title)
-        text.append(subtitle)
-        row.append(text)
+        header = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=18,
+                         margin_top=26, margin_bottom=18, margin_start=28, margin_end=28)
+        header.append(heading(self.tr, "WHEEL CONTROL", "Sürüşü kendine uyarla.",
+                              "Canlı direksiyon girişi, hassas ayarlar ve oyun profillerin."))
+        row = Gtk.Box(spacing=12)
+        status = text(self.tr, "USB ile bağla. Ayarlarını seç. Hazır olduğunda uygula.", "muted")
+        status.set_hexpand(True)
+        row.append(status)
         self.device_model = Gtk.StringList()
         self.device_dropdown = Gtk.DropDown(model=self.device_model,
                                            tooltip_text="Active wheel")
@@ -133,13 +131,61 @@ class WheelPage(WheelControlsMixin, Gtk.Box):
         row.append(self.scan_spinner)
         self.refresh_button = Gtk.Button(icon_name="view-refresh-symbolic",
                                          tooltip_text="Scan devices (Ctrl+R)")
+        self.refresh_button.add_css_class("icon-action")
         self.refresh_button.connect("clicked", lambda _button: self.refresh_devices())
         row.append(self.refresh_button)
         diagnostics = Gtk.Button(icon_name="edit-copy-symbolic",
                                  tooltip_text="Copy Diagnostics  Ctrl+D")
+        diagnostics.add_css_class("icon-action")
         diagnostics.connect("clicked", self._copy_diagnostics)
         row.append(diagnostics)
-        return row
+        header.append(row)
+        return header
+
+    def _build_empty_page(self):
+        scroll = Gtk.ScrolledWindow(vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
+        clamp = Adw.Clamp(maximum_size=1120, tightening_threshold=950)
+        clamp.set_child(scroll)
+        content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20,
+                          margin_start=28, margin_end=28, margin_top=8, margin_bottom=28)
+        scroll.set_child(content)
+        welcome = Gtk.Box(spacing=24)
+        welcome.add_css_class("card")
+        welcome.append(icon("wheel", 70))
+        copy = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10, hexpand=True)
+        copy.append(text(self.tr, "Direksiyonunu bağla.", "title-2"))
+        copy.append(text(self.tr, "Henüz bir direksiyon algılanmadı. Bağlandığında canlı giriş ve desteklenen ayarlar burada açılır.", "muted"))
+        actions = Gtk.Box(spacing=12)
+        scan = Gtk.Button(label="Scan Again", css_classes=["primary"])
+        scan.connect("clicked", lambda *_: self.refresh_devices())
+        demo = Gtk.Button(label="Open Demo", css_classes=["soft"])
+        demo.connect("clicked", lambda *_: self._load_devices([self._demo_device]))
+        actions.append(scan)
+        actions.append(demo)
+        copy.append(actions)
+        welcome.append(copy)
+        content.append(welcome)
+        guide = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=18)
+        guide.add_css_class("card")
+        guide.append(text(self.tr, "İlk bağlantı", "section-title"))
+        for number, title, description in (
+            ("01", "USB bağlantısı", "Direksiyonu bilgisayara USB ile bağla; gerekiyorsa güç adaptörünü tak."),
+            ("02", "Doğru çalışma modu", "Modelinin Linux için desteklediği modu seç. Logitech G29 için PS3 konumunu kullan."),
+            ("03", "Kendi profilin", "Algılandıktan sonra bir oyun profili seç. Ayarlar yalnız Uygula dediğinde yazılır."),
+        ):
+            row = Gtk.Box(spacing=16)
+            row.append(Gtk.Label(label=number, valign=Gtk.Align.START, css_classes=["eyebrow"]))
+            copy = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5, hexpand=True)
+            copy.append(text(self.tr, title, "card-title"))
+            copy.append(text(self.tr, description, "muted"))
+            row.append(copy)
+            guide.append(row)
+        content.append(guide)
+        content.append(text(self.tr, "Demo, arayüzü denemek içindir; gerçek direksiyon verisi veya cihaz testi değildir.", "download-notice"))
+        return clamp
+
+    def _build_device_page(self):
+        return WheelControlsMixin._build_device_page(self)
 
     def _install_shortcuts(self):
         controller = Gtk.ShortcutController()

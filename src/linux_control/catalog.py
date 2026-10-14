@@ -459,3 +459,71 @@ for _base in (_endurance, _missing):
 TEMPLATES.append(("Fan işlemi başarısız: {error}", "Fan operation failed: {error}"))
 TRANSLATIONS.update(TEMPLATES)
 TRANSLATIONS["Renk seç"] = "Choose color"
+
+# Shared redesign and official per-module distribution pages.
+TRANSLATIONS.update(dict(line.split("\t", 1) for line in """
+TERCİHLER	PREFERENCES
+Klavye kısayolları	Keyboard shortcuts
+Bu bölümün indirme sayfası	Downloads for this module
+{app} indirme sayfası	{app} download page
+İndirmeler	Downloads
+İNDİRME MERKEZİ	DOWNLOAD CENTER
+Panele dön	Back to dashboard
+Anvil Control’ün bağımsız sürümünü ve resmî Linux paketlerini burada bulabilirsin.	Find the standalone Anvil Control release and official Linux packages here.
+Wheel Control’ün bağımsız sürümü, kurulum paketleri ve kaynak kodu.	The standalone Wheel Control release, installation packages and source code.
+Fedora Doctor, Linux Control paketinin içinde gelir. Üç aracı birlikte indir.	Fedora Doctor is included in Linux Control. Download all three tools together.
+Linux Control ile birlikte	Included in Linux Control
+Bağımsız uygulama	Standalone application
+Ön sürüm	Preview release
+Yayımlanan sürüm	Published release
+Sürüm sayfası	Release page
+Güncel sürümü kontrol et	Check for a newer release
+Paket bilgileri bu sürümle birlikte gelir. Güncel sürümü istediğinde kontrol edebilirsin.	Package details are included with this version. You can check for a newer release whenever you want.
+Paket seç	Choose package
+Fedora · RPM	Fedora · RPM
+Debian / Ubuntu · DEB	Debian / Ubuntu · DEB
+Taşınabilir	Portable
+Kaynak paketleri	Source packages
+Kaynak RPM	Source RPM
+İndir	Download
+İndirdikten sonra	After downloading
+Terminali indirilen dosyanın bulunduğu klasörde aç. Komutu kendin çalıştırabilirsin.	Open a terminal in the downloaded file’s folder. You can run this command yourself.
+Kopyala	Copy
+Komut kopyalandı	Command copied
+Kaynak kod	Source code
+Tüm sürümler	All releases
+Sorun bildir	Report an issue
+İndirme bağlantıları tarayıcıda açılır. Bu sayfa paket kurmaz veya sistem izinlerini değiştirmez.	Download links open in your browser. This page does not install packages or change system permissions.
+Bu sürümde paket bulunamadı. Tüm sürümler sayfasını açabilirsin.	No package was found in this release. You can open the all releases page.
+Bağlantı açılamadı. Varsayılan tarayıcını kontrol et.	Could not open the link. Check your default browser.
+GitHub’daki sürüm kontrol ediliyor…	Checking the release on GitHub…
+Güncel sürüm alınamadı. Kayıtlı bağlantıları kullanabilir veya daha sonra tekrar deneyebilirsin.	Could not fetch the latest release. You can use the included links or try again later.
+Sürüm ve paket bağlantıları GitHub’dan güncellendi.	Release and package links were updated from GitHub.
+Sistemin, canlı.	Your system, live.
+Kullanımı, sıcaklıkları ve fanları tek bakışta takip et.	Track usage, temperatures and fans at a glance.
+Sürüşü kendine uyarla.	Make the drive yours.
+Canlı direksiyon girişi, hassas ayarlar ve oyun profillerin.	Live wheel input, precise settings and your game profiles.
+USB ile bağla. Ayarlarını seç. Hazır olduğunda uygula.	Connect over USB. Choose your settings. Apply when ready.
+Direksiyonunu bağla.	Connect your wheel.
+Henüz bir direksiyon algılanmadı. Bağlandığında canlı giriş ve desteklenen ayarlar burada açılır.	No wheel has been detected yet. Live input and supported settings will appear here when it connects.
+İlk bağlantı	First connection
+USB bağlantısı	USB connection
+Direksiyonu bilgisayara USB ile bağla; gerekiyorsa güç adaptörünü tak.	Connect the wheel over USB and plug in its power adapter if required.
+Doğru çalışma modu	The right mode
+Modelinin Linux için desteklediği modu seç. Logitech G29 için PS3 konumunu kullan.	Select your model’s supported Linux mode. Use the PS3 position for a Logitech G29.
+Kendi profilin	Your own profile
+Algılandıktan sonra bir oyun profili seç. Ayarlar yalnız Uygula dediğinde yazılır.	Once detected, choose a game profile. Settings are written only when you choose Apply.
+Demo, arayüzü denemek içindir; gerçek direksiyon verisi veya cihaz testi değildir.	The demo lets you explore the interface; it is not real wheel data or a hardware test.
+Sorunu gör. Çözümü bul.	See the issue. Find a fix.
+Sistemini tara; ne olduğunu ve sonraki adımı açıkça gör.	Scan your system and see clearly what is happening and what to do next.
+Tamamlanan kontrol	Completed checks
+Dikkat gerektiren	Need attention
+Doğrulanamayan	Unverified
+Tarama sonuçları	Scan results
+Dikkat gerektirenler	Need attention
+İlk kontrolü başlat.	Start your first check.
+Disk, SSD, servisler, ağ ve depolar için bulgular burada görünecek.	Findings for disks, SSDs, services, networking and repositories will appear here.
+Kontroller bu bilgisayarda çalışır. Sonuçlar dışarı gönderilmez.	Checks run on this computer. Results are not sent anywhere.
+Dikkat gerektiren bulgu yok.	No findings need attention.
+Diğer kontrolleri görmek için filtreyi kapatabilirsin.	Turn off the filter to see the other checks.
+""".strip().splitlines()))

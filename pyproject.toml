@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "linux-control"
-version = "0.1.2"
+version = "0.2.0"
 description = "Native Linux hardware, racing wheel and diagnostics control center"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -28,5 +28,5 @@ package-dir = {"" = "src"}
 where = ["src"]
 
 [tool.setuptools.package-data]
-linux_control = ["resources/*.svg"]
+linux_control = ["resources/*.svg", "resources/*.css", "resources/*.json", "resources/*.ttf"]
 wheel_control = ["resources/*.css", "resources/*.svg"]

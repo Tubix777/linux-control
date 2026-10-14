@@ -14,42 +14,13 @@ from . import __version__
 from .i18n import Translator
 from .settings import Settings
 from .interactions import CSS as MOTION_CSS, MotionController
+from .design import CSS as DESIGN_CSS, icon, load_font
 from .pages.doctor import DoctorPage
+from .pages.downloads import DownloadsPage
 from .pages.wheel import CSS as WHEEL_CSS
 
 
-CSS = DOCTOR_CSS + WHEEL_CSS + """
-@define-color accent_color #eeeeee;
-@define-color accent_bg_color #cccccc;
-@define-color accent_fg_color #101010;
-@define-color window_bg_color #080808;
-@define-color window_fg_color #f5f5f5;
-@define-color view_bg_color #111111;
-@define-color view_fg_color #f5f5f5;
-@define-color card_bg_color #191919;
-@define-color card_fg_color #f5f5f5;
-@define-color headerbar_bg_color #080808;
-@define-color headerbar_fg_color #f5f5f5;
-.sidebar { background: #101010; padding: 24px 16px 20px; }
-.brand { font-size: 21px; font-weight: 800; letter-spacing: -0.6px; }
-.nav-button { background: transparent; border-radius: 14px; border: 1px solid transparent; padding: 15px 12px; }
-.nav-button:hover { background: #232323; border-color: #383838; }
-.nav-button.selected { background: #303030; border-color: #676767; }
-button, switch { transition: background-color 140ms ease-out, border-color 140ms ease-out; }
-window.reduce-motion * { transition: none; animation: none; }
-.nav-title { font-weight: 750; font-size: 14px; }
-.nav-caption { font-size: 11px; color: #b3b3b3; }
-.sidebar-title { font-size: 10px; letter-spacing: 1.5px; color: #8f8f8f; font-weight: 700; }
-.sidebar-footer { font-size: 11px; color: #9f9f9f; }
-.page-header { font-weight: 700; }
-.module-tag { background: #202020; border-radius: 8px; padding: 4px 9px; color: #bdbdbd; font-size: 11px; }
-scale highlight { background: #dddddd; }
-progressbar progress { background: #dddddd; }
-switch:checked { background: #aaaaaa; color: #080808; }
-button.suggested-action { background: #363636; color: #ffffff; border: 1px solid #6b6b6b; }
-entry, searchentry { background: #202020; border-color: #414141; color: #f5f5f5; }
-.heading { color: #f5f5f5; }
-""" + MOTION_CSS
+CSS = DOCTOR_CSS + WHEEL_CSS + MOTION_CSS + DESIGN_CSS
 
 MODULES = (
     ("hardware", "Donanım", "Sıcaklık, fan ve performans", "computer-symbolic"),
@@ -59,10 +30,11 @@ MODULES = (
 
 
 class MainWindow(Adw.ApplicationWindow):
-    def __init__(self, application, preferences=None, page_factories=None, initial="hardware", wheel_demo=False):
+    def __init__(self, application, preferences=None, page_factories=None, initial="hardware", wheel_demo=False, initial_view="dashboard"):
         super().__init__(application=application, title="Linux Control")
+        load_font()
         self.add_css_class("linux-control-window")
-        self.set_default_size(1260, 880)
+        self.set_default_size(1320, 900)
         self.set_size_request(960, 620)
         self.preferences = preferences or Settings()
         if self.preferences.reduced_motion:
@@ -70,66 +42,93 @@ class MainWindow(Adw.ApplicationWindow):
         self.tr = Translator(self.preferences.language)
         self._closed = False
         self.current_page = None
+        self.current_view = "dashboard"
         self.pages = {}
+        self.downloads = {}
         self.nav_buttons = {}
+        self.download_buttons = {}
+        self.nav_rows = {}
         self.motion = MotionController(self, self.animations_enabled())
         root = box(0)
         header = Adw.HeaderBar()
         self.page_title = label("", "page-header", False)
         header.set_title_widget(self.page_title)
-        tag = label("ÖN SÜRÜM", "module-tag", False)
-        self.tr.bind(tag, "ÖN SÜRÜM")
+        tag = label(f"v{__version__}", "module-tag", False)
         header.pack_end(tag)
+        help_button = Gtk.Button()
+        help_button.set_child(icon("keyboard", 18))
+        self.tr.bind(help_button, "Klavye kısayolları", "set_tooltip_text")
+        help_button.add_css_class("flat")
+        help_button.connect("clicked", self.show_shortcuts)
+        header.pack_end(help_button)
         root.append(header)
         body = box(0, True)
         body.set_vexpand(True)
-        sidebar = box(10)
-        sidebar.set_size_request(228, -1)
+        sidebar = box(8)
+        sidebar.set_size_request(220, -1)
         sidebar.set_hexpand(False)
         sidebar.add_css_class("sidebar")
         brand_row = box(10, True)
         resources = Path(__file__).parent / "resources"
-        brand_row.append(Gtk.Image.new_from_file(str(resources / "brand.svg")))
-        brand_row.append(label("Linux Control", "brand", False))
+        brand_image = icon("brand", 30)
+        brand_row.append(brand_image)
+        brand_copy = box(3)
+        brand_copy.append(label("Linux Control", "brand", False))
+        brand_copy.append(self.tr.bind(label("Bilgisayarın, tek yerde.", "brand-caption"), "Bilgisayarın, tek yerde."))
+        brand_row.append(brand_copy)
         sidebar.append(brand_row)
-        tagline = label("Bilgisayarın, tek yerde.", "muted")
-        self.tr.bind(tagline, "Bilgisayarın, tek yerde.")
-        sidebar.append(tagline)
         section = label("ARAÇLAR", "sidebar-title")
-        section.set_margin_top(22)
+        section.set_margin_top(26)
+        section.set_margin_start(8)
         self.tr.bind(section, "ARAÇLAR")
         sidebar.append(section)
-        for name, title, caption, icon in MODULES:
+        for name, title, caption, _symbolic_icon in MODULES:
+            nav_row = box(0, True)
+            nav_row.add_css_class("nav-row")
             button = Gtk.Button()
             button.add_css_class("nav-button")
+            button.set_hexpand(True)
             content = box(12, True)
-            image = Gtk.Image.new_from_file(str(resources / {"hardware": "computer.svg", "wheel": "wheel.svg", "doctor": "search.svg"}[name]))
-            image.set_pixel_size(22)
+            image = icon({"hardware": "computer", "wheel": "wheel", "doctor": "search"}[name], 20)
+            image.set_pixel_size(20)
+            image.add_css_class("nav-icon")
             content.append(image)
             texts = box(4)
             texts.set_hexpand(True)
             texts.append(self.tr.bind(label(title, "nav-title", False), title))
-            caption_label = label(caption, "nav-caption")
+            caption = {"hardware": "Anvil Control", "wheel": "Wheel Control", "doctor": "Fedora Doctor"}[name]
+            caption_label = label(caption, "nav-caption", False)
             caption_label.set_max_width_chars(25)
             texts.append(self.tr.bind(caption_label, caption))
             content.append(texts)
             button.set_child(content)
             self.tr.bind(button, title, "set_tooltip_text")
             button.connect("clicked", lambda _button, target=name: self.select_page(target))
-            sidebar.append(button)
+            nav_row.append(button)
+            download_button = Gtk.Button()
+            download_button.add_css_class("nav-download")
+            download_image = icon("download", 17)
+            download_image.set_pixel_size(17)
+            download_button.set_child(download_image)
+            download_button.connect("clicked", lambda _button, target=name: self.select_downloads(target))
+            nav_row.append(download_button)
+            sidebar.append(nav_row)
             self.nav_buttons[name] = button
+            self.download_buttons[name] = download_button
+            self.nav_rows[name] = nav_row
             action = Gio.SimpleAction.new(name, None)
             action.connect("activate", lambda _action, _parameter, target=name: self.select_page(target))
             self.add_action(action)
         spacer = Gtk.Box(vexpand=True)
         sidebar.append(spacer)
-        language_label = label("Dil", "sidebar-title")
-        self.tr.bind(language_label, "Dil")
-        sidebar.append(language_label)
+        preferences_box = box(10)
+        preferences_box.add_css_class("sidebar-settings")
+        preferences_box.append(self.tr.bind(label("TERCİHLER", "sidebar-title"), "TERCİHLER"))
         self.language = Gtk.DropDown.new_from_strings(["Türkçe", "English"])
         self.language.set_selected(0 if self.preferences.language == "tr" else 1)
         self.language.connect("notify::selected", self.language_changed)
-        sidebar.append(self.language)
+        self.tr.bind(self.language, "Dil", "set_tooltip_text")
+        preferences_box.append(self.language)
         motion_row = box(10, True)
         motion_label = label("Hareketi azalt", "sidebar-footer")
         motion_label.set_hexpand(True)
@@ -139,12 +138,13 @@ class MainWindow(Adw.ApplicationWindow):
         self.tr.bind(self.motion_switch, "Geçiş ve kaydırma animasyonlarını azalt", "set_tooltip_text")
         self.motion_switch.connect("notify::active", self.motion_changed)
         motion_row.append(self.motion_switch)
-        sidebar.append(motion_row)
+        preferences_box.append(motion_row)
+        sidebar.append(preferences_box)
         footer = label("Yerel ve şeffaf", "sidebar-footer")
         self.tr.bind(footer, "Yerel ve şeffaf")
-        footer.set_margin_top(16)
+        footer.set_margin_top(12)
+        footer.set_margin_start(8)
         sidebar.append(footer)
-        sidebar.append(label(f"v{__version__}", "sidebar-footer"))
         body.append(sidebar)
         body.append(Gtk.Separator(orientation=Gtk.Orientation.VERTICAL))
         self.stack = Gtk.Stack(hexpand=True, vexpand=True)
@@ -154,7 +154,9 @@ class MainWindow(Adw.ApplicationWindow):
         self.stack.set_vhomogeneous(False)
         body.append(self.stack)
         root.append(body)
-        self.set_content(root)
+        self.toast_overlay = Adw.ToastOverlay()
+        self.toast_overlay.set_child(root)
+        self.set_content(self.toast_overlay)
         if page_factories is None:
             from .pages.hardware import HardwarePage
             from .pages.wheel import WheelPage
@@ -169,6 +171,18 @@ class MainWindow(Adw.ApplicationWindow):
             self.stack.add_named(page, name)
             page.set_active(False)
             self.motion.decorate(page)
+            downloads = DownloadsPage(self, self.tr, self.preferences, name)
+            self.downloads[name] = downloads
+            self.stack.add_named(downloads, name + "-downloads")
+            self.motion.decorate(downloads)
+        # A window activates one breakpoint at a time. Keep both modules'
+        # compact setters in the same breakpoint so neither masks the other.
+        compact = Adw.Breakpoint.new(Adw.BreakpointCondition.parse("max-width: 1120px"))
+        if hasattr(self.pages["hardware"], "metric_grid"):
+            compact.add_setter(self.pages["hardware"].metric_grid, "max-children-per-line", 2)
+        if hasattr(self.pages["wheel"], "control_columns"):
+            compact.add_setter(self.pages["wheel"].control_columns, "orientation", Gtk.Orientation.VERTICAL)
+        self.add_breakpoint(compact)
         self.tr.connect(self.retranslate)
         self._gtk_settings = Gtk.Settings.get_default()
         self._animation_signal = (
@@ -176,27 +190,68 @@ class MainWindow(Adw.ApplicationWindow):
             if self._gtk_settings else None
         )
         self.sync_motion()
-        self.select_page(initial)
+        self.select_page(initial, initial_view)
         self.connect("close-request", self.on_close)
         for index, (name, *_rest) in enumerate(MODULES, 1):
             application.set_accels_for_action("win." + name, [f"<Control>{index}"])
+        download_action = Gio.SimpleAction.new("downloads", None)
+        download_action.connect("activate", lambda *_: self.select_downloads(self.current_page))
+        self.add_action(download_action)
+        application.set_accels_for_action("win.downloads", ["<Control>l"])
 
     def animations_enabled(self):
         settings = Gtk.Settings.get_default()
         return bool(not self.preferences.reduced_motion and settings and settings.get_property("gtk-enable-animations"))
 
-    def select_page(self, name):
-        if self._closed or name not in self.pages or name == self.current_page:
+    def select_page(self, name, view="dashboard"):
+        if self._closed or name not in self.pages or view not in ("dashboard", "downloads"):
+            return
+        if name == self.current_page and view == self.current_view:
             return
         if self.current_page:
-            self.pages[self.current_page].set_active(False)
+            previous = self.downloads if self.current_view == "downloads" else self.pages
+            previous[self.current_page].set_active(False)
             self.nav_buttons[self.current_page].remove_css_class("selected")
+            self.download_buttons[self.current_page].remove_css_class("selected")
+            self.nav_rows[self.current_page].remove_css_class("current")
         self.current_page = name
+        self.current_view = view
+        self.nav_rows[name].add_css_class("current")
         self.nav_buttons[name].add_css_class("selected")
-        self.stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
-        self.stack.set_visible_child_name(name)
-        self.pages[name].set_active(True)
+        if view == "downloads":
+            self.download_buttons[name].add_css_class("selected")
+        self.stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
+        self.stack.set_visible_child_name(name + ("-downloads" if view == "downloads" else ""))
+        target = self.downloads if view == "downloads" else self.pages
+        target[name].set_active(True)
         self.retranslate()
+
+    def select_downloads(self, name):
+        self.select_page(name, "downloads")
+
+    def toast(self, source):
+        if not self._closed:
+            self.toast_overlay.add_toast(Adw.Toast.new(self.tr(source)))
+
+    def show_shortcuts(self, *_):
+        dialog = Adw.Dialog(title=self.tr("Klavye kısayolları"))
+        dialog.set_content_width(420)
+        root = box(18)
+        root.append(Adw.HeaderBar())
+        content = box(16)
+        for method in (content.set_margin_start, content.set_margin_end, content.set_margin_bottom):
+            method(24)
+        for keys, source in (("Ctrl + 1", "Donanım"), ("Ctrl + 2", "Direksiyon"),
+                             ("Ctrl + 3", "Sorun Teşhisi"), ("Ctrl + L", "Bu bölümün indirme sayfası")):
+            row = box(24, True)
+            title = label(self.tr(source))
+            title.set_hexpand(True)
+            row.append(title)
+            row.append(label(keys, "shortcut-key", False))
+            content.append(row)
+        root.append(content)
+        dialog.set_child(root)
+        dialog.present(self)
 
     def language_changed(self, dropdown, *_):
         self.preferences.language = "tr" if dropdown.get_selected() == 0 else "en"
@@ -216,7 +271,7 @@ class MainWindow(Adw.ApplicationWindow):
             self.remove_css_class("reduce-motion")
         self.motion.set_enabled(enabled)
         self.stack.set_transition_duration(240 if enabled else 0)
-        for page in self.pages.values():
+        for page in (*self.pages.values(), *self.downloads.values()):
             if hasattr(page, "sync_motion"):
                 page.sync_motion()
 
@@ -230,6 +285,13 @@ class MainWindow(Adw.ApplicationWindow):
     def retranslate(self):
         title = next((title for name, title, *_ in MODULES if name == self.current_page), "Linux Control")
         self.page_title.set_label(self.tr(title))
+        if self.current_view == "downloads":
+            self.page_title.set_label(self.tr(title) + "  /  " + self.tr("İndirmeler"))
+        for name, button in self.download_buttons.items():
+            from .downloads import APPLICATIONS
+            description = self.tr("{app} indirme sayfası", app=APPLICATIONS[name])
+            button.set_tooltip_text(description)
+            button.update_property([Gtk.AccessibleProperty.LABEL], [description])
 
     def on_close(self, *_):
         if not self._closed:
@@ -238,7 +300,7 @@ class MainWindow(Adw.ApplicationWindow):
             if self._animation_signal is not None:
                 self._gtk_settings.disconnect(self._animation_signal)
                 self._animation_signal = None
-            for page in self.pages.values():
+            for page in (*self.pages.values(), *self.downloads.values()):
                 page.close()
         return False
 
@@ -262,6 +324,7 @@ def main():
     parser.add_argument("--page", choices=[name for name, *_ in MODULES], default="hardware")
     parser.add_argument("--language", choices=("tr", "en"))
     parser.add_argument("--wheel-demo", action="store_true", help="Explicitly use a simulated wheel, without hardware writes")
+    parser.add_argument("--downloads", action="store_true", help="Open the selected module's download page")
     parser.add_argument("--screenshot", help="Render the selected page to a PNG, then exit")
     arguments = parser.parse_args()
     application = Adw.Application(application_id="io.github.Tubix777.LinuxControl", flags=Gio.ApplicationFlags.NON_UNIQUE)
@@ -274,20 +337,21 @@ def main():
         preferences = Settings()
         if arguments.language:
             preferences.language = arguments.language
-        window = MainWindow(app, preferences=preferences, initial=arguments.page, wheel_demo=arguments.wheel_demo)
+        window = MainWindow(app, preferences=preferences, initial=arguments.page, wheel_demo=arguments.wheel_demo,
+                            initial_view="downloads" if arguments.downloads else "dashboard")
         window.present()
         if arguments.screenshot:
-            if arguments.page == "doctor":
+            if arguments.page == "doctor" and not arguments.downloads:
                 window.pages["doctor"].start_scan()
             started = GLib.get_monotonic_time()
 
             def render_ready():
                 elapsed = (GLib.get_monotonic_time() - started) / 1_000_000
-                page = window.pages[arguments.page]
+                page = (window.downloads if arguments.downloads else window.pages)[arguments.page]
                 pending = getattr(page, "_busy", False) or getattr(page, "_polling", False) or getattr(page, "_scan_running", False)
                 if elapsed < 3 or (pending and elapsed < 45):
                     return True
-                if arguments.page == "doctor" and getattr(page, "_motion_tick_id", None) is not None and elapsed < 47:
+                if arguments.page == "doctor" and not arguments.downloads and getattr(page, "_motion_tick_id", None) is not None and elapsed < 47:
                     return True
                 okay = save_screenshot(window, arguments.screenshot)
                 window.on_close()

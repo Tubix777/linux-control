@@ -106,6 +106,49 @@ class ActualWindowTests(unittest.TestCase):
             self.assertTrue(all(not page._closed for page in pages.values()))
             self.assertEqual(sum(page._active for page in pages.values()), 1)
 
+    def test_download_navigation_preserves_real_unapplied_controls_and_app_selection(self):
+        wheel, doctor = self.window.pages["wheel"], self.window.pages["doctor"]
+        wheel.range_control.set_value(540)
+        wheel.gain_control.set_value(42)
+        doctor.dropdown.set_selected(1)
+        for name in ("hardware", "wheel", "doctor"):
+            self.window.select_downloads(name)
+            self.assertFalse(any(page._active for page in self.window.pages.values()))
+            self.window.language.set_selected(1)
+            self.window.language.set_selected(0)
+        self.window.select_page("wheel")
+        self.assertEqual(wheel.range_control.get_value(), 540)
+        self.assertEqual(wheel.gain_control.get_value(), 42)
+        self.assertEqual(doctor.dropdown.get_selected(), 1)
+        self.assertEqual(self.device._demo_values, {})
+
+    def test_attention_filter_retains_unknowns_and_restores_all_findings(self):
+        doctor = self.window.pages["doctor"]
+        findings = [Finding("Good", "ok", "Fine"), Finding("Warning", "warning", "Check"),
+                    Finding("Unknown", "unknown", "Cannot read")]
+        doctor.show_findings(findings)
+        doctor.filter_button.set_active(True)
+        self.assertEqual(len(doctor._cards), 2)
+        self.assertEqual(doctor._findings, findings)
+        self.assertFalse(doctor._auto_scroll)
+        self.assertEqual(doctor.scan_counts["checks"].get_label(), "3")
+        self.assertEqual(doctor.scan_counts["unknown"].get_label(), "1")
+        doctor.filter_button.set_active(False)
+        self.assertEqual(len(doctor._cards), 3)
+
+    def test_scan_with_no_attention_findings_reveals_the_filtered_empty_state(self):
+        doctor = self.window.pages["doctor"]
+        findings = [Finding("Good", "ok", "Fine")]
+        doctor.show_findings(findings)
+        doctor.filter_button.set_active(True)
+        doctor.show_findings(findings)
+        self.drain(lambda: doctor._motion_tick_id is None)
+        self.assertEqual(doctor._findings, findings)
+        self.assertEqual(len(doctor._cards), 1)
+        self.assertTrue(doctor._cards[0].has_css_class("doctor-empty"))
+        self.assertEqual(doctor._cards[0].get_opacity(), 1)
+        self.assertFalse(doctor._auto_scroll)
+
     def test_blocked_probes_do_not_block_navigation_or_gtk_callbacks(self):
         hardware_entered, doctor_entered, release = (threading.Event() for _ in range(3))
         threads = []
@@ -188,15 +231,20 @@ class ActualWindowTests(unittest.TestCase):
             self.window.present()
             self.drain(lambda: self.window.get_width() > 0
                        and self.window.pages["wheel"].current_device is self.device)
-            for name in ("hardware", "wheel", "doctor"):
-                self.window.select_page(name)
+            for name, view in ((name, view) for name in ("hardware", "wheel", "doctor")
+                               for view in ("dashboard", "downloads")):
+                self.window.select_page(name, view)
                 self.settle()
                 self.assertEqual(self.window.get_width(), width,
                                  f"{name}: minimum layout forced a wider window")
+                self.assertEqual(self.window.pages["hardware"].metric_grid.get_max_children_per_line(),
+                                 2 if width <= 1120 else 4)
+                self.assertEqual(self.window.pages["wheel"].control_columns.get_orientation(),
+                                 Gtk.Orientation.VERTICAL if width <= 1120 else Gtk.Orientation.HORIZONTAL)
                 # Adwaita's minimum-sized client decoration adds two pixels.
                 self.assertLessEqual(abs(self.window.get_height() - height), 2,
                                      f"{name}: minimum layout forced a taller window")
-                page = self.window.pages[name]
+                page = (self.window.downloads if view == "downloads" else self.window.pages)[name]
                 self.assertLessEqual(page.get_width(), self.window.get_width())
                 self.assertGreater(page.get_width(), 500)
                 for scrolled in self.scrollers(page):

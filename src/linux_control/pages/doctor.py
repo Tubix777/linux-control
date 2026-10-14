@@ -8,12 +8,14 @@ from gi.repository import Adw, Gdk, GLib, Gtk
 from doctor import __version__
 from doctor.core import Finding, check_app, list_flatpaks, scan
 from doctor.app import STATUS, box, label as make_label
+from linux_control.design import heading
 
 
 class DoctorPage(Gtk.Box):
     def __init__(self, host, translator, settings):
         super().__init__(orientation=Gtk.Orientation.VERTICAL)
         self.host, self.tr, self.preferences = host, translator, settings
+        self.add_css_class("doctor-page")
         self._closed = False
         self._active = False
         self._findings = None
@@ -31,7 +33,7 @@ class DoctorPage(Gtk.Box):
         self._cards = []
         self._fade_started = {}
         self._revealed = set()
-        scroll = self.scroll = Gtk.ScrolledWindow(vexpand=True)
+        scroll = self.scroll = Gtk.ScrolledWindow(vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
         content = self.content = box(22)
         scroll.get_vadjustment().connect("value-changed", self.viewport_changed)
         scroll.get_vadjustment().connect("changed", self.viewport_changed)
@@ -51,12 +53,11 @@ class DoctorPage(Gtk.Box):
                        content.set_margin_start, content.set_margin_end):
             method(28)
         scroll.set_child(content)
-        self.append(scroll)
-        hero = box(8)
-        hero.append(label("BİLGİSAYARINI ANLA", "eyebrow"))
-        hero.append(label("Sorun ne? Birlikte bakalım.", "hero"))
-        hero.append(label("Linux kontrolleri, anlaşılır açıklamalar ve uygulanabilir adımlar.", "muted"))
-        content.append(hero)
+        clamp = Adw.Clamp(maximum_size=1120, tightening_threshold=950)
+        clamp.set_child(scroll)
+        self.append(clamp)
+        content.append(heading(self.tr, "FEDORA DOCTOR", "Sorunu gör. Çözümü bul.",
+                              "Sistemini tara; ne olduğunu ve sonraki adımı açıkça gör."))
         actions = box(12, True)
         self.scan_button = Gtk.Button(label="Sistemi tara")
         self.tr.bind(self.scan_button, "Sistemi tara")
@@ -67,8 +68,24 @@ class DoctorPage(Gtk.Box):
         actions.append(self.spinner)
         actions.append(label("Yerel çalışır · Sistem ayarlarını değiştirmez", "muted"))
         content.append(actions)
-        self.summary = label("Henüz tarama yapılmadı. İlk kontrol birkaç saniye sürer.", "summary")
-        content.append(self.summary)
+        overview = box(16)
+        overview.add_css_class("card")
+        overview.add_css_class("scan-overview")
+        stats = box(24, True)
+        self.scan_counts = {}
+        for key, title in (("checks", "Tamamlanan kontrol"), ("alerts", "Dikkat gerektiren"), ("unknown", "Doğrulanamayan")):
+            column = box(5)
+            column.set_hexpand(True)
+            number = Gtk.Label(label="—", xalign=0)
+            number.add_css_class("scan-count")
+            column.append(number)
+            column.append(label(title, "muted"))
+            stats.append(column)
+            self.scan_counts[key] = number
+        overview.append(stats)
+        self.summary = label("Henüz tarama yapılmadı. İlk kontrol birkaç saniye sürer.", "muted")
+        overview.append(self.summary)
+        content.append(overview)
         app_panel = box(10)
         app_panel.add_css_class("card")
         app_panel.append(label("Bir uygulamada sorun mu var?", "card-title"))
@@ -93,10 +110,24 @@ class DoctorPage(Gtk.Box):
         self.folder_label = label("Klasör seçimi isteğe bağlıdır.", "muted")
         app_panel.append(self.folder_label)
         content.append(app_panel)
-        self.results = box(12)
+        results_header = self.results_header = box(16, True)
+        title = label("Tarama sonuçları", "section-title")
+        title.set_hexpand(True)
+        results_header.append(title)
+        self.filter_button = Gtk.ToggleButton(sensitive=False)
+        self.tr.bind(self.filter_button, "Dikkat gerektirenler")
+        self.filter_button.add_css_class("soft")
+        self.filter_button.connect("toggled", self.filter_changed)
+        results_header.append(self.filter_button)
+        content.append(results_header)
+        self.results = box(14)
         content.append(self.results)
-        self.results.append(label("Bulgular burada görünecek.", "muted"))
-        content.append(label(f"Fedora Doctor {__version__} · İlk çalışan prototip · Günlükler dışarı gönderilmez", "muted"))
+        empty = box(8)
+        empty.add_css_class("doctor-empty")
+        empty.append(label("İlk kontrolü başlat.", "card-title"))
+        empty.append(label("Disk, SSD, servisler, ağ ve depolar için bulgular burada görünecek.", "muted"))
+        self.results.append(empty)
+        content.append(label("Kontroller bu bilgisayarda çalışır. Sonuçlar dışarı gönderilmez.", "download-notice"))
         self.tr.connect(self.retranslate)
         self.background(list_flatpaks, self.set_apps)
 
@@ -114,10 +145,16 @@ class DoctorPage(Gtk.Box):
         threading.Thread(target=worker, daemon=True).start()
 
     def set_apps(self, apps):
+        index = self.dropdown.get_selected()
+        previous = self.apps[index] if index < len(self.apps) else None
         self.apps = apps or []
         self.app_model.splice(0, self.app_model.get_n_items(),
             [f"{name} · {self.tr('kişisel') if scope == 'user' else self.tr('sistem') if scope == 'system' else scope}" for _, name, scope in self.apps]
             or [self.tr("Kurulu Flatpak uygulaması bulunamadı")])
+        if previous:
+            selected = next((i for i, item in enumerate(self.apps)
+                             if (item[0], item[2]) == (previous[0], previous[2])), 0)
+            self.dropdown.set_selected(selected)
         self.dropdown.set_sensitive(bool(self.apps) and not self._busy)
         self.app_button.set_sensitive(bool(self.apps) and not self._busy)
         return False
@@ -145,6 +182,7 @@ class DoctorPage(Gtk.Box):
         self.app_button.set_sensitive(not value and bool(self.apps))
         self.dropdown.set_sensitive(not value and bool(self.apps))
         self.folder_button.set_sensitive(not value)
+        self.filter_button.set_sensitive(not value and self._findings is not None)
         self.spinner.set_visible(value)
         self.spinner.set_spinning(value)
 
@@ -167,7 +205,7 @@ class DoctorPage(Gtk.Box):
         self.summary.set_label(self.tr.dynamic(self._summary_source))
         self.background(lambda: check_app(app_id, scope, folder), self.show_findings)
 
-    def show_findings(self, findings):
+    def show_findings(self, findings, *, auto_scroll=True):
         self.cancel_motion()
         if hasattr(self.host, "motion"):
             self.host.motion.forget(self.results)
@@ -179,6 +217,9 @@ class DoctorPage(Gtk.Box):
         alerts = sum(item.status in ("warning", "critical") for item in findings)
         unknown = sum(item.status == "unknown" for item in findings)
         self._findings = list(findings)
+        for key, value in (("checks", len(findings)), ("alerts", alerts), ("unknown", unknown)):
+            self.scan_counts[key].set_label(str(value))
+        self.filter_button.set_sensitive(True)
         self._summary_source = f"{len(findings)} kontrol tamamlandı · {alerts} dikkat gerektiren bulgu · {unknown} kontrol edilemeyen alan"
         self.summary.set_label(self.tr.dynamic(self._summary_source))
         order = {"critical": 0, "warning": 1, "unknown": 2, "ok": 3, "info": 4}
@@ -187,7 +228,17 @@ class DoctorPage(Gtk.Box):
             return priority, order[item.status]
         def label(text, css="", wrap=True):
             return make_label(self.tr.dynamic(text), css, wrap)
-        for item in sorted(findings, key=finding_order):
+        visible_findings = [item for item in findings if not self.filter_button.get_active()
+                            or item.status in ("warning", "critical", "unknown")]
+        if not visible_findings:
+            empty = box(8)
+            empty.add_css_class("doctor-empty")
+            empty.add_css_class("scan-result")
+            empty.append(label("Dikkat gerektiren bulgu yok.", "card-title"))
+            empty.append(label("Diğer kontrolleri görmek için filtreyi kapatabilirsin.", "muted"))
+            self.results.append(empty)
+            self._cards.append(empty)
+        for item in sorted(visible_findings, key=finding_order):
             card = box(9)
             card.add_css_class("card")
             card.add_css_class("scan-result")
@@ -203,7 +254,10 @@ class DoctorPage(Gtk.Box):
                 metric_row = box(12, True)
                 percentage = f"{item.metric:g}%" if self.tr.language == "en" else f"%{item.metric:g}"
                 metric_row.append(label(percentage, "metric"))
-                metric_row.append(label(item.metric_label, "muted"))
+                metric_caption = label(item.metric_label, "muted")
+                metric_caption.set_hexpand(True)
+                metric_caption.set_wrap(False)
+                metric_row.append(metric_caption)
                 card.append(metric_row)
                 meter = Gtk.ProgressBar(fraction=max(0.0, min(1.0, item.metric / 100)))
                 meter.add_css_class("metric-bar")
@@ -227,7 +281,7 @@ class DoctorPage(Gtk.Box):
         if self.animations_enabled():
             for card in self._cards:
                 card.set_opacity(0)
-        self._auto_scroll = self._active
+        self._auto_scroll = self._active and auto_scroll
         if self._active:
             self.queue_motion()
         else:
@@ -235,6 +289,11 @@ class DoctorPage(Gtk.Box):
                 card.set_opacity(1)
                 self._revealed.add(index)
         return False
+
+    def filter_changed(self, *_):
+        if self._closed or self._busy or self._findings is None:
+            return
+        self.show_findings(self._findings, auto_scroll=False)
 
     def animations_enabled(self):
         settings = Gtk.Settings.get_default()
@@ -280,7 +339,7 @@ class DoctorPage(Gtk.Box):
 
     def motion_frame(self, _widget, clock):
         adjustment = self.scroll.get_vadjustment()
-        allocated, bounds = self.results.compute_bounds(self.content)
+        allocated, bounds = self.results_header.compute_bounds(self.content)
         # Tick callbacks precede layout. Wait for the new result cards to allocate.
         if not allocated or not self._cards or self._cards[0].get_height() <= 0:
             return True
@@ -349,7 +408,7 @@ class DoctorPage(Gtk.Box):
         self.summary.set_label(self.tr.dynamic(self._summary_source))
         if self._findings is not None and not self._busy:
             scroll_value = self.scroll.get_vadjustment().get_value()
-            self.show_findings(self._findings)
+            self.show_findings(self._findings, auto_scroll=False)
             self.interrupt_auto_scroll()
             self.scroll.get_vadjustment().set_value(scroll_value)
 

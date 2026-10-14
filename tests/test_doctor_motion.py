@@ -137,6 +137,11 @@ class ScanMotionTests(unittest.TestCase):
         self.assertTrue(any(0 < opacity < 1 for opacity in fade_samples),
                         "visible cards should fade through intermediate opacity")
         self.assertTrue(self.visible_cards())
+        allocated, heading = self.window.results_header.compute_bounds(self.window.content)
+        self.assertTrue(allocated)
+        self.assertGreaterEqual(heading.get_y(), adjustment.get_value())
+        self.assertLessEqual(heading.get_y() + heading.get_height(),
+                             adjustment.get_value() + adjustment.get_page_size())
         for index, card in self.visible_cards():
             self.assertEqual(card.get_opacity(), 1)
             self.assertIn(index, self.window._revealed)

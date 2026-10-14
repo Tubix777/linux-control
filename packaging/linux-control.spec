@@ -1,8 +1,8 @@
 Name:           linux-control
-Version:        0.1.2
+Version:        0.2.0
 Release:        1%{?dist}
 Summary:        Native hardware, racing wheel and diagnostics control center
-License:        GPL-3.0-or-later AND MIT
+License:        GPL-3.0-or-later AND MIT AND OFL-1.1
 URL:            https://github.com/Tubix777/linux-control
 Source0:        %{name}-%{version}.tar.gz
 BuildArch:      noarch
@@ -10,15 +10,15 @@ BuildRequires:  python3
 BuildRequires:  python3-gobject
 BuildRequires:  python3-cairo
 BuildRequires:  python3-pyudev
-BuildRequires:  gtk4
-BuildRequires:  libadwaita
+BuildRequires:  gtk4 >= 4.12
+BuildRequires:  libadwaita >= 1.5
 BuildRequires:  desktop-file-utils
 Requires:       python3
 Requires:       python3-gobject
 Requires:       python3-cairo
 Requires:       python3-pyudev
-Requires:       gtk4
-Requires:       libadwaita
+Requires:       gtk4 >= 4.12
+Requires:       libadwaita >= 1.5
 Recommends:     udisks2
 
 %description
@@ -54,6 +54,12 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/io.github.Tubix777.Li
 %{_datadir}/icons/hicolor/scalable/apps/io.github.Tubix777.LinuxControl.svg
 
 %changelog
+* Wed Oct 14 2026 Linux Control contributors - 0.2.0-1
+- Redesign native typography, sidebar, dashboards and responsive layouts
+- Add official download pages with package links and manual installation commands
+- Add diagnostic overview and attention filter without dropping unknown results
+- Bundle the Manrope font under OFL-1.1 for consistent offline typography
+
 * Sat Oct 10 2026 Linux Control contributors - 0.1.2-1
 - Add read-only circuit/fan activity illustration with bounded visible-only motion
 - Stop activity on stale readings, polling errors, pause, page hide and reduced motion

@@ -1,0 +1,81 @@
+{
+  "hardware": {
+    "tag_name": "v0.15.0-alpha",
+    "html_url": "https://github.com/Tubix777/anvil-control/releases/tag/v0.15.0-alpha",
+    "prerelease": false,
+    "assets": [
+      {
+        "name": "anvil-control-0.15.0-1.fc44.noarch.rpm",
+        "browser_download_url": "https://github.com/Tubix777/anvil-control/releases/download/v0.15.0-alpha/anvil-control-0.15.0-1.fc44.noarch.rpm",
+        "size": 57081
+      },
+      {
+        "name": "anvil-control-0.15.0-1.fc44.src.rpm",
+        "browser_download_url": "https://github.com/Tubix777/anvil-control/releases/download/v0.15.0-alpha/anvil-control-0.15.0-1.fc44.src.rpm",
+        "size": 438539
+      },
+      {
+        "name": "anvil-control-0.15.0-linux-x86_64.tar.gz",
+        "browser_download_url": "https://github.com/Tubix777/anvil-control/releases/download/v0.15.0-alpha/anvil-control-0.15.0-linux-x86_64.tar.gz",
+        "size": 79023575
+      },
+      {
+        "name": "anvil-control-0.15.0.tar.gz",
+        "browser_download_url": "https://github.com/Tubix777/anvil-control/releases/download/v0.15.0-alpha/anvil-control-0.15.0.tar.gz",
+        "size": 411043
+      },
+      {
+        "name": "anvil-control_0.15.0.alpha1-1_all.deb",
+        "browser_download_url": "https://github.com/Tubix777/anvil-control/releases/download/v0.15.0-alpha/anvil-control_0.15.0.alpha1-1_all.deb",
+        "size": 36174
+      },
+      {
+        "name": "anvil-control_0.15.0.alpha1-1_amd64.deb",
+        "browser_download_url": "https://github.com/Tubix777/anvil-control/releases/download/v0.15.0-alpha/anvil-control_0.15.0.alpha1-1_amd64.deb",
+        "size": 79026024
+      },
+      {
+        "name": "anvil_control-0.15.0-py3-none-any.whl",
+        "browser_download_url": "https://github.com/Tubix777/anvil-control/releases/download/v0.15.0-alpha/anvil_control-0.15.0-py3-none-any.whl",
+        "size": 46862
+      },
+      {
+        "name": "SHA256SUMS",
+        "browser_download_url": "https://github.com/Tubix777/anvil-control/releases/download/v0.15.0-alpha/SHA256SUMS",
+        "size": 722
+      }
+    ]
+  },
+  "wheel": {
+    "tag_name": "v0.1.1",
+    "html_url": "https://github.com/Tubix777/wheel-control/releases/tag/v0.1.1",
+    "prerelease": true,
+    "assets": [
+      {
+        "name": "CHECKSUMS.txt",
+        "browser_download_url": "https://github.com/Tubix777/wheel-control/releases/download/v0.1.1/CHECKSUMS.txt",
+        "size": 401
+      },
+      {
+        "name": "wheel-control-0.1.1-1.fc44.noarch.rpm",
+        "browser_download_url": "https://github.com/Tubix777/wheel-control/releases/download/v0.1.1/wheel-control-0.1.1-1.fc44.noarch.rpm",
+        "size": 112013
+      },
+      {
+        "name": "wheel-control-0.1.1-1.fc44.src.rpm",
+        "browser_download_url": "https://github.com/Tubix777/wheel-control/releases/download/v0.1.1/wheel-control-0.1.1-1.fc44.src.rpm",
+        "size": 379993
+      },
+      {
+        "name": "wheel_control-0.1.1-py3-none-any.whl",
+        "browser_download_url": "https://github.com/Tubix777/wheel-control/releases/download/v0.1.1/wheel_control-0.1.1-py3-none-any.whl",
+        "size": 47579
+      },
+      {
+        "name": "wheel_control-0.1.1.tar.gz",
+        "browser_download_url": "https://github.com/Tubix777/wheel-control/releases/download/v0.1.1/wheel_control-0.1.1.tar.gz",
+        "size": 356635
+      }
+    ]
+  }
+}

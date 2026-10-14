@@ -1,5 +1,28 @@
 # Validation
 
+## 0.2.0 redesign and distribution pages
+
+200 tests passed in the isolated Fedora 44 GTK/KWin Wayland suite, with no GUI
+skips. The six native views were checked at 960 × 620 and 1280 × 900. Assertions
+cover both compact hardware columns and wheel panel orientation, as well as
+horizontal clipping and the supported minimum height.
+
+New checks cover official repository/asset URLs, filename integrity, draft and
+preview releases, oversized/unexpected responses, source versus portable
+archives, offline fallback, background release requests, navigation during
+pending requests, close-time callback cancellation, package-format preservation,
+unsaved actual wheel settings and Flatpak selection through download navigation,
+and attention filtering that retains unverified findings. Empty filtered results
+remain visible and release their animation callback. Scan scrolling leaves the
+result heading and filter fully visible.
+
+Real read-only hardware, empty wheel, diagnostic and three distribution pages
+were rendered and inspected. The app's HTTP reader returned public metadata for
+Anvil v0.15.0-alpha, Wheel v0.1.1 and the existing Linux Control release. Native
+icons are rendered at their intended size and display scale. Manrope is bundled
+with its OFL notice and loaded within the process. No physical fan, RGB, power
+profile, force-feedback or device-permission changes were performed.
+
 ## 0.1.2 hardware motion
 
 183 tests passed in the isolated Fedora 44 GTK/Wayland suite. Added cases cover

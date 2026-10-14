@@ -28,6 +28,7 @@ from anvil.insights import SensorStats, ThermalAlerts
 from anvil.fan_history import FanRpmHistory
 from anvil.rgb import parse_devices
 from linux_control.motion import HardwareSignal
+from linux_control.design import heading
 
 HELPER = Path("/usr/libexec/anvil-fan-helper")
 
@@ -128,7 +129,7 @@ class HistoryChart(Gtk.DrawingArea):
     def __init__(self, translator):
         super().__init__()
         self.tr = translator
-        self.set_content_height(170)
+        self.set_content_height(148)
         self.set_hexpand(True)
         self.samples = deque(maxlen=120)
         self.set_draw_func(self._draw)
@@ -139,6 +140,7 @@ class HistoryChart(Gtk.DrawingArea):
         self.queue_draw()
 
     def _draw(self, area, cr, width, height):
+        cr.select_font_face("Manrope")
         left, top, bottom = 34, 10, height - 23
         right = width - 12
         cr.set_line_width(1)
@@ -178,6 +180,7 @@ class HistoryChart(Gtk.DrawingArea):
 class HardwarePage(Gtk.Box):
     def __init__(self, host, translator, settings):
         super().__init__(orientation=Gtk.Orientation.VERTICAL)
+        self.add_css_class("hardware-page")
         self.host, self.tr, self.settings = host, translator, settings
         self._closed = False
         self._active = False
@@ -239,48 +242,52 @@ class HardwarePage(Gtk.Box):
 
     def _build(self):
         scroll = Gtk.ScrolledWindow(vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
-        self.append(scroll)
+        clamp = Adw.Clamp(maximum_size=1180, tightening_threshold=1050)
+        clamp.set_child(scroll)
+        self.append(clamp)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20,
-                               margin_top=30, margin_bottom=30, margin_start=28, margin_end=28)
+                               margin_top=30, margin_bottom=32, margin_start=28, margin_end=28)
         scroll.set_child(self.content)
-        self.content.append(self.label("DONANIM · ANVIL CONTROL", "eyebrow"))
-        hero = Gtk.Box(spacing=12)
-        heading = self.label("Bilgisayarının nabzı.", "hero")
-        heading.set_hexpand(True)
-        hero.append(heading)
         self.signal = HardwareSignal(self._animations_enabled)
         self.signal.set_hexpand(False)
         self.signal.set_tooltip_text(self.tr("Devre hareketi görseldir; fan yalnız pozitif, güncel RPM okumasında döner. Hızı ölçekli değildir."))
-        hero.append(self.signal)
-        self.content.append(hero)
-        self.identity_label = self.label("Donanım bilgileri okunuyor…", "muted")
+        self.content.append(heading(self.tr, "ANVIL CONTROL", "Sistemin, canlı.",
+                                   "Kullanımı, sıcaklıkları ve fanları tek bakışta takip et.", self.signal))
+        self.identity_label = self.label("Donanım bilgileri okunuyor…", "machine-identity")
         self.content.append(self.identity_label)
         toolbar = Gtk.Box(spacing=8)
+        toolbar.add_css_class("hardware-toolbar")
         self.pause_button = self.button("Duraklat", self._toggle_pause)
         toolbar.append(self.pause_button)
         toolbar.append(self.button("CSV kaydet", lambda *_: self._export("csv")))
         toolbar.append(self.button("JSON raporu", lambda *_: self._export("json")))
-        self.live_label = self.label("İlk ölçüm bekleniyor", "muted")
+        self.live_label = self.label("İlk ölçüm bekleniyor", "live-state")
+        self.live_label.set_wrap(False)
         self.live_label.set_hexpand(True)
         self.live_label.set_halign(Gtk.Align.END)
         toolbar.append(self.live_label)
         self.content.append(toolbar)
 
         self.metrics = {}
-        grid = Gtk.Grid(column_spacing=14, row_spacing=14, column_homogeneous=True)
+        grid = Gtk.FlowBox(column_spacing=14, row_spacing=14, homogeneous=True,
+                           min_children_per_line=2, max_children_per_line=4,
+                           selection_mode=Gtk.SelectionMode.NONE)
+        self.metric_grid = grid
         for i, (key, name) in enumerate((("cpu", "İşlemci"), ("gpu", "Ekran kartı"),
                                          ("memory", "Bellek"), ("disk", "Sistem diski"))):
             card = self.card(name)
+            card.add_css_class("metric-card")
             value = Gtk.Label(label="—", xalign=0)
             value.add_css_class("metric")
             bar = Gtk.ProgressBar()
             bar.add_css_class("metric-bar")
             detail = Gtk.Label(label=self.tr("Veri bekleniyor"), xalign=0, wrap=True)
+            detail.set_max_width_chars(22)
             detail.add_css_class("muted")
             card.append(value)
             card.append(bar)
             card.append(detail)
-            grid.attach(card, i % 2, i // 2, 1, 1)
+            grid.append(card)
             self.metrics[key] = (value, bar, detail)
         self.content.append(grid)
         history = self.card("Canlı performans")
