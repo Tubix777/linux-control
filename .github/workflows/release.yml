@@ -9,26 +9,30 @@ on:
         required: true
         type: string
 permissions:
-  contents: write
+  contents: read
 jobs:
+  distributions:
+    uses: ./.github/workflows/packages.yml
+    with:
+      ref: ${{ inputs.tag || github.ref }}
   release:
+    needs: distributions
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 10
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
           ref: ${{ inputs.tag || github.ref }}
-      - name: Test and build release assets
-        run: |
-          docker run --rm -v "$PWD:/workspace" -w /workspace registry.fedoraproject.org/fedora:44 bash -euc '
-            dnf -y install python3 python3-gobject python3-cairo python3-pyudev gtk4 libadwaita weston dbus-daemon rpm-build desktop-file-utils tar gzip findutils
-            packaging/run_checks.sh
-            python3 packaging/build_rpm.py --output dist
-            cd dist
-            sha256sum -- *.rpm *.tar.gz > SHA256SUMS
-          '
-      - name: Publish source and RPM assets
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: uzeyir-doctor-*
+          path: verified-artifacts
+      - name: Verify source consistency and collect distro assets
+        run: python3 packaging/collect_release.py verified-artifacts --output dist
+      - name: Publish verified packages
         env:
           GH_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}

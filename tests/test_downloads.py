@@ -5,6 +5,7 @@ import unittest
 from linux_control import __version__
 from linux_control.downloads import (Asset, MAX_RESPONSE, REPOSITORIES, ReleaseError,
                                      bundled_release, fetch_release, official_url, parse_release)
+from linux_control.downloads import format_for
 
 
 def payload(module="wheel"):
@@ -14,6 +15,13 @@ def payload(module="wheel"):
 
 
 class DistributionTests(unittest.TestCase):
+    def test_initial_package_format_matches_os_family_without_running_package_tools(self):
+        for release, expected in (({"ID": "zorin", "ID_LIKE": "ubuntu debian"}, "deb"),
+                                  ({"ID": "deepin"}, "deb"), ({"ID": "ubuntu"}, "deb"),
+                                  ({"ID": "endeavouros", "ID_LIKE": "arch"}, "arch"),
+                                  ({"ID": "fedora"}, "rpm"), ({"ID": "unknown"}, "source")):
+            self.assertEqual(format_for(release), expected)
+
     def test_all_bundled_module_links_belong_to_the_correct_repository(self):
         for module, repository in REPOSITORIES.items():
             release = bundled_release(module)
@@ -26,7 +34,7 @@ class DistributionTests(unittest.TestCase):
     def test_doctor_is_distributed_in_the_current_combined_package(self):
         release = bundled_release("doctor")
         self.assertEqual(release.tag, "v" + __version__)
-        self.assertTrue(all(asset.name.startswith("linux-control-" + __version__) for asset in release.assets))
+        self.assertTrue(all(asset.name.startswith(("uzeyir-doctor-" + __version__, "uzeyir-doctor_" + __version__)) for asset in release.assets))
 
     def test_external_hosts_credentials_and_encoded_traversal_are_rejected(self):
         repository = REPOSITORIES["wheel"]
@@ -57,7 +65,15 @@ class DistributionTests(unittest.TestCase):
     def test_source_archives_are_not_presented_as_portable_applications(self):
         self.assertEqual(Asset("linux-control-0.2.0.tar.gz", "").kind, "source")
         self.assertEqual(Asset("anvil-control-0.15.0-linux-x86_64.tar.gz", "").kind, "portable")
-        self.assertEqual(bundled_release("doctor").formats, ("rpm", "source"))
+        self.assertEqual(bundled_release("doctor").formats, ("rpm", "deb", "arch", "source"))
+
+    def test_arch_package_command_is_copy_only_and_source_recipe_is_not_installable(self):
+        asset = Asset("uzeyir-doctor-0.3.0-1-any.pkg.tar.zst", "")
+        self.assertEqual(asset.kind, "arch")
+        self.assertEqual(asset.install_command, "sudo pacman -U ./" + asset.name)
+        bundle = Asset("uzeyir-doctor-0.3.0-arch-build.tar.gz", "")
+        self.assertEqual(bundle.kind, "source")
+        self.assertIsNone(bundle.install_command)
 
     def test_alpha_release_is_marked_as_preview_even_without_api_flag(self):
         data = payload()

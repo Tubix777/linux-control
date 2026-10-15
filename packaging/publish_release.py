@@ -8,6 +8,20 @@ import subprocess
 import tomllib
 
 
+def release_files(directory, version):
+    """A release is incomplete if any distribution artifact is missing."""
+    names = (f"uzeyir-doctor-{version}-1.fc44.noarch.rpm",
+             f"uzeyir-doctor-{version}-1.fc44.src.rpm",
+             f"uzeyir-doctor_{version}-1_all.deb",
+             f"uzeyir-doctor-{version}-1-any.pkg.tar.zst",
+             f"uzeyir-doctor-{version}.tar.gz",
+             f"uzeyir-doctor-{version}-arch-build.tar.gz", "SHA256SUMS")
+    files = [Path(directory) / name for name in names]
+    if not all(file.is_file() and file.stat().st_size for file in files):
+        raise ValueError("Fedora, DEB, Arch, source/build archives and checksums are required")
+    return files
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("tag")
@@ -20,12 +34,10 @@ def main():
     repository = os.environ.get("GITHUB_REPOSITORY", "Tubix777/linux-control")
     def command(*arguments):
         return ["gh", "release", *arguments, "--repo", repository]
-    files = sorted(args.assets.glob("*.rpm")) + sorted(args.assets.glob("*.tar.gz")) + [args.assets / "SHA256SUMS"]
-    if not all(file.is_file() for file in files) or len(files) < 4:
-        raise SystemExit("Source, RPM, source RPM and SHA256SUMS assets are required")
+    files = release_files(args.assets, version)
     view = subprocess.run(command("view", args.tag, "--json", "assets,isDraft"), capture_output=True, text=True)
     if view.returncode:
-        subprocess.run(command("create", args.tag, "--verify-tag", "--draft", "--prerelease", "--title", f"Linux Control {args.tag}", "--notes-file", str(root / "docs/release-notes.md")), check=True)
+        subprocess.run(command("create", args.tag, "--verify-tag", "--draft", "--prerelease", "--title", f"Uzeyir Doctor {args.tag}", "--notes-file", str(root / "docs/release-notes.md")), check=True)
         existing = set()
         is_draft = True
     else:

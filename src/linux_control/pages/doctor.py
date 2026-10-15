@@ -35,7 +35,7 @@ class DoctorPage(Gtk.Box):
         self._cards = []
         self._fade_started = {}
         self._revealed = set()
-        scroll = self.scroll = Gtk.ScrolledWindow(vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
+        scroll = self.scroll = Gtk.ScrolledWindow(hexpand=True, vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
         content = self.content = box(22)
         scroll.get_vadjustment().connect("value-changed", self.viewport_changed)
         scroll.get_vadjustment().connect("changed", self.viewport_changed)
@@ -55,11 +55,11 @@ class DoctorPage(Gtk.Box):
                        content.set_margin_start, content.set_margin_end):
             method(28)
         scroll.set_child(content)
-        clamp = Adw.Clamp(maximum_size=1120, tightening_threshold=950)
+        clamp = Adw.Clamp(hexpand=True, unit=Adw.LengthUnit.PX, maximum_size=1120, tightening_threshold=950)
         clamp.set_child(scroll)
         self.append(clamp)
         self.scan_signal = ScanSignal()
-        content.append(heading(self.tr, "FEDORA DOCTOR", "Sorunu gör. Çözümü bul.",
+        content.append(heading(self.tr, "UZEYIR DOCTOR", "Sorunu gör. Çözümü bul.",
                               "Sistemini tara; ne olduğunu ve sonraki adımı açıkça gör.", self.scan_signal))
         actions = box(12, True)
         self.scan_button = Gtk.Button(label="Sistemi tara")

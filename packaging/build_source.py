@@ -15,7 +15,7 @@ PUBLIC_FILES = ("src", "tests", "share", "packaging", "docs", ".github", "licens
 def build(destination: Path) -> Path:
     version = tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]["version"]
     destination.mkdir(parents=True, exist_ok=True)
-    archive = destination / f"linux-control-{version}.tar.gz"
+    archive = destination / f"uzeyir-doctor-{version}.tar.gz"
     epoch = int(os.environ.get("SOURCE_DATE_EPOCH", "0"))
     files = []
     for name in PUBLIC_FILES:
@@ -28,7 +28,7 @@ def build(destination: Path) -> Path:
         for path in sorted(files):
             if path.is_symlink():
                 raise ValueError(f"Source archive refuses symlinks: {path.relative_to(ROOT)}")
-            info = tar.gettarinfo(str(path), arcname=f"linux-control-{version}/{path.relative_to(ROOT)}")
+            info = tar.gettarinfo(str(path), arcname=f"uzeyir-doctor-{version}/{path.relative_to(ROOT)}")
             info.uid = info.gid = 0
             info.uname = info.gname = ""
             info.mtime = epoch

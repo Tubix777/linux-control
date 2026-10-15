@@ -1,5 +1,28 @@
 # Validation
 
+## 0.3.0 distribution and rename validation
+
+Ubuntu 24.04 (GTK 4.14 / Adw 1.5), Ubuntu 26.04 (GTK 4.22 / Adw 1.9),
+Deepin 25 (GTK 4.18 / Adw 1.5), Fedora 44 and current Arch (GTK 4.24 / Adw 1.10)
+are checked in isolated containers and private Weston sessions. DEB jobs run
+215 tests without GUI skips; Fedora/Arch skip only the dpkg-deb-specific build
+test. Every installed package opens all six native views and verifies SVG
+decoding. Zorin 18 is covered through its Ubuntu 24.04 base, not a separately
+installed Zorin desktop. Debian 13 and other derivatives require the declared
+minimum libraries; physical hardware and other architectures remain separate.
+
+New checks cover package ownership/modes, bundled fonts/licenses, the absence
+of privileged installation scripts, DEB dependencies/checksums, offline Arch
+source pinning, complete release artifacts, identical Fedora/Arch source
+archives, download format classification and name/legacy identity consistency.
+
+Download pages choose DEB/Arch/RPM from the OS family before the GTK loop starts.
+Older libadwaita clamp content is explicitly expanded and verified against the
+available page width. The DEB explicitly requires its SVG loader. Wheel switch rows now use the GTK
+list container required by newer libadwaita, preserving their state and writes.
+The application is Uzeyir Doctor; the Python module, settings directory and
+desktop application ID stay stable for upgrade compatibility.
+
 ## 0.2.1 motion
 
 208 tests passed in an isolated Fedora 44 KWin/Wayland session, including GUI

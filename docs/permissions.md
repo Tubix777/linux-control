@@ -1,6 +1,6 @@
 # Donanım izinleri
 
-Linux Control normal kullanıcı olarak çalışır. Otomatik `sudo`, otomatik izin genişletme veya başlangıçta donanım ayarı değiştirme yapmaz.
+Uzeyir Doctor normal kullanıcı olarak çalışır. Otomatik `sudo`, otomatik izin genişletme veya başlangıçta donanım ayarı değiştirme yapmaz.
 
 ## Direksiyon
 

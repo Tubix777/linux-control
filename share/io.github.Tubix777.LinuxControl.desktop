@@ -1,12 +1,12 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Linux Control
+Name=Uzeyir Doctor
 GenericName=System control center
 GenericName[tr]=Sistem kontrol merkezi
 Comment=Hardware monitoring, racing wheel controls and system diagnostics
 Comment[tr]=Donanım izleme, direksiyon kontrolü ve sistem teşhisi
-Exec=linux-control
+Exec=uzeyir-doctor
 Icon=io.github.Tubix777.LinuxControl
 Terminal=false
 Categories=Settings;HardwareSettings;

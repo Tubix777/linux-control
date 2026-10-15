@@ -22,5 +22,9 @@ dbus-run-session -- bash -euo pipefail -c '
     sleep 0.1
   done
   if [ ! -S "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" ]; then cat "$XDG_RUNTIME_DIR/weston.log"; exit 1; fi
-  python3 -W ignore::DeprecationWarning -m unittest discover -s tests -v
-'
+  if (( $# )); then
+    "$@"
+  else
+    python3 -W ignore::DeprecationWarning -m unittest discover -s tests -v
+  fi
+' checks "$@"

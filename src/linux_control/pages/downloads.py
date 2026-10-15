@@ -11,11 +11,11 @@ from linux_control.design import heading, icon, text
 from linux_control.entrance import MotionBox
 from linux_control.downloads import APPLICATIONS, REPOSITORIES, bundled_release, fetch_release, size_text
 
-FORMATS = {"rpm": "Fedora · RPM", "deb": "Debian / Ubuntu · DEB", "portable": "Taşınabilir", "source": "Kaynak paketleri"}
+FORMATS = {"rpm": "Fedora · RPM", "deb": "Debian / Ubuntu · DEB", "arch": "Arch · pacman", "portable": "Taşınabilir", "source": "Kaynak paketleri"}
 DESCRIPTIONS = {
     "hardware": "Anvil Control’ün bağımsız sürümünü ve resmî Linux paketlerini burada bulabilirsin.",
     "wheel": "Wheel Control’ün bağımsız sürümü, kurulum paketleri ve kaynak kodu.",
-    "doctor": "Fedora Doctor, Linux Control paketinin içinde gelir. Üç aracı birlikte indir.",
+    "doctor": "Uzeyir Doctor ile donanım, direksiyon ve sistem teşhisini birlikte indir.",
 }
 
 
@@ -27,14 +27,17 @@ class DownloadsPage(Gtk.Box):
         self._closed, self._active, self._busy = False, False, False
         self._generation = 0
         self.release = bundled_release(module)
-        self._format = self.release.formats[0] if self.release.formats else None
+        preferred = getattr(host, "package_format", None)
+        self._format = (preferred if preferred in self.release.formats else
+                        "source" if preferred and "source" in self.release.formats else
+                        self.release.formats[0] if self.release.formats else None)
         self._status = "Paket bilgileri bu sürümle birlikte gelir. Güncel sürümü istediğinde kontrol edebilirsin."
         self.asset_buttons = []
         self.commands = []
         self.add_css_class("downloads-page")
 
-        self.scroll = Gtk.ScrolledWindow(vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
-        clamp = Adw.Clamp(maximum_size=1120, tightening_threshold=950)
+        self.scroll = Gtk.ScrolledWindow(hexpand=True, vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
+        clamp = Adw.Clamp(hexpand=True, unit=Adw.LengthUnit.PX, maximum_size=1120, tightening_threshold=950)
         clamp.set_child(self.scroll)
         self.append(clamp)
         self.content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=22,
@@ -54,7 +57,7 @@ class DownloadsPage(Gtk.Box):
         release_card.add_css_class("card")
         row = Gtk.Box(spacing=18)
         info = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6, hexpand=True)
-        info.append(text(self.tr, "Linux Control ile birlikte" if module == "doctor" else "Bağımsız uygulama", "eyebrow"))
+        info.append(text(self.tr, "Birleşik uygulama" if module == "doctor" else "Bağımsız uygulama", "eyebrow"))
         self.version_label = Gtk.Label(xalign=0)
         self.version_label.add_css_class("download-version")
         info.append(self.version_label)

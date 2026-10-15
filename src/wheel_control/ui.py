@@ -423,7 +423,10 @@ class WheelControlsMixin:
             title="Combine pedals",
             subtitle="Expose throttle and brake as a single axis",
         )
-        settings.append(self.combine_switch)
+        pedal_preferences = Gtk.ListBox(selection_mode=Gtk.SelectionMode.NONE)
+        pedal_preferences.add_css_class("boxed-list")
+        pedal_preferences.append(self.combine_switch)
+        settings.append(pedal_preferences)
 
         self.advanced_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=16)
         self.spring_control = ControlScale(
@@ -445,7 +448,10 @@ class WheelControlsMixin:
             title="Clipping LEDs",
             subtitle="Use the wheel LEDs as a live force-feedback meter",
         )
-        self.advanced_box.append(self.ffb_leds_switch)
+        led_preferences = Gtk.ListBox(selection_mode=Gtk.SelectionMode.NONE)
+        led_preferences.add_css_class("boxed-list")
+        led_preferences.append(self.ffb_leds_switch)
+        self.advanced_box.append(led_preferences)
         self.advanced_expander = Gtk.Expander(label="Advanced force effects")
         self.advanced_expander.set_child(self.advanced_box)
         settings.append(self.advanced_expander)

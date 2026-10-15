@@ -1,4 +1,4 @@
-# Linux Control
+# Uzeyir Doctor
 
 Anvil Control, Wheel Control ve Fedora Doctor tek bir yerel GTK 4 / libadwaita penceresinde. Soldaki büyük düğmelerle **Donanım**, **Direksiyon** ve **Sorun Teşhisi** arasında geçiş yapın.
 
@@ -26,20 +26,28 @@ Donanım başlığında hareketli devre ışıkları ve fan etkinlik görseli va
 
 Kontrol ayarları açık bir **Uygula** eylemiyle gönderilir. Bölüm ve dil değişimi ayarları donanıma uygulamaz. Teşhis taraması sistem ayarlarını değiştirmez, uygulama başlatmaz, ayrıcalık istemez ve günlükleri dışarı göndermez.
 
-İndirme ekranları kayıtlı resmî paket bilgileriyle çevrimdışı açılır. **Güncel sürümü kontrol et** düğmesi yalnız ilgili GitHub deposunun herkese açık sürüm bilgilerini sorgular; arayüzü bekletmez. Ağ hatasında mevcut bağlantılar korunur. **İndir** ve sürüm bağlantıları varsayılan tarayıcıda açılır. Anvil ve Wheel bağlantıları bağımsız uygulamalara aittir; Fedora Doctor, birleşik Linux Control paketiyle dağıtılır. Manrope uygulama içinde yüklenir; masaüstünün yazı tipi ayarı değiştirilmez.
+İndirme ekranları kayıtlı resmî paket bilgileriyle çevrimdışı açılır. **Güncel sürümü kontrol et** düğmesi yalnız ilgili GitHub deposunun herkese açık sürüm bilgilerini sorgular; arayüzü bekletmez. Ağ hatasında mevcut bağlantılar korunur. **İndir** ve sürüm bağlantıları varsayılan tarayıcıda açılır. Anvil ve Wheel bağlantıları bağımsız uygulamalara aittir; Fedora Doctor, birleşik Uzeyir Doctor paketiyle dağıtılır. Manrope uygulama içinde yüklenir; masaüstünün yazı tipi ayarı değiştirilmez.
 
-## Fedora'da çalıştırma
+## İndir ve kur
 
-[Releases](https://github.com/Tubix777/linux-control/releases) sayfasındaki Fedora RPM'ini indirin ve paket yöneticinizle kurun. Ardından uygulama menüsünden **Linux Control**'ü açın.
+**Yeni ad: Uzeyir Doctor** (eski adı Linux Control). Dil, hareket tercihleri,
+profiller ve eski başlatıcı komutu korunur.
 
-Kaynak koddan çalıştırmak için dağıtım paketleri gerekir:
+| Sistem | GitHub Releases indirmesi |
+| --- | --- |
+| Ubuntu 24.04/26.04, Zorin 18, Deepin 25, Debian 13 | [DEB indir](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-doctor_0.3.0-1_all.deb) |
+| Güncel Arch Linux | [pacman paketi](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-doctor-0.3.0-1-any.pkg.tar.zst) · [PKGBUILD ve kaynak](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-doctor-0.3.0-arch-build.tar.gz) |
+| Fedora 44 | [RPM indir](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-doctor-0.3.0-1.fc44.noarch.rpm) |
+| Diğer Linux sistemleri | [Kaynak arşivi](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-doctor-0.3.0.tar.gz) |
 
-```bash
-sudo dnf install python3-gobject python3-cairo python3-pyudev gtk4 libadwaita
-./run.sh
-```
+[Tüm dosyalar ve SHA256SUMS](https://github.com/Tubix777/linux-control/releases/tag/v0.3.0) ·
+[Dağıtıma göre kurulum, sürüm koşulları ve kaldırma](docs/install.md).
+DEB için `sudo apt install ./uzeyir-doctor_0.3.0-1_all.deb`; Arch ve Fedora
+komutları kurulum belgesindedir. Kurulumdan sonra menüden **Uzeyir Doctor**'ü açın.
 
-Uygulamanın kendisini `sudo` ile çalıştırmayın. Kaynaktan çalıştırma setuptools veya pip kurulumu gerektirmez. GTK ≥ 4.12, libadwaita ≥ 1.5 ve Python ≥ 3.11 bağımlılıkları bulunduğunda diğer Linux dağıtımlarında da çalışabilir; Fedora RPM başka dağıtımlara yönelik değildir.
+Asgari Python ≥ 3.11, GTK ≥ 4.12 ve libadwaita ≥ 1.5 gerekir. Kaynak koddan
+çalıştırma setuptools veya pip kurulumu gerektirmez. Uygulamanın kendisini
+`sudo` ile çalıştırmayın. Eski dağıtımlarda bağımlılıkları atlayarak kurulum yapmayın.
 
 ```bash
 ./run.sh --page doctor
@@ -64,12 +72,14 @@ Uygulamanın kendisini `sudo` ile çalıştırmayın. Kaynaktan çalıştırma s
 PYTHONPATH=src python3 -m unittest discover -s tests -v
 python3 packaging/build_source.py
 python3 packaging/build_rpm.py
+python3 packaging/build_deb.py  # dpkg-deb bulunan sistemlerde
+python3 packaging/build_arch.py # Arch üzerinde normal kullanıcıyla
 ```
 
-Arayüz testleri gerçek masaüstü yerine ayrı bir sanal compositor altında çalıştırılmalıdır; [doğrulama belgesi](docs/validation.md) ayrıntıları içerir. GitHub Actions her değişiklikte testleri ve Fedora RPM derlemesini çalıştırır. Sürüm etiketi gönderildiğinde kaynak arşivi, RPM, kaynak RPM ve sağlama toplamları otomatik GitHub Release'e eklenir.
+Arayüz testleri gerçek masaüstü yerine ayrı bir sanal compositor altında çalıştırılmalıdır; [doğrulama belgesi](docs/validation.md) ayrıntıları içerir. GitHub Actions, Fedora 44, Ubuntu 24.04/26.04, Deepin 25 ve güncel Arch ortamlarında testleri ve kurulu uygulamanın açılışını kontrol eder. Sürüm etiketi gönderildiğinde doğrulanan RPM, kaynak RPM, DEB, Arch paketi, PKGBUILD/kaynak paketi ve SHA256SUMS GitHub Releases içine eklenir.
 
 [Uygulama planı](PLAN.md), [yayın notları](docs/release-notes.md), [katkı ve lisanslar](ATTRIBUTION.md).
 
 ## English
 
-Linux Control combines hardware monitoring, racing-wheel controls and local system diagnostics in one native GTK 4 window, with a shared monochrome design, bundled Manrope typography, responsive layouts, smooth navigation, scan-result animations and live Turkish/English switching. Each sidebar module has its own official download page. Package links work from bundled metadata offline; checking for newer releases is an explicit action. Installation commands can be copied but are never executed by the app. Reduce Motion respects accessibility preferences. Device settings require explicit actions; diagnostics remain read-only. Unavailable hardware data is never replaced with invented readings. This initial combined version is a preview; physical force-feedback coverage and motherboard fan control remain limited to the support described above.
+Uzeyir Doctor combines hardware monitoring, racing-wheel controls and local system diagnostics in one native GTK 4 window, with a shared monochrome design, bundled Manrope typography, responsive layouts, smooth navigation, scan-result animations and live Turkish/English switching. Each sidebar module has its own official download page. Package links work from bundled metadata offline; checking for newer releases is an explicit action. Installation commands can be copied but are never executed by the app. Reduce Motion respects accessibility preferences. Device settings require explicit actions; diagnostics remain read-only. Unavailable hardware data is never replaced with invented readings. This initial combined version is a preview; physical force-feedback coverage and motherboard fan control remain limited to the support described above.

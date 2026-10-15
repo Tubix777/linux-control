@@ -10,7 +10,7 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Adw, Gdk, Gio, GLib, Graphene, Gtk
 from doctor.app import CSS as DOCTOR_CSS, box, label
-from . import __version__
+from . import APP_NAME, __version__
 from .i18n import Translator
 from .settings import Settings
 from .interactions import CSS as MOTION_CSS, MotionController
@@ -30,13 +30,14 @@ MODULES = (
 
 
 class MainWindow(Adw.ApplicationWindow):
-    def __init__(self, application, preferences=None, page_factories=None, initial="hardware", wheel_demo=False, initial_view="dashboard"):
-        super().__init__(application=application, title="Linux Control")
+    def __init__(self, application, preferences=None, page_factories=None, initial="hardware", wheel_demo=False, initial_view="dashboard", package_format=None):
+        super().__init__(application=application, title=APP_NAME)
         load_font()
         self.add_css_class("linux-control-window")
         self.set_default_size(1320, 900)
         self.set_size_request(960, 620)
         self.preferences = preferences or Settings()
+        self.package_format = package_format
         if self.preferences.reduced_motion:
             self.add_css_class("reduce-motion")
         self.tr = Translator(self.preferences.language)
@@ -73,7 +74,7 @@ class MainWindow(Adw.ApplicationWindow):
         brand_image = icon("brand", 30)
         brand_row.append(brand_image)
         brand_copy = box(3)
-        brand_copy.append(label("Linux Control", "brand", False))
+        brand_copy.append(label(APP_NAME, "brand", False))
         brand_copy.append(self.tr.bind(label("Bilgisayarın, tek yerde.", "brand-caption"), "Bilgisayarın, tek yerde."))
         brand_row.append(brand_copy)
         sidebar.append(brand_row)
@@ -96,7 +97,7 @@ class MainWindow(Adw.ApplicationWindow):
             texts = box(4)
             texts.set_hexpand(True)
             texts.append(self.tr.bind(label(title, "nav-title", False), title))
-            caption = {"hardware": "Anvil Control", "wheel": "Wheel Control", "doctor": "Fedora Doctor"}[name]
+            caption = {"hardware": "Anvil Control", "wheel": "Wheel Control", "doctor": APP_NAME}[name]
             caption_label = label(caption, "nav-caption", False)
             caption_label.set_max_width_chars(25)
             texts.append(self.tr.bind(caption_label, caption))
@@ -293,7 +294,7 @@ class MainWindow(Adw.ApplicationWindow):
             pass
 
     def retranslate(self):
-        title = next((title for name, title, *_ in MODULES if name == self.current_page), "Linux Control")
+        title = next((title for name, title, *_ in MODULES if name == self.current_page), APP_NAME)
         self.page_title.set_label(self.tr(title))
         if self.current_view == "downloads":
             self.page_title.set_label(self.tr(title) + "  /  " + self.tr("İndirmeler"))
@@ -330,13 +331,16 @@ def save_screenshot(window, destination):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Linux Control native desktop application")
+    parser = argparse.ArgumentParser(description=APP_NAME + " native desktop application")
     parser.add_argument("--page", choices=[name for name, *_ in MODULES], default="hardware")
     parser.add_argument("--language", choices=("tr", "en"))
     parser.add_argument("--wheel-demo", action="store_true", help="Explicitly use a simulated wheel, without hardware writes")
     parser.add_argument("--downloads", action="store_true", help="Open the selected module's download page")
     parser.add_argument("--screenshot", help="Render the selected page to a PNG, then exit")
     arguments = parser.parse_args()
+    # Resolve the OS before GTK's event loop starts; navigation does no file IO.
+    from .downloads import system_format
+    package_format = system_format()
     application = Adw.Application(application_id="io.github.Tubix777.LinuxControl", flags=Gio.ApplicationFlags.NON_UNIQUE)
 
     def activate(app):
@@ -348,7 +352,7 @@ def main():
         if arguments.language:
             preferences.language = arguments.language
         window = MainWindow(app, preferences=preferences, initial=arguments.page, wheel_demo=arguments.wheel_demo,
-                            initial_view="downloads" if arguments.downloads else "dashboard")
+                            initial_view="downloads" if arguments.downloads else "dashboard", package_format=package_format)
         window.present()
         if arguments.screenshot:
             if arguments.page == "doctor" and not arguments.downloads:

@@ -143,8 +143,8 @@ class WheelPage(WheelControlsMixin, Gtk.Box):
         return header
 
     def _build_empty_page(self):
-        scroll = Gtk.ScrolledWindow(vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
-        clamp = Adw.Clamp(maximum_size=1120, tightening_threshold=950)
+        scroll = Gtk.ScrolledWindow(hexpand=True, vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
+        clamp = Adw.Clamp(hexpand=True, unit=Adw.LengthUnit.PX, maximum_size=1120, tightening_threshold=950)
         clamp.set_child(scroll)
         content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=20,
                           margin_start=28, margin_end=28, margin_top=8, margin_bottom=28)

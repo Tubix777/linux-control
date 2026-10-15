@@ -471,8 +471,8 @@ Bu bölümün indirme sayfası	Downloads for this module
 Panele dön	Back to dashboard
 Anvil Control’ün bağımsız sürümünü ve resmî Linux paketlerini burada bulabilirsin.	Find the standalone Anvil Control release and official Linux packages here.
 Wheel Control’ün bağımsız sürümü, kurulum paketleri ve kaynak kodu.	The standalone Wheel Control release, installation packages and source code.
-Fedora Doctor, Linux Control paketinin içinde gelir. Üç aracı birlikte indir.	Fedora Doctor is included in Linux Control. Download all three tools together.
-Linux Control ile birlikte	Included in Linux Control
+Uzeyir Doctor ile donanım, direksiyon ve sistem teşhisini birlikte indir.	Download hardware, wheel controls and system diagnostics together with Uzeyir Doctor.
+Birleşik uygulama	Combined application
 Bağımsız uygulama	Standalone application
 Ön sürüm	Preview release
 Yayımlanan sürüm	Published release

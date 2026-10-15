@@ -3,21 +3,40 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import json
+import platform
 from pathlib import Path
 import re
 from urllib.parse import unquote, urlsplit
 from urllib.request import Request, urlopen
 
-from . import __version__
+from . import APP_NAME, __version__
 
 REPOSITORIES = {
     "hardware": "Tubix777/anvil-control",
     "wheel": "Tubix777/wheel-control",
     "doctor": "Tubix777/linux-control",
 }
-APPLICATIONS = {"hardware": "Anvil Control", "wheel": "Wheel Control", "doctor": "Fedora Doctor"}
+APPLICATIONS = {"hardware": "Anvil Control", "wheel": "Wheel Control", "doctor": APP_NAME}
 MAX_RESPONSE = 2_000_000
 SAFE_FILENAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9._+\-]{0,159}\Z")
+
+
+def format_for(release):
+    family = {release.get("ID", ""), *release.get("ID_LIKE", "").split()}
+    if family & {"debian", "ubuntu", "deepin", "zorin"}:
+        return "deb"
+    if "arch" in family:
+        return "arch"
+    if "fedora" in family:
+        return "rpm"
+    return "source"
+
+
+def system_format():
+    try:
+        return format_for(platform.freedesktop_os_release())
+    except OSError:
+        return "source"
 
 
 def official_url(url, repository, *, asset=False):
@@ -46,6 +65,8 @@ class Asset:
     def kind(self):
         if self.name.endswith(".src.rpm"):
             return "source"
+        if self.name.endswith(".pkg.tar.zst"):
+            return "arch"
         if self.name.endswith(".rpm"):
             return "rpm"
         if self.name.endswith(".deb"):
@@ -63,6 +84,8 @@ class Asset:
             return None
         if self.kind == "rpm":
             return f"sudo dnf install ./{self.name}"
+        if self.kind == "arch":
+            return f"sudo pacman -U ./{self.name}"
         if self.kind == "deb":
             return f"sudo apt install ./{self.name}"
         return None
@@ -78,7 +101,7 @@ class Release:
 
     @property
     def formats(self):
-        return tuple(kind for kind in ("rpm", "deb", "portable", "source")
+        return tuple(kind for kind in ("rpm", "deb", "arch", "portable", "source")
                      if any(asset.kind == kind for asset in self.assets))
 
 
@@ -117,9 +140,12 @@ def bundled_release(module):
     repository = REPOSITORIES[module]
     if module == "doctor":
         tag = "v" + __version__
-        names = (f"linux-control-{__version__}-1.fc44.noarch.rpm",
-                 f"linux-control-{__version__}.tar.gz",
-                 f"linux-control-{__version__}-1.fc44.src.rpm")
+        names = (f"uzeyir-doctor-{__version__}-1.fc44.noarch.rpm",
+                 f"uzeyir-doctor_{__version__}-1_all.deb",
+                 f"uzeyir-doctor-{__version__}-1-any.pkg.tar.zst",
+                 f"uzeyir-doctor-{__version__}.tar.gz",
+                 f"uzeyir-doctor-{__version__}-arch-build.tar.gz",
+                 f"uzeyir-doctor-{__version__}-1.fc44.src.rpm")
         return parse_release({"tag_name": tag, "html_url": f"https://github.com/{repository}/releases/tag/{tag}",
                               "prerelease": True, "assets": [
                                   {"name": name, "browser_download_url": f"https://github.com/{repository}/releases/download/{tag}/{name}"}

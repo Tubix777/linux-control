@@ -1,4 +1,4 @@
-# Linux Control — uygulama ve yayın planı
+# Uzeyir Doctor — uygulama ve yayın planı
 
 Kullanıcının kararları: Üç uygulama tek pencerede birleşecek. Soldaki büyük
 düğmeler Donanım, Direksiyon ve Sorun Teşhisi bölümlerini açacak. Siyah zemin,
@@ -73,4 +73,18 @@ ayrı geliştirme dalında, canlı ölçüm ve direksiyon girişini geciktirmede
 4. [x] Gerçek tarama sırasında hareketli sinyal; bitişte kısa hale ve sonuçlara yükselerek giriş ekle.
 5. [x] Gizlenme, kapatma, hareket azaltma ve dinamik liste yaşam döngüsünü test et.
 6. [x] Yerel arayüzü küçük/geniş pencerede kontrol et; animasyonu kaydet ve RPM üret.
-7. [ ] Sürümü artır; kaynağı ve paketleri GitHub'da yayımla, doğrula ve uygulamayı aç.
+7. [x] Sürümü artır; kaynağı ve paketleri GitHub'da yayımla, doğrula ve uygulamayı aç.
+
+## 0.3.0 — Uzeyir Doctor ve Linux dağıtım paketleri
+
+15 Ekim 2026: Ubuntu, Deepin, Zorin ve Arch için GitHub Releases üzerinden
+indirilebilir kurulum seçenekleri ekle. Ortak çalışma klasörünü koru.
+
+1. [x] Mevcut kaynak ve paketleri, dağıtım tabanlarını ve asgari bağımlılıkları incele.
+2. [x] DEB ve Arch paketlerini güvenli ortak içerikle üret; lisans ve masaüstü girişini koru.
+3. [x] İndirme arayüzünü ve Türkçe/İngilizce kurulum yönergelerini güncelle.
+4. [x] Yalıtılmış Ubuntu/Deepin/Arch ortamlarında kurulum ve yerel arayüzü doğrula.
+5. [ ] GitHub otomatik test/yayın akışına yeni paketleri ekle; 0.3.0 olarak yayımla.
+6. [ ] Releases indirmelerini, sağlama toplamlarını ve paket içeriğini uzaktan doğrula.
+
+Ek karar: Uygulama adı Uzeyir Doctor. Paket ve başlatıcı adı uzeyir-doctor; eski komut, masaüstü kimliği ve kullanıcı ayarları uyumluluk için korunur.
