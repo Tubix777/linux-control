@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Build a Fedora RPM and source RPM without installing them."""
 import argparse
+import os
 from pathlib import Path
 import shutil
 import subprocess
 import tempfile
 from build_source import ROOT, build
+from payload import source_epoch
 
 
 def main():
@@ -23,7 +25,8 @@ def main():
         shutil.copy2(archive, top / "SOURCES" / archive.name)
         spec = top / "SPECS" / "linux-control.spec"
         shutil.copy2(ROOT / "packaging/linux-control.spec", spec)
-        subprocess.run(["rpmbuild", "-ba", "--define", f"_topdir {top}", str(spec)], check=True)
+        subprocess.run(["rpmbuild", "-ba", "--define", f"_topdir {top}", str(spec)],
+                       env={**os.environ, "SOURCE_DATE_EPOCH": str(source_epoch())}, check=True)
         packages = sorted(top.glob("RPMS/**/*.rpm")) + sorted(top.glob("SRPMS/*.rpm"))
         if not packages:
             raise RuntimeError("rpmbuild returned no package artifacts")
