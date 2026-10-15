@@ -127,3 +127,23 @@ class DownloadPageTests(unittest.TestCase):
         self.assertTrue(all(download._closed for download in self.window.downloads.values()))
         self.window.select_downloads("hardware")
         self.assertEqual(self.window.current_page, "hardware")
+
+    def test_replacing_format_rows_releases_animated_widgets(self):
+        page = self.window.downloads["hardware"]
+        count = len(self.window.motion._handlers)
+        for _ in range(6):
+            previous = page.asset_box.get_first_child()
+            page.render_assets()
+            self.assertNotIn(previous, self.window.motion._handlers)
+            self.assertNotIn(previous, self.window.motion._fades)
+        self.assertEqual(len(self.window.motion._handlers), count)
+
+    def test_transition_direction_tracks_module_order_and_download_return(self):
+        self.window.select_page("doctor")
+        self.assertEqual(self.window.stack.get_transition_type(), Gtk.StackTransitionType.SLIDE_UP)
+        self.window.select_page("wheel")
+        self.assertEqual(self.window.stack.get_transition_type(), Gtk.StackTransitionType.SLIDE_DOWN)
+        self.window.select_downloads("wheel")
+        self.assertEqual(self.window.stack.get_transition_type(), Gtk.StackTransitionType.SLIDE_LEFT)
+        self.window.select_page("wheel")
+        self.assertEqual(self.window.stack.get_transition_type(), Gtk.StackTransitionType.SLIDE_RIGHT)

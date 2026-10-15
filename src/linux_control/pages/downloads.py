@@ -8,6 +8,7 @@ gi.require_version("Adw", "1")
 from gi.repository import Adw, Gio, GLib, Gtk, Pango
 
 from linux_control.design import heading, icon, text
+from linux_control.entrance import MotionBox
 from linux_control.downloads import APPLICATIONS, REPOSITORIES, bundled_release, fetch_release, size_text
 
 FORMATS = {"rpm": "Fedora · RPM", "deb": "Debian / Ubuntu · DEB", "portable": "Taşınabilir", "source": "Kaynak paketleri"}
@@ -141,6 +142,8 @@ class DownloadsPage(Gtk.Box):
 
     def render_assets(self):
         for container in (self.asset_box, self.command_box):
+            if hasattr(self.host, "motion"):
+                self.host.motion.forget(container)
             child = container.get_first_child()
             while child:
                 following = child.get_next_sibling()
@@ -151,7 +154,7 @@ class DownloadsPage(Gtk.Box):
         if not assets:
             self.asset_box.append(Gtk.Label(label=self.tr("Bu sürümde paket bulunamadı. Tüm sürümler sayfasını açabilirsin."), wrap=True, css_classes=["download-row"]))
         for asset in assets:
-            row = Gtk.Box(spacing=14)
+            row = MotionBox(spacing=14)
             row.add_css_class("download-row")
             row.append(icon("download", 20))
             copy = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6, hexpand=True)
@@ -171,7 +174,7 @@ class DownloadsPage(Gtk.Box):
             self.asset_buttons.append(button)
             self.asset_box.append(row)
             if asset.install_command:
-                command = Gtk.Box(spacing=12)
+                command = MotionBox(spacing=12)
                 command.add_css_class("command-panel")
                 code = Gtk.Label(label=asset.install_command, selectable=True, xalign=0, wrap=True, hexpand=True)
                 code.set_wrap_mode(Pango.WrapMode.CHAR)
@@ -209,7 +212,7 @@ class DownloadsPage(Gtk.Box):
         self._generation += 1
         generation = self._generation
         self.refresh_button.set_sensitive(False)
-        self.spinner.start()
+        self.sync_motion()
         self._status = "GitHub’daki sürüm kontrol ediliyor…"
         self.status.set_label(self.tr(self._status))
         def worker():
@@ -236,9 +239,11 @@ class DownloadsPage(Gtk.Box):
 
     def set_active(self, active):
         self._active = bool(active) and not self._closed
+        self.sync_motion()
 
     def sync_motion(self):
-        pass
+        enabled = self.host.animations_enabled() if hasattr(self.host, "animations_enabled") else not self.settings.reduced_motion
+        self.spinner.set_spinning(self._busy and self._active and enabled and not self._closed)
 
     def close(self):
         self._closed = True

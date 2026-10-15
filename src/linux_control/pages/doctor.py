@@ -9,6 +9,8 @@ from doctor import __version__
 from doctor.core import Finding, check_app, list_flatpaks, scan
 from doctor.app import STATUS, box, label as make_label
 from linux_control.design import heading
+from linux_control.entrance import MotionBox
+from linux_control.activity import ScanSignal
 
 
 class DoctorPage(Gtk.Box):
@@ -56,8 +58,9 @@ class DoctorPage(Gtk.Box):
         clamp = Adw.Clamp(maximum_size=1120, tightening_threshold=950)
         clamp.set_child(scroll)
         self.append(clamp)
+        self.scan_signal = ScanSignal()
         content.append(heading(self.tr, "FEDORA DOCTOR", "Sorunu gör. Çözümü bul.",
-                              "Sistemini tara; ne olduğunu ve sonraki adımı açıkça gör."))
+                              "Sistemini tara; ne olduğunu ve sonraki adımı açıkça gör.", self.scan_signal))
         actions = box(12, True)
         self.scan_button = Gtk.Button(label="Sistemi tara")
         self.tr.bind(self.scan_button, "Sistemi tara")
@@ -184,9 +187,12 @@ class DoctorPage(Gtk.Box):
         self.folder_button.set_sensitive(not value)
         self.filter_button.set_sensitive(not value and self._findings is not None)
         self.spinner.set_visible(value)
-        self.spinner.set_spinning(value)
+        self.scan_signal.set_state(running=value)
+        self.sync_motion()
 
     def start_scan(self):
+        if self._closed or self._busy:
+            return
         self.cancel_motion()
         self.busy(True)
         self._summary_source = "Sistem kontrol ediliyor…"
@@ -194,6 +200,8 @@ class DoctorPage(Gtk.Box):
         self.background(scan, self.show_findings)
 
     def start_app(self, *_):
+        if self._closed or self._busy:
+            return
         index = self.dropdown.get_selected()
         if index >= len(self.apps):
             return
@@ -206,10 +214,13 @@ class DoctorPage(Gtk.Box):
         self.background(lambda: check_app(app_id, scope, folder), self.show_findings)
 
     def show_findings(self, findings, *, auto_scroll=True):
+        completed = self._busy and findings is not None
         self.cancel_motion()
         if hasattr(self.host, "motion"):
             self.host.motion.forget(self.results)
         self.busy(False)
+        if completed:
+            self.scan_signal.finish()
         while self.results.get_first_child():
             self.results.remove(self.results.get_first_child())
         if findings is None:
@@ -231,7 +242,7 @@ class DoctorPage(Gtk.Box):
         visible_findings = [item for item in findings if not self.filter_button.get_active()
                             or item.status in ("warning", "critical", "unknown")]
         if not visible_findings:
-            empty = box(8)
+            empty = MotionBox(orientation=Gtk.Orientation.VERTICAL, spacing=8)
             empty.add_css_class("doctor-empty")
             empty.add_css_class("scan-result")
             empty.append(label("Dikkat gerektiren bulgu yok.", "card-title"))
@@ -239,7 +250,7 @@ class DoctorPage(Gtk.Box):
             self.results.append(empty)
             self._cards.append(empty)
         for item in sorted(visible_findings, key=finding_order):
-            card = box(9)
+            card = MotionBox(orientation=Gtk.Orientation.VERTICAL, spacing=9)
             card.add_css_class("card")
             card.add_css_class("scan-result")
             heading = box(10, True)
@@ -281,12 +292,14 @@ class DoctorPage(Gtk.Box):
         if self.animations_enabled():
             for card in self._cards:
                 card.set_opacity(0)
+                card.set_entrance_offset(18)
         self._auto_scroll = self._active and auto_scroll
         if self._active:
             self.queue_motion()
         else:
             for index, card in enumerate(self._cards):
                 card.set_opacity(1)
+                card.set_entrance_offset(0)
                 self._revealed.add(index)
         return False
 
@@ -327,6 +340,7 @@ class DoctorPage(Gtk.Box):
             self._motion_tick_id = None
         for card in self._cards:
             card.set_opacity(1)
+            card.set_entrance_offset(0)
         self._cards = []
         self._fade_started = {}
         self._revealed = set()
@@ -351,6 +365,7 @@ class DoctorPage(Gtk.Box):
                 adjustment.set_value(target)
             for index, card in enumerate(self._cards):
                 card.set_opacity(1)
+                card.set_entrance_offset(0)
                 self._revealed.add(index)
             self._auto_scroll = False
             self._motion_tick_id = None
@@ -379,6 +394,7 @@ class DoctorPage(Gtk.Box):
             if index in self._fade_started:
                 progress = min(1.0, max(0.0, (now - self._fade_started[index]) / 420000))
                 card.set_opacity(1 - (1 - progress) ** 3)
+                card.set_entrance_offset(18 * (1 - progress) ** 3)
                 if progress >= 1:
                     self._revealed.add(index)
                 else:
@@ -390,6 +406,7 @@ class DoctorPage(Gtk.Box):
 
     def set_active(self, active):
         self._active = active
+        self.sync_motion()
         if not active:
             if self._motion_tick_id is not None:
                 self.remove_tick_callback(self._motion_tick_id)
@@ -397,6 +414,7 @@ class DoctorPage(Gtk.Box):
             self.interrupt_auto_scroll()
             for index, card in enumerate(self._cards):
                 card.set_opacity(1)
+                card.set_entrance_offset(0)
                 self._revealed.add(index)
 
     def retranslate(self):
@@ -413,10 +431,15 @@ class DoctorPage(Gtk.Box):
             self.scroll.get_vadjustment().set_value(scroll_value)
 
     def sync_motion(self):
+        enabled = self.animations_enabled()
+        self.scan_signal.set_state(active=self._active, enabled=enabled)
+        self.spinner.set_spinning(self._busy and self._active and enabled and not self._closed)
         if not self.animations_enabled() and self._active:
             self.queue_motion()
 
     def close(self):
         self._closed = True
+        self.scan_signal.close()
+        self.spinner.stop()
         self.cancel_motion()
         self.tr.disconnect(self.retranslate)

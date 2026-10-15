@@ -33,7 +33,7 @@ Ortak çalışma klasörü korunuyor; geliştirme ayrı klon ve dalda yapılıyo
 6. [x] Dil, klavye, kaydedilmemiş seçimler, çevrimdışı kullanım ve hareket azaltmayı doğrula.
 7. [x] Sanal Wayland oturumunda davranış testlerini ve farklı pencere boyutlarını doğrula.
 8. [x] Gerçek arayüz görüntülerini kontrol et; RPM, kaynak ve checksum dosyalarını üret.
-9. [ ] Uzak ana dalda yeni çalışma varsa koruyarak yayımla; GitHub test/yayın sonucunu doğrula.
+9. [x] Uzak ana dalda yeni çalışma varsa koruyarak yayımla; GitHub test/yayın sonucunu doğrula.
 
 ## Kalite ölçütleri
 
@@ -61,3 +61,16 @@ Test sonuçları, görsel kontrol ve yayın bağlantıları tamamlandıkça bura
 
 - 0.2.0: 200 test özel KWin/Wayland oturumunda geçti; altı görünümün küçük/geniş yerleşimi doğrulandı.
 - 0.2.0: Fedora noarch/kaynak RPM üretildi; font, CSS, indirme kayıtları ve OFL lisansı pakette doğrulandı.
+
+## 0.2.1 — hareket ve akıcılık
+
+15 Ekim 2026: Daha fazla animasyon isteği. Ortak kaynak klasörüne dokunmadan
+ayrı geliştirme dalında, canlı ölçüm ve direksiyon girişini geciktirmeden ilerle.
+
+1. [x] Güncel ana dalı doğrula; sayfa, indirme ve tarama animasyonlarını incele.
+2. [x] Yönlü bölüm/indirme geçişleri ve sol menü seçim vurgusu ekle.
+3. [x] Başlıkları, indirme satırlarını ve komutları sabit yerleşimde kademeli hareketle göster.
+4. [x] Gerçek tarama sırasında hareketli sinyal; bitişte kısa hale ve sonuçlara yükselerek giriş ekle.
+5. [x] Gizlenme, kapatma, hareket azaltma ve dinamik liste yaşam döngüsünü test et.
+6. [x] Yerel arayüzü küçük/geniş pencerede kontrol et; animasyonu kaydet ve RPM üret.
+7. [ ] Sürümü artır; kaynağı ve paketleri GitHub'da yayımla, doğrula ve uygulamayı aç.

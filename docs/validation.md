@@ -1,5 +1,17 @@
 # Validation
 
+## 0.2.1 motion
+
+208 tests passed in an isolated Fedora 44 KWin/Wayland session, including GUI
+checks without skips. New cases cover paint-only geometry stability, unsaved
+entries, remapping, finite scan completion, hidden/closed/reduced activity,
+format-row handler cleanup, actual pending scan lifecycle, filter rebuilds and
+directional navigation. Existing input latency, hardware-write boundaries,
+manual scroll interruption and compact/wide layout checks remain in place.
+
+Six native views and a real read-only scan were visually inspected; a native
+frame recording was captured. No physical fan or force-feedback writes were run.
+
 ## 0.2.0 redesign and distribution pages
 
 200 tests passed in the isolated Fedora 44 GTK/KWin Wayland suite, with no GUI

@@ -9,6 +9,7 @@ import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("PangoCairo", "1.0")
 from gi.repository import Gio, Gtk, PangoCairo
+from .entrance import MotionBox
 
 RESOURCES = Path(__file__).parent / "resources"
 CSS = (RESOURCES / "theme.css").read_text(encoding="utf-8")
@@ -58,7 +59,7 @@ def text(tr, source, css="", wrap=True):
 
 
 def heading(tr, eyebrow, title, description, illustration=None):
-    hero = Gtk.Box(spacing=24)
+    hero = MotionBox(spacing=24)
     hero.add_css_class("module-hero")
     copy = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10, hexpand=True)
     copy.append(text(tr, eyebrow, "eyebrow"))

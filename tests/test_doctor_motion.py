@@ -146,6 +146,33 @@ class ScanMotionTests(unittest.TestCase):
             self.assertEqual(card.get_opacity(), 1)
             self.assertIn(index, self.window._revealed)
 
+    def test_scan_signal_tracks_pending_job_and_reduction_without_fake_progress(self):
+        signal = self.window.scan_signal
+        self.assertIsNone(signal._tick_id)
+        self.window.start_scan()
+        self.wait_for(lambda: signal._tick_id is not None, "real pending scan signal")
+        count = len(self.jobs)
+        self.window.start_scan()
+        self.assertEqual(len(self.jobs), count)
+        self.window.set_active(False)
+        self.assertIsNone(signal._tick_id)
+        self.window.set_active(True)
+        self.window.preferences.reduced_motion = True
+        self.window.sync_motion()
+        self.assertIsNone(signal._tick_id)
+        self.assertFalse(self.window.spinner.get_spinning())
+        self.assertTrue(self.window._busy)
+        self.window.show_findings(findings(2))
+        self.assertFalse(signal._running)
+        self.finish_motion()
+        self.assertTrue(all(card.entrance_offset == 0 for card in self.window._cards))
+
+    def test_filter_rebuild_does_not_show_operation_completion_animation(self):
+        self.window.show_findings(findings(2), auto_scroll=False)
+        self.assertIsNone(self.window.scan_signal._tick_id)
+        self.window.filter_button.set_active(True)
+        self.assertIsNone(self.window.scan_signal._tick_id)
+
     def test_unseen_cards_reveal_when_user_scrolls_later(self):
         self.window.show_findings(findings(12))
         self.finish_motion()

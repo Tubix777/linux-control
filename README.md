@@ -4,6 +4,8 @@ Anvil Control, Wheel Control ve Fedora Doctor tek bir yerel GTK 4 / libadwaita p
 
 Siyah, gri ve beyaz arayüz; akıcı bölüm geçişleri; tarama sonrası sonuçlara yumuşak kaydırma; ekrana giren bulgu kartlarında kademeli belirme. Türkçe ve İngilizce arasında uygulamayı yeniden başlatmadan geçiş yapılır. **Hareketi azalt** tercihi geçişleri ve kaydırma animasyonlarını kapatır; canlı giriş verileri anında güncellenir.
 
+**0.2.1:** Bölüm ve indirme sayfaları yönüne göre kayar. Başlıklar, donanım kartları, paket satırları ve kurulum komutları kademeli hareketle belirir. Gerçek tarama boyunca çalışan sinyal, işlem bitince kısa bir halka gösterir; bulgu içerikleri yükselerek görünür. Gizli sayfalarda etkinlik durur ve hareket azaltma tercihi korunur.
+
 **0.2.0:** Sayfalar, yerel Manrope yazı tipi, daha sakin kartlar ve ortak bilgi hiyerarşisiyle yeniden düzenlendi. Donanım kartları geniş pencerede dört, dar pencerede iki sütun kullanır. Direksiyon ayarları dar pencerede alt alta yerleşir. Sol menüde her uygulamanın yanındaki indirme düğmesi, o uygulamanın paket ve sürüm sayfasını açar.
 
 Teşhis ekranındaki özet, tamamlanan/dikkat gerektiren/doğrulanamayan kontrolleri ayrı gösterir. **Dikkat gerektirenler** filtresi doğrulanamayan bulguları da korur. Kart belirmeleri, ayrıntı açılışları, odak tepkileri ve masaüstünün hareket azaltma tercihi ortak şekilde çalışır.

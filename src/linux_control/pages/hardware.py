@@ -29,6 +29,7 @@ from anvil.fan_history import FanRpmHistory
 from anvil.rgb import parse_devices
 from linux_control.motion import HardwareSignal
 from linux_control.design import heading
+from linux_control.entrance import MotionBox
 
 HELPER = Path("/usr/libexec/anvil-fan-helper")
 
@@ -235,7 +236,7 @@ class HardwarePage(Gtk.Box):
         widget.set_label(self.tr.dynamic(message) if hasattr(self.tr, "dynamic") else message)
 
     def card(self, heading):
-        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        box = MotionBox(orientation=Gtk.Orientation.VERTICAL, spacing=12)
         box.add_css_class("card")
         box.append(self.label(heading, "title-3"))
         return box

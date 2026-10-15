@@ -1,5 +1,5 @@
 Name:           linux-control
-Version:        0.2.0
+Version:        0.2.1
 Release:        1%{?dist}
 Summary:        Native hardware, racing wheel and diagnostics control center
 License:        GPL-3.0-or-later AND MIT AND OFL-1.1
@@ -54,6 +54,11 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/io.github.Tubix777.Li
 %{_datadir}/icons/hicolor/scalable/apps/io.github.Tubix777.LinuxControl.svg
 
 %changelog
+* Thu Oct 15 2026 Linux Control contributors - 0.2.1-1
+- Add directional page transitions and paint-only staggered entrances
+- Animate actual diagnostic activity and finite completion without fake progress
+- Release hidden/replaced animation callbacks and respect reduced motion
+
 * Wed Oct 14 2026 Linux Control contributors - 0.2.0-1
 - Redesign native typography, sidebar, dashboards and responsive layouts
 - Add official download pages with package links and manual installation commands

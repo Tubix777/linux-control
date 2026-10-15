@@ -208,6 +208,7 @@ class MainWindow(Adw.ApplicationWindow):
             return
         if name == self.current_page and view == self.current_view:
             return
+        previous_name = self.current_page
         if self.current_page:
             previous = self.downloads if self.current_view == "downloads" else self.pages
             previous[self.current_page].set_active(False)
@@ -220,7 +221,16 @@ class MainWindow(Adw.ApplicationWindow):
         self.nav_buttons[name].add_css_class("selected")
         if view == "downloads":
             self.download_buttons[name].add_css_class("selected")
-        self.stack.set_transition_type(Gtk.StackTransitionType.CROSSFADE)
+        if previous_name == name:
+            transition = (Gtk.StackTransitionType.SLIDE_LEFT if view == "downloads"
+                          else Gtk.StackTransitionType.SLIDE_RIGHT)
+        elif previous_name:
+            names = [module[0] for module in MODULES]
+            transition = (Gtk.StackTransitionType.SLIDE_UP if names.index(name) > names.index(previous_name)
+                          else Gtk.StackTransitionType.SLIDE_DOWN)
+        else:
+            transition = Gtk.StackTransitionType.CROSSFADE
+        self.stack.set_transition_type(transition)
         self.stack.set_visible_child_name(name + ("-downloads" if view == "downloads" else ""))
         target = self.downloads if view == "downloads" else self.pages
         target[name].set_active(True)
