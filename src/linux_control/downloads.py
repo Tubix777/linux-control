@@ -140,12 +140,12 @@ def bundled_release(module):
     repository = REPOSITORIES[module]
     if module == "doctor":
         tag = "v" + __version__
-        names = (f"uzeyir-doctor-{__version__}-1.fc44.noarch.rpm",
-                 f"uzeyir-doctor_{__version__}-1_all.deb",
-                 f"uzeyir-doctor-{__version__}-1-any.pkg.tar.zst",
-                 f"uzeyir-doctor-{__version__}.tar.gz",
-                 f"uzeyir-doctor-{__version__}-arch-build.tar.gz",
-                 f"uzeyir-doctor-{__version__}-1.fc44.src.rpm")
+        names = (f"uzeyir-control-{__version__}-1.fc44.noarch.rpm",
+                 f"uzeyir-control_{__version__}-1_all.deb",
+                 f"uzeyir-control-{__version__}-1-any.pkg.tar.zst",
+                 f"uzeyir-control-{__version__}.tar.gz",
+                 f"uzeyir-control-{__version__}-arch-build.tar.gz",
+                 f"uzeyir-control-{__version__}-1.fc44.src.rpm")
         return parse_release({"tag_name": tag, "html_url": f"https://github.com/{repository}/releases/tag/{tag}",
                               "prerelease": True, "assets": [
                                   {"name": name, "browser_download_url": f"https://github.com/{repository}/releases/download/{tag}/{name}"}

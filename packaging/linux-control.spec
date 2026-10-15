@@ -1,4 +1,4 @@
-Name:           uzeyir-doctor
+Name:           uzeyir-control
 Version:        0.3.0
 Release:        1%{?dist}
 Summary:        Native hardware, racing wheel and diagnostics control center
@@ -25,7 +25,7 @@ Provides:       linux-control = %{version}-%{release}
 Obsoletes:      linux-control < %{version}-%{release}
 
 %description
-Uzeyir Doctor combines live hardware monitoring, racing-wheel configuration,
+Uzeyir Control combines live hardware monitoring, racing-wheel configuration,
 local system diagnostics and Flatpak permission checks in one GTK 4 window.
 It uses a monochrome interface, live Turkish/English selection and optional
 reduced motion. Unsupported hardware is reported without invented readings.
@@ -37,10 +37,10 @@ reduced motion. Unsupported hardware is reported without invented readings.
 # Pure Python sources; no build-time network access or wheel build required.
 
 %install
-install -d %{buildroot}%{_datadir}/uzeyir-doctor/src
-cp -a src/. %{buildroot}%{_datadir}/uzeyir-doctor/src/
-find %{buildroot}%{_datadir}/uzeyir-doctor -type d -name __pycache__ -prune -exec rm -rf {} +
-install -Dm0755 packaging/linux-control %{buildroot}%{_bindir}/uzeyir-doctor
+install -d %{buildroot}%{_datadir}/uzeyir-control/src
+cp -a src/. %{buildroot}%{_datadir}/uzeyir-control/src/
+find %{buildroot}%{_datadir}/uzeyir-control -type d -name __pycache__ -prune -exec rm -rf {} +
+install -Dm0755 packaging/linux-control %{buildroot}%{_bindir}/uzeyir-control
 install -Dm0755 packaging/linux-control %{buildroot}%{_bindir}/linux-control
 install -Dm0644 share/io.github.Tubix777.LinuxControl.desktop %{buildroot}%{_datadir}/applications/io.github.Tubix777.LinuxControl.desktop
 install -Dm0644 share/io.github.Tubix777.LinuxControl.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/io.github.Tubix777.LinuxControl.svg
@@ -52,14 +52,14 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/io.github.Tubix777.Li
 %files
 %license COPYING licenses/*.txt
 %doc README.md ATTRIBUTION.md docs/install.md docs/permissions.md docs/validation.md
-%{_bindir}/uzeyir-doctor
+%{_bindir}/uzeyir-control
 %{_bindir}/linux-control
-%{_datadir}/uzeyir-doctor/
+%{_datadir}/uzeyir-control/
 %{_datadir}/applications/io.github.Tubix777.LinuxControl.desktop
 %{_datadir}/icons/hicolor/scalable/apps/io.github.Tubix777.LinuxControl.svg
 
 %changelog
-* Thu Oct 15 2026 Uzeyir Doctor contributors - 0.3.0-1
+* Thu Oct 15 2026 Uzeyir Control contributors - 0.3.0-1
 - Rename application and packages while preserving settings, profiles and desktop identity
 - Add Ubuntu/Deepin/Zorin DEB and Arch pacman/build packages
 

@@ -20,7 +20,7 @@ Download pages choose DEB/Arch/RPM from the OS family before the GTK loop starts
 Older libadwaita clamp content is explicitly expanded and verified against the
 available page width. The DEB explicitly requires its SVG loader. Wheel switch rows now use the GTK
 list container required by newer libadwaita, preserving their state and writes.
-The application is Uzeyir Doctor; the Python module, settings directory and
+The application is Uzeyir Control; the Python module, settings directory and
 desktop application ID stay stable for upgrade compatibility.
 
 ## 0.2.1 motion

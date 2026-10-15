@@ -23,16 +23,16 @@ class PackageTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory)
             stage(target)
-            self.assertTrue((target / "usr/share/uzeyir-doctor/src/linux_control/resources/Manrope.ttf").is_file())
-            self.assertTrue((target / "usr/share/licenses/uzeyir-doctor/Manrope-OFL.txt").is_file())
+            self.assertTrue((target / "usr/share/uzeyir-control/src/linux_control/resources/Manrope.ttf").is_file())
+            self.assertTrue((target / "usr/share/licenses/uzeyir-control/Manrope-OFL.txt").is_file())
             desktop = (target / "usr/share/applications/io.github.Tubix777.LinuxControl.desktop").read_text()
             self.assertIn("Name=" + APP_NAME, desktop)
-            self.assertIn("Exec=uzeyir-doctor", desktop)
-            self.assertEqual(APP_NAME, "Uzeyir Doctor")
-            for name in ("uzeyir-doctor", "linux-control"):
+            self.assertIn("Exec=uzeyir-control", desktop)
+            self.assertEqual(APP_NAME, "Uzeyir Control")
+            for name in ("uzeyir-control", "linux-control"):
                 launcher = target / "usr/bin" / name
                 self.assertEqual(launcher.stat().st_mode & 0o777, 0o755)
-                self.assertIn('/usr/share/uzeyir-doctor/src', launcher.read_text())
+                self.assertIn('/usr/share/uzeyir-control/src', launcher.read_text())
             files = [str(p.relative_to(target)) for p in target.rglob("*") if p.is_file()]
             self.assertFalse(any("__pycache__" in p or p.startswith(("etc/", "usr/libexec/", "usr/lib/udev/")) for p in files))
 
@@ -41,12 +41,12 @@ class PackageTests(unittest.TestCase):
             bundle = build_arch.build(directory, recipe_only=True)
             with tarfile.open(bundle) as archive:
                 files = {Path(n).name: archive.extractfile(n).read() for n in archive.getnames()}
-            source = files[f"uzeyir-doctor-{version()}.tar.gz"]
+            source = files[f"uzeyir-control-{version()}.tar.gz"]
             recipe = files["PKGBUILD"].decode()
             self.assertIn(hashlib.sha256(source).hexdigest(), recipe)
             self.assertNotIn("SKIP", recipe)
             self.assertNotIn("@VERSION@", recipe)
-            self.assertIn("pkgname=uzeyir-doctor", recipe)
+            self.assertIn("pkgname=uzeyir-control", recipe)
             self.assertIn("conflicts=('linux-control')", recipe)
             self.assertIn("packaging/stage_payload.py", recipe)
             self.assertFalse(any(name.endswith(('.pyc', '.rpm', '.deb', '.pkg.tar.zst')) for name in files))
@@ -76,24 +76,24 @@ class PackageTests(unittest.TestCase):
             root = Path(directory)
             with self.assertRaises(ValueError):
                 release_files(root, v)
-            names = {"fedora": [f"uzeyir-doctor-{v}.tar.gz", f"uzeyir-doctor-{v}-1.fc44.noarch.rpm", f"uzeyir-doctor-{v}-1.fc44.src.rpm"],
-                     "ubuntu24": [f"uzeyir-doctor_{v}-1_all.deb"],
-                     "arch": [f"uzeyir-doctor-{v}.tar.gz", f"uzeyir-doctor-{v}-1-any.pkg.tar.zst", f"uzeyir-doctor-{v}-arch-build.tar.gz"]}
+            names = {"fedora": [f"uzeyir-control-{v}.tar.gz", f"uzeyir-control-{v}-1.fc44.noarch.rpm", f"uzeyir-control-{v}-1.fc44.src.rpm"],
+                     "ubuntu24": [f"uzeyir-control_{v}-1_all.deb"],
+                     "arch": [f"uzeyir-control-{v}.tar.gz", f"uzeyir-control-{v}-1-any.pkg.tar.zst", f"uzeyir-control-{v}-arch-build.tar.gz"]}
             for platform, files in names.items():
-                folder = root / ("uzeyir-doctor-" + platform)
+                folder = root / ("uzeyir-control-" + platform)
                 folder.mkdir()
                 for name in files:
                     (folder / name).write_bytes(b"verified fixture")
             dest = root / "release"
             self.assertEqual(len(collect(root, dest)), 7)
             self.assertEqual(len((dest / "SHA256SUMS").read_text().splitlines()), 6)
-            (root / "uzeyir-doctor-arch" / f"uzeyir-doctor-{v}.tar.gz").write_bytes(b"different source")
+            (root / "uzeyir-control-arch" / f"uzeyir-control-{v}.tar.gz").write_bytes(b"different source")
             with self.assertRaises(ValueError):
                 collect(root, dest)
 
     def test_rename_preserves_desktop_identity_preferences_and_legacy_command(self):
         project = (ROOT / "pyproject.toml").read_text()
-        self.assertIn('name = "uzeyir-doctor"', project)
-        self.assertIn('uzeyir-doctor = "linux_control.app:main"', project)
+        self.assertIn('name = "uzeyir-control"', project)
+        self.assertIn('uzeyir-control = "linux_control.app:main"', project)
         self.assertIn('linux-control = "linux_control.app:main"', project)
         self.assertIn('linux-control/preferences.json', (ROOT / 'src/linux_control/settings.py').read_text())

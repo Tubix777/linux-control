@@ -34,7 +34,7 @@ class DistributionTests(unittest.TestCase):
     def test_doctor_is_distributed_in_the_current_combined_package(self):
         release = bundled_release("doctor")
         self.assertEqual(release.tag, "v" + __version__)
-        self.assertTrue(all(asset.name.startswith(("uzeyir-doctor-" + __version__, "uzeyir-doctor_" + __version__)) for asset in release.assets))
+        self.assertTrue(all(asset.name.startswith(("uzeyir-control-" + __version__, "uzeyir-control_" + __version__)) for asset in release.assets))
 
     def test_external_hosts_credentials_and_encoded_traversal_are_rejected(self):
         repository = REPOSITORIES["wheel"]
@@ -68,10 +68,10 @@ class DistributionTests(unittest.TestCase):
         self.assertEqual(bundled_release("doctor").formats, ("rpm", "deb", "arch", "source"))
 
     def test_arch_package_command_is_copy_only_and_source_recipe_is_not_installable(self):
-        asset = Asset("uzeyir-doctor-0.3.0-1-any.pkg.tar.zst", "")
+        asset = Asset("uzeyir-control-0.3.0-1-any.pkg.tar.zst", "")
         self.assertEqual(asset.kind, "arch")
         self.assertEqual(asset.install_command, "sudo pacman -U ./" + asset.name)
-        bundle = Asset("uzeyir-doctor-0.3.0-arch-build.tar.gz", "")
+        bundle = Asset("uzeyir-control-0.3.0-arch-build.tar.gz", "")
         self.assertEqual(bundle.kind, "source")
         self.assertIsNone(bundle.install_command)
 

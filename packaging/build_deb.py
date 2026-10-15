@@ -20,19 +20,19 @@ def build(destination):
     with tempfile.TemporaryDirectory(prefix="deb-", dir=scratch) as directory:
         payload = Path(directory) / "package"
         stage(payload)
-        copyright_file = payload / "usr/share/doc/uzeyir-doctor/copyright"
+        copyright_file = payload / "usr/share/doc/uzeyir-control/copyright"
         copyright_file.write_text((ROOT / "ATTRIBUTION.md").read_text() + "\n\n" +
             "\n\n".join(p.read_text() for p in [ROOT / "COPYING", *sorted((ROOT / "licenses").glob("*.txt"))]))
         files = sorted(p for p in payload.rglob("*") if p.is_file())
         installed_size = (sum(p.stat().st_size for p in files) + 1023) // 1024
         control = payload / "DEBIAN"
         control.mkdir(mode=0o755)
-        (control / "control").write_text(f"""Package: uzeyir-doctor
+        (control / "control").write_text(f"""Package: uzeyir-control
 Version: {version()}-1
 Section: utils
 Priority: optional
 Architecture: all
-Maintainer: Uzeyir Doctor contributors <tuna@kale.gen.tr>
+Maintainer: Uzeyir Control contributors <tuna@kale.gen.tr>
 Homepage: https://github.com/Tubix777/linux-control
 Bugs: https://github.com/Tubix777/linux-control/issues
 Installed-Size: {installed_size}
@@ -51,7 +51,7 @@ Description: Native hardware, racing wheel and diagnostics control center
         (control / "md5sums").write_text("".join(
             hashlib.md5(p.read_bytes(), usedforsecurity=False).hexdigest() + "  " +
             str(p.relative_to(payload)) + "\n" for p in files))
-        result = destination / f"uzeyir-doctor_{version()}-1_all.deb"
+        result = destination / f"uzeyir-control_{version()}-1_all.deb"
         subprocess.run(["dpkg-deb", "--root-owner-group", "-Zxz", "--build", str(payload), str(result)],
                        env={**os.environ, "SOURCE_DATE_EPOCH": os.environ.get("SOURCE_DATE_EPOCH", "0")}, check=True)
         return result

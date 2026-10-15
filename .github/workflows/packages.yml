@@ -40,7 +40,7 @@ jobs:
         run: docker run --rm -v "$PWD:/workspace" -w /workspace '${{ matrix.image }}' bash 'packaging/ci/${{ matrix.script }}.sh'
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
-          name: uzeyir-doctor-${{ matrix.platform }}
+          name: uzeyir-control-${{ matrix.platform }}
           path: dist/*
           if-no-files-found: error
 

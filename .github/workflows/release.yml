@@ -28,7 +28,7 @@ jobs:
           ref: ${{ inputs.tag || github.ref }}
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
-          pattern: uzeyir-doctor-*
+          pattern: uzeyir-control-*
           path: verified-artifacts
       - name: Verify source consistency and collect distro assets
         run: python3 packaging/collect_release.py verified-artifacts --output dist

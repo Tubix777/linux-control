@@ -314,7 +314,7 @@ Yön tuşu: {direction}	D-pad: {direction}
 Tuşlar: {state}	Buttons: {state}
 {percent}% — {state}	{percent}% — {state}
 SSD · {model}	SSD · {model}
-Fedora Doctor {version} · İlk çalışan prototip · Günlükler dışarı gönderilmez	Fedora Doctor {version} · Working prototype · Logs are not uploaded
+Uzeyir Doctor {version} · İlk çalışan prototip · Günlükler dışarı gönderilmez	Uzeyir Doctor {version} · Working prototype · Logs are not uploaded
 """.strip().splitlines()]
 
 TRANSLATIONS.update(dict(line.split("\t", 1) for line in """
@@ -471,7 +471,7 @@ Bu bölümün indirme sayfası	Downloads for this module
 Panele dön	Back to dashboard
 Anvil Control’ün bağımsız sürümünü ve resmî Linux paketlerini burada bulabilirsin.	Find the standalone Anvil Control release and official Linux packages here.
 Wheel Control’ün bağımsız sürümü, kurulum paketleri ve kaynak kodu.	The standalone Wheel Control release, installation packages and source code.
-Uzeyir Doctor ile donanım, direksiyon ve sistem teşhisini birlikte indir.	Download hardware, wheel controls and system diagnostics together with Uzeyir Doctor.
+Uzeyir Control ile donanım, direksiyon ve sistem teşhisini birlikte indir.	Download hardware, wheel controls and system diagnostics together with Uzeyir Control.
 Birleşik uygulama	Combined application
 Bağımsız uygulama	Standalone application
 Ön sürüm	Preview release

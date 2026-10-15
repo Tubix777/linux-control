@@ -11,14 +11,14 @@ def collect(artifacts, destination):
     artifacts, destination = Path(artifacts), Path(destination)
     destination.mkdir(parents=True, exist_ok=True)
     v = version()
-    source_name = f"uzeyir-doctor-{v}.tar.gz"
-    fedora = artifacts / "uzeyir-doctor-fedora"
-    arch = artifacts / "uzeyir-doctor-arch"
+    source_name = f"uzeyir-control-{v}.tar.gz"
+    fedora = artifacts / "uzeyir-control-fedora"
+    arch = artifacts / "uzeyir-control-arch"
     if (fedora / source_name).read_bytes() != (arch / source_name).read_bytes():
         raise ValueError("Arch and Fedora must use the same source archive")
-    choices = ((fedora, (f"uzeyir-doctor-{v}-1.fc44.noarch.rpm", f"uzeyir-doctor-{v}-1.fc44.src.rpm", source_name)),
-               (artifacts / "uzeyir-doctor-ubuntu24", (f"uzeyir-doctor_{v}-1_all.deb",)),
-               (arch, (f"uzeyir-doctor-{v}-1-any.pkg.tar.zst", f"uzeyir-doctor-{v}-arch-build.tar.gz")))
+    choices = ((fedora, (f"uzeyir-control-{v}-1.fc44.noarch.rpm", f"uzeyir-control-{v}-1.fc44.src.rpm", source_name)),
+               (artifacts / "uzeyir-control-ubuntu24", (f"uzeyir-control_{v}-1_all.deb",)),
+               (arch, (f"uzeyir-control-{v}-1-any.pkg.tar.zst", f"uzeyir-control-{v}-arch-build.tar.gz")))
     sums = []
     for folder, names in choices:
         for name in names:

@@ -15,7 +15,7 @@ FORMATS = {"rpm": "Fedora · RPM", "deb": "Debian / Ubuntu · DEB", "arch": "Arc
 DESCRIPTIONS = {
     "hardware": "Anvil Control’ün bağımsız sürümünü ve resmî Linux paketlerini burada bulabilirsin.",
     "wheel": "Wheel Control’ün bağımsız sürümü, kurulum paketleri ve kaynak kodu.",
-    "doctor": "Uzeyir Doctor ile donanım, direksiyon ve sistem teşhisini birlikte indir.",
+    "doctor": "Uzeyir Control ile donanım, direksiyon ve sistem teşhisini birlikte indir.",
 }
 
 

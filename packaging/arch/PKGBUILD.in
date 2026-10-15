@@ -1,5 +1,5 @@
 # Upstream GitHub release recipe. This project is not published in the AUR.
-pkgname=uzeyir-doctor
+pkgname=uzeyir-control
 pkgver=@VERSION@
 pkgrel=1
 pkgdesc='Native hardware, racing wheel and system diagnostics control center'
@@ -11,10 +11,10 @@ optdepends=('udisks2: SSD SMART readback' 'flatpak: Flatpak diagnostics' 'lm_sen
 provides=('linux-control')
 conflicts=('linux-control')
 options=('!strip' '!debug')
-source=("https://github.com/Tubix777/linux-control/releases/download/v${pkgver}/uzeyir-doctor-${pkgver}.tar.gz")
+source=("https://github.com/Tubix777/linux-control/releases/download/v${pkgver}/uzeyir-control-${pkgver}.tar.gz")
 sha256sums=('@SHA256@')
 
 package() {
-  cd "${srcdir}/uzeyir-doctor-${pkgver}"
+  cd "${srcdir}/uzeyir-control-${pkgver}"
   python3 packaging/stage_payload.py "${pkgdir}"
 }

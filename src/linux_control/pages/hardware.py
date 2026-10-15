@@ -108,7 +108,7 @@ def diagnostic_text(identity, sample, fan_channels):
     keys = ("board", "vendor", "bios", "bios_date", "os", "kernel", "cpu")
     readings = [{key: row.get(key) for key in ("chip", "label", "unit", "value")}
                 for row in sample.get("sensors", [])]
-    return json.dumps({"application": "Uzeyir Doctor", "module": "Anvil Control",
+    return json.dumps({"application": "Uzeyir Control", "module": "Anvil Control",
                        "created": datetime.now().isoformat(timespec="seconds"),
                        "identity": {key: identity.get(key) for key in keys},
                        "cpu_usage": sample.get("cpu_usage"),
@@ -774,7 +774,7 @@ class HardwarePage(Gtk.Box):
             return
         contents = csv_text(list(self._history)) if format == "csv" else diagnostic_text(self._identity, self._sample, self._fan_channels)
         dialog = Gtk.FileDialog(title=self.tr("Ölçümleri kaydet"))
-        dialog.set_initial_name(f"uzeyir-doctor-{datetime.now():%Y%m%d-%H%M%S}.{format}")
+        dialog.set_initial_name(f"uzeyir-control-{datetime.now():%Y%m%d-%H%M%S}.{format}")
         def selected(dialog, result):
             try:
                 file = dialog.save_finish(result)

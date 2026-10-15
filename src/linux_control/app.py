@@ -97,7 +97,7 @@ class MainWindow(Adw.ApplicationWindow):
             texts = box(4)
             texts.set_hexpand(True)
             texts.append(self.tr.bind(label(title, "nav-title", False), title))
-            caption = {"hardware": "Anvil Control", "wheel": "Wheel Control", "doctor": APP_NAME}[name]
+            caption = {"hardware": "Anvil Control", "wheel": "Wheel Control", "doctor": "Uzeyir Doctor"}[name]
             caption_label = label(caption, "nav-caption", False)
             caption_label.set_max_width_chars(25)
             texts.append(self.tr.bind(caption_label, caption))

@@ -34,18 +34,18 @@ def build(destination, *, recipe_only=False):
             "Install base-devel first with sudo pacman -Syu --needed base-devel.\n"
             "The matching source archive is included and its SHA-256 is pinned.\n"
             "Do not run makepkg as root. This is an upstream recipe, not an AUR package.\n")
-        bundle = destination / f"uzeyir-doctor-{version()}-arch-build.tar.gz"
+        bundle = destination / f"uzeyir-control-{version()}-arch-build.tar.gz"
         epoch = int(os.environ.get("SOURCE_DATE_EPOCH", "0"))
         with bundle.open("wb") as output, gzip.GzipFile(filename="", fileobj=output, mode="wb", mtime=epoch) as compressed, tarfile.open(fileobj=compressed, mode="w") as tar:
             for file in sorted(staging.iterdir()):
-                info = tar.gettarinfo(str(file), arcname=f"uzeyir-doctor-{version()}-arch-build/{file.name}")
+                info = tar.gettarinfo(str(file), arcname=f"uzeyir-control-{version()}-arch-build/{file.name}")
                 info.uid = info.gid = 0
                 info.uname = info.gname = ""
                 info.mode, info.mtime = 0o644, epoch
                 tar.addfile(info, io.BytesIO(file.read_bytes()))
         if not recipe_only:
             subprocess.run(["makepkg", "--cleanbuild", "--force", "--noconfirm"], cwd=staging, check=True)
-            packages = list(staging.glob(f"uzeyir-doctor-{version()}-1-any.pkg.tar.zst"))
+            packages = list(staging.glob(f"uzeyir-control-{version()}-1-any.pkg.tar.zst"))
             if len(packages) != 1:
                 raise RuntimeError("makepkg did not produce the expected package")
             shutil.copyfile(packages[0], destination / packages[0].name)

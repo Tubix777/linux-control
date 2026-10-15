@@ -3,7 +3,7 @@ requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "uzeyir-doctor"
+name = "uzeyir-control"
 version = "0.3.0"
 description = "Native Linux hardware, racing wheel and diagnostics control center"
 readme = "README.md"
@@ -19,7 +19,7 @@ Source = "https://github.com/Tubix777/linux-control"
 Issues = "https://github.com/Tubix777/linux-control/issues"
 
 [project.scripts]
-uzeyir-doctor = "linux_control.app:main"
+uzeyir-control = "linux_control.app:main"
 linux-control = "linux_control.app:main"
 
 [tool.setuptools]

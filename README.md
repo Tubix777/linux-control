@@ -1,6 +1,6 @@
-# Uzeyir Doctor
+# Uzeyir Control
 
-Anvil Control, Wheel Control ve Fedora Doctor tek bir yerel GTK 4 / libadwaita penceresinde. Soldaki büyük düğmelerle **Donanım**, **Direksiyon** ve **Sorun Teşhisi** arasında geçiş yapın.
+Anvil Control, Wheel Control ve Uzeyir Doctor tek bir yerel GTK 4 / libadwaita penceresinde. Soldaki büyük düğmelerle **Donanım**, **Direksiyon** ve **Sorun Teşhisi** arasında geçiş yapın.
 
 Siyah, gri ve beyaz arayüz; akıcı bölüm geçişleri; tarama sonrası sonuçlara yumuşak kaydırma; ekrana giren bulgu kartlarında kademeli belirme. Türkçe ve İngilizce arasında uygulamayı yeniden başlatmadan geçiş yapılır. **Hareketi azalt** tercihi geçişleri ve kaydırma animasyonlarını kapatır; canlı giriş verileri anında güncellenir.
 
@@ -26,24 +26,24 @@ Donanım başlığında hareketli devre ışıkları ve fan etkinlik görseli va
 
 Kontrol ayarları açık bir **Uygula** eylemiyle gönderilir. Bölüm ve dil değişimi ayarları donanıma uygulamaz. Teşhis taraması sistem ayarlarını değiştirmez, uygulama başlatmaz, ayrıcalık istemez ve günlükleri dışarı göndermez.
 
-İndirme ekranları kayıtlı resmî paket bilgileriyle çevrimdışı açılır. **Güncel sürümü kontrol et** düğmesi yalnız ilgili GitHub deposunun herkese açık sürüm bilgilerini sorgular; arayüzü bekletmez. Ağ hatasında mevcut bağlantılar korunur. **İndir** ve sürüm bağlantıları varsayılan tarayıcıda açılır. Anvil ve Wheel bağlantıları bağımsız uygulamalara aittir; Fedora Doctor, birleşik Uzeyir Doctor paketiyle dağıtılır. Manrope uygulama içinde yüklenir; masaüstünün yazı tipi ayarı değiştirilmez.
+İndirme ekranları kayıtlı resmî paket bilgileriyle çevrimdışı açılır. **Güncel sürümü kontrol et** düğmesi yalnız ilgili GitHub deposunun herkese açık sürüm bilgilerini sorgular; arayüzü bekletmez. Ağ hatasında mevcut bağlantılar korunur. **İndir** ve sürüm bağlantıları varsayılan tarayıcıda açılır. Anvil ve Wheel bağlantıları bağımsız uygulamalara aittir; Uzeyir Doctor, birleşik Uzeyir Control paketiyle dağıtılır. Manrope uygulama içinde yüklenir; masaüstünün yazı tipi ayarı değiştirilmez.
 
 ## İndir ve kur
 
-**Yeni ad: Uzeyir Doctor** (eski adı Linux Control). Dil, hareket tercihleri,
+**Yeni ad: Uzeyir Control** (eski adı Linux Control). Dil, hareket tercihleri,
 profiller ve eski başlatıcı komutu korunur.
 
 | Sistem | GitHub Releases indirmesi |
 | --- | --- |
-| Ubuntu 24.04/26.04, Zorin 18, Deepin 25, Debian 13 | [DEB indir](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-doctor_0.3.0-1_all.deb) |
-| Güncel Arch Linux | [pacman paketi](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-doctor-0.3.0-1-any.pkg.tar.zst) · [PKGBUILD ve kaynak](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-doctor-0.3.0-arch-build.tar.gz) |
-| Fedora 44 | [RPM indir](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-doctor-0.3.0-1.fc44.noarch.rpm) |
-| Diğer Linux sistemleri | [Kaynak arşivi](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-doctor-0.3.0.tar.gz) |
+| Ubuntu 24.04/26.04, Zorin 18, Deepin 25, Debian 13 | [DEB indir](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-control_0.3.0-1_all.deb) |
+| Güncel Arch Linux | [pacman paketi](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-control-0.3.0-1-any.pkg.tar.zst) · [PKGBUILD ve kaynak](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-control-0.3.0-arch-build.tar.gz) |
+| Fedora 44 | [RPM indir](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-control-0.3.0-1.fc44.noarch.rpm) |
+| Diğer Linux sistemleri | [Kaynak arşivi](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-control-0.3.0.tar.gz) |
 
 [Tüm dosyalar ve SHA256SUMS](https://github.com/Tubix777/linux-control/releases/tag/v0.3.0) ·
 [Dağıtıma göre kurulum, sürüm koşulları ve kaldırma](docs/install.md).
-DEB için `sudo apt install ./uzeyir-doctor_0.3.0-1_all.deb`; Arch ve Fedora
-komutları kurulum belgesindedir. Kurulumdan sonra menüden **Uzeyir Doctor**'ü açın.
+DEB için `sudo apt install ./uzeyir-control_0.3.0-1_all.deb`; Arch ve Fedora
+komutları kurulum belgesindedir. Kurulumdan sonra menüden **Uzeyir Control**'ü açın.
 
 Asgari Python ≥ 3.11, GTK ≥ 4.12 ve libadwaita ≥ 1.5 gerekir. Kaynak koddan
 çalıştırma setuptools veya pip kurulumu gerektirmez. Uygulamanın kendisini
@@ -82,4 +82,4 @@ Arayüz testleri gerçek masaüstü yerine ayrı bir sanal compositor altında �
 
 ## English
 
-Uzeyir Doctor combines hardware monitoring, racing-wheel controls and local system diagnostics in one native GTK 4 window, with a shared monochrome design, bundled Manrope typography, responsive layouts, smooth navigation, scan-result animations and live Turkish/English switching. Each sidebar module has its own official download page. Package links work from bundled metadata offline; checking for newer releases is an explicit action. Installation commands can be copied but are never executed by the app. Reduce Motion respects accessibility preferences. Device settings require explicit actions; diagnostics remain read-only. Unavailable hardware data is never replaced with invented readings. This initial combined version is a preview; physical force-feedback coverage and motherboard fan control remain limited to the support described above.
+Uzeyir Control combines hardware monitoring, racing-wheel controls and local system diagnostics in one native GTK 4 window, with a shared monochrome design, bundled Manrope typography, responsive layouts, smooth navigation, scan-result animations and live Turkish/English switching. Each sidebar module has its own official download page. Package links work from bundled metadata offline; checking for newer releases is an explicit action. Installation commands can be copied but are never executed by the app. Reduce Motion respects accessibility preferences. Device settings require explicit actions; diagnostics remain read-only. Unavailable hardware data is never replaced with invented readings. This initial combined version is a preview; physical force-feedback coverage and motherboard fan control remain limited to the support described above.

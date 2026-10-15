@@ -60,7 +60,7 @@ def box(spacing: int = 8, horizontal: bool = False) -> Gtk.Box:
 
 class Window(Adw.ApplicationWindow):
     def __init__(self, application, screenshot: str | None = None):
-        super().__init__(application=application, title="Fedora Doctor")
+        super().__init__(application=application, title="Uzeyir Doctor")
         self.set_default_size(1040, 820)
         self.apps = []
         self.folder = None
@@ -75,7 +75,7 @@ class Window(Adw.ApplicationWindow):
         self._revealed = set()
         root = box(0)
         header = Adw.HeaderBar()
-        header.set_title_widget(label("Fedora Doctor", "card-title"))
+        header.set_title_widget(label("Uzeyir Doctor", "card-title"))
         root.append(header)
         scroll = self.scroll = Gtk.ScrolledWindow(vexpand=True)
         content = self.content = box(22)
@@ -141,7 +141,7 @@ class Window(Adw.ApplicationWindow):
         self.results = box(12)
         content.append(self.results)
         self.results.append(label("Bulgular burada görünecek.", "muted"))
-        content.append(label(f"Fedora Doctor {__version__} · İlk çalışan prototip · Günlükler dışarı gönderilmez", "muted"))
+        content.append(label(f"Uzeyir Doctor {__version__} · İlk çalışan prototip · Günlükler dışarı gönderilmez", "muted"))
         self.present()
         self.background(list_flatpaks, self.set_apps)
 
