@@ -88,3 +88,10 @@ indirilebilir kurulum seçenekleri ekle. Ortak çalışma klasörünü koru.
 6. [ ] Releases indirmelerini, sağlama toplamlarını ve paket içeriğini uzaktan doğrula.
 
 Son adlandırma kararı: Ana uygulama Uzeyir Control; teşhis modülü Uzeyir Doctor. Paket ve başlatıcı adı uzeyir-control; eski komut, masaüstü kimliği ve kullanıcı ayarları uyumluluk için korunur.
+
+## 0.3.1 — ortak kaynak arşiviyle yayın düzeltmesi
+
+1. [x] Fedora ve Arch kaynak içeriklerinin aynı, gzip akışlarının farklı olduğunu doğrula.
+2. [x] Kaynağı bir kez üret; her derlemede içerik/izin kontrolüyle aynı arşivi kullan.
+3. [ ] Beş dağıtım ve tam yayın toplama işlemini tekrar doğrula.
+4. [ ] 0.3.1 paketlerini yayımla; indirmeleri ve kullanıcı kurulumunu doğrula.

@@ -1,5 +1,6 @@
 """Unprivileged staging shared by non-RPM packages. No installer side effects."""
 from pathlib import Path
+import os
 import shutil
 import tomllib
 
@@ -8,6 +9,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def version():
     return tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]["version"]
+
+
+def source_epoch(root=ROOT):
+    metadata = tomllib.loads((root / "pyproject.toml").read_text())
+    return int(os.environ.get('SOURCE_DATE_EPOCH', metadata.get('tool', {}).get('uzeyir-control', {}).get('source-date-epoch', 0)))
 
 
 def stage(destination):
@@ -35,7 +41,9 @@ def stage(destination):
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, target)
         target.chmod(0o755 if name.startswith("usr/bin/") else 0o644)
+    epoch = source_epoch()
     for directory in destination.rglob("*"):
         if directory.is_dir():
             directory.chmod(0o755)
-
+        else:
+            os.utime(directory, (epoch, epoch))

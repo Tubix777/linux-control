@@ -35,14 +35,14 @@ profiller ve eski başlatıcı komutu korunur.
 
 | Sistem | GitHub Releases indirmesi |
 | --- | --- |
-| Ubuntu 24.04/26.04, Zorin 18, Deepin 25, Debian 13 | [DEB indir](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-control_0.3.0-1_all.deb) |
-| Güncel Arch Linux | [pacman paketi](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-control-0.3.0-1-any.pkg.tar.zst) · [PKGBUILD ve kaynak](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-control-0.3.0-arch-build.tar.gz) |
-| Fedora 44 | [RPM indir](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-control-0.3.0-1.fc44.noarch.rpm) |
-| Diğer Linux sistemleri | [Kaynak arşivi](https://github.com/Tubix777/linux-control/releases/download/v0.3.0/uzeyir-control-0.3.0.tar.gz) |
+| Ubuntu 24.04/26.04, Zorin 18, Deepin 25, Debian 13 | [DEB indir](https://github.com/Tubix777/linux-control/releases/download/v0.3.1/uzeyir-control_0.3.1-1_all.deb) |
+| Güncel Arch Linux | [pacman paketi](https://github.com/Tubix777/linux-control/releases/download/v0.3.1/uzeyir-control-0.3.1-1-any.pkg.tar.zst) · [PKGBUILD ve kaynak](https://github.com/Tubix777/linux-control/releases/download/v0.3.1/uzeyir-control-0.3.1-arch-build.tar.gz) |
+| Fedora 44 | [RPM indir](https://github.com/Tubix777/linux-control/releases/download/v0.3.1/uzeyir-control-0.3.1-1.fc44.noarch.rpm) |
+| Diğer Linux sistemleri | [Kaynak arşivi](https://github.com/Tubix777/linux-control/releases/download/v0.3.1/uzeyir-control-0.3.1.tar.gz) |
 
-[Tüm dosyalar ve SHA256SUMS](https://github.com/Tubix777/linux-control/releases/tag/v0.3.0) ·
+[Tüm dosyalar ve SHA256SUMS](https://github.com/Tubix777/linux-control/releases/tag/v0.3.1) ·
 [Dağıtıma göre kurulum, sürüm koşulları ve kaldırma](docs/install.md).
-DEB için `sudo apt install ./uzeyir-control_0.3.0-1_all.deb`; Arch ve Fedora
+DEB için `sudo apt install ./uzeyir-control_0.3.1-1_all.deb`; Arch ve Fedora
 komutları kurulum belgesindedir. Kurulumdan sonra menüden **Uzeyir Control**'ü açın.
 
 Asgari Python ≥ 3.11, GTK ≥ 4.12 ve libadwaita ≥ 1.5 gerekir. Kaynak koddan

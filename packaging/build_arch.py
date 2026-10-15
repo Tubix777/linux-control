@@ -4,14 +4,13 @@ import argparse
 import gzip
 import hashlib
 import io
-import os
 from pathlib import Path
 import shutil
 import subprocess
 import tarfile
 import tempfile
 from build_source import build as build_source
-from payload import ROOT, version
+from payload import ROOT, source_epoch, version
 
 
 def recipe(archive):
@@ -35,7 +34,7 @@ def build(destination, *, recipe_only=False):
             "The matching source archive is included and its SHA-256 is pinned.\n"
             "Do not run makepkg as root. This is an upstream recipe, not an AUR package.\n")
         bundle = destination / f"uzeyir-control-{version()}-arch-build.tar.gz"
-        epoch = int(os.environ.get("SOURCE_DATE_EPOCH", "0"))
+        epoch = source_epoch()
         with bundle.open("wb") as output, gzip.GzipFile(filename="", fileobj=output, mode="wb", mtime=epoch) as compressed, tarfile.open(fileobj=compressed, mode="w") as tar:
             for file in sorted(staging.iterdir()):
                 info = tar.gettarinfo(str(file), arcname=f"uzeyir-control-{version()}-arch-build/{file.name}")

@@ -1,18 +1,18 @@
 # Uzeyir Control — Linux kurulumları
 
-[GitHub Releases](https://github.com/Tubix777/linux-control/releases/tag/v0.3.0)
+[GitHub Releases](https://github.com/Tubix777/linux-control/releases/tag/v0.3.1)
 sayfasından dağıtımınıza uygun dosyayı indirin. Paketler üçüncü parti bir mağazaya
 yüklenmiş değildir; bu projenin kendi GitHub yayınıdır.
 
 | Dağıtım | İndirilecek dosya | Gereken sürüm |
 | --- | --- | --- |
-| Ubuntu, Kubuntu ve Ubuntu tabanlı sistemler | `uzeyir-control_0.3.0-1_all.deb` | Ubuntu 24.04 veya 26.04 |
+| Ubuntu, Kubuntu ve Ubuntu tabanlı sistemler | `uzeyir-control_0.3.1-1_all.deb` | Ubuntu 24.04 veya 26.04 |
 | Zorin OS | Aynı `.deb` | Zorin 18 serisi (Ubuntu 24.04 tabanı) |
 | Deepin | Aynı `.deb` | Deepin 25; gerekli kütüphaneler sistem deposunda bulunmalı |
 | Debian | Aynı `.deb` | Debian 13 veya eşdeğer bağımlılıklar |
-| Arch Linux | `uzeyir-control-0.3.0-1-any.pkg.tar.zst` | Güncel, tam yükseltilmiş Arch |
-| Fedora | `uzeyir-control-0.3.0-1.fc44.noarch.rpm` | Fedora 44 |
-| Diğer dağıtımlar | `uzeyir-control-0.3.0.tar.gz` | Python ≥ 3.11, GTK ≥ 4.12, libadwaita ≥ 1.5 |
+| Arch Linux | `uzeyir-control-0.3.1-1-any.pkg.tar.zst` | Güncel, tam yükseltilmiş Arch |
+| Fedora | `uzeyir-control-0.3.1-1.fc44.noarch.rpm` | Fedora 44 |
+| Diğer dağıtımlar | `uzeyir-control-0.3.1.tar.gz` | Python ≥ 3.11, GTK ≥ 4.12, libadwaita ≥ 1.5 |
 
 DEB `all`, Arch `any` ve Fedora `noarch` paketleri derlenmiş işlemci kodu içermez;
 Python kaynaklarını ve arayüz varlıklarını taşır. Bu, her işlemci/cihazın gerçek
@@ -24,7 +24,7 @@ kontrollerini atlamayın veya sistem kütüphanelerini elle değiştirmeyin.
 İndirilen dosyanın bulunduğu klasörde:
 
 ```bash
-sudo apt install ./uzeyir-control_0.3.0-1_all.deb
+sudo apt install ./uzeyir-control_0.3.1-1_all.deb
 ```
 
 APT, Python/GTK/libadwaita bağımlılıklarını kendi dağıtımınızın depolarından
@@ -43,16 +43,16 @@ GitHub paketini kurun:
 
 ```bash
 sudo pacman -Syu --needed python python-gobject python-cairo python-pyudev gtk4 libadwaita fontconfig
-sudo pacman -U ./uzeyir-control-0.3.0-1-any.pkg.tar.zst
+sudo pacman -U ./uzeyir-control-0.3.1-1-any.pkg.tar.zst
 ```
 
-Kaynak tarifiyle kurmak için `uzeyir-control-0.3.0-arch-build.tar.gz` dosyasını
+Kaynak tarifiyle kurmak için `uzeyir-control-0.3.1-arch-build.tar.gz` dosyasını
 indirin. Paket, PKGBUILD ile tam eşleşen kaynak arşivini ve SHA-256 değerini içerir:
 
 ```bash
 sudo pacman -Syu --needed base-devel
-tar -xzf uzeyir-control-0.3.0-arch-build.tar.gz
-cd uzeyir-control-0.3.0-arch-build
+tar -xzf uzeyir-control-0.3.1-arch-build.tar.gz
+cd uzeyir-control-0.3.1-arch-build
 less PKGBUILD
 makepkg -si
 ```
@@ -64,7 +64,7 @@ ayrıca kontrol edilmelidir.
 ## Fedora
 
 ```bash
-sudo dnf install ./uzeyir-control-0.3.0-1.fc44.noarch.rpm
+sudo dnf install ./uzeyir-control-0.3.1-1.fc44.noarch.rpm
 ```
 
 `.src.rpm` yeniden derleme içindir; normal kullanımda `.noarch.rpm` dosyasını seçin.

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "uzeyir-control"
-version = "0.3.0"
+version = "0.3.1"
 description = "Native Linux hardware, racing wheel and diagnostics control center"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -24,6 +24,9 @@ linux-control = "linux_control.app:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
+
+[tool.uzeyir-control]
+source-date-epoch = 1792094400
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -1,5 +1,7 @@
 """Public package payloads, pinned Arch sources and complete release assets."""
 import hashlib
+import gzip
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -7,18 +9,37 @@ import sys
 import tarfile
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "packaging"))
 import build_arch
 import build_deb
+import build_source
 from collect_release import collect
-from payload import stage, version
+from payload import source_epoch, stage, version
 from publish_release import release_files
 from linux_control import APP_NAME
 
 
 class PackageTests(unittest.TestCase):
+    def test_shared_source_preserves_compressed_bytes_and_rejects_different_contents(self):
+        with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ):
+            os.environ.pop('UZEYIR_SOURCE_ARCHIVE', None)
+            root = Path(directory) / 'project'
+            root.mkdir()
+            (root / 'pyproject.toml').write_text('[project]\nversion = "9.0"\n')
+            (root / 'README.md').write_text('Verified public contents')
+            with patch.object(build_source, 'ROOT', root):
+                canonical = build_source.build(Path(directory) / 'canonical')
+                canonical.write_bytes(gzip.compress(gzip.decompress(canonical.read_bytes()), compresslevel=0, mtime=0))
+                os.environ['UZEYIR_SOURCE_ARCHIVE'] = str(canonical)
+                result = build_source.build(Path(directory) / 'distribution')
+                self.assertEqual(result.read_bytes(), canonical.read_bytes())
+                (root / 'README.md').write_text('Unverified change')
+                with self.assertRaises(ValueError):
+                    build_source.build(Path(directory) / 'rejected')
+
     def test_payload_includes_brand_fonts_licenses_and_no_privileged_installer(self):
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory)
@@ -29,6 +50,7 @@ class PackageTests(unittest.TestCase):
             self.assertIn("Name=" + APP_NAME, desktop)
             self.assertIn("Exec=uzeyir-control", desktop)
             self.assertEqual(APP_NAME, "Uzeyir Control")
+            self.assertEqual((target / 'usr/share/uzeyir-control/src/linux_control/__init__.py').stat().st_mtime, source_epoch())
             for name in ("uzeyir-control", "linux-control"):
                 launcher = target / "usr/bin" / name
                 self.assertEqual(launcher.stat().st_mode & 0o777, 0o755)

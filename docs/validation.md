@@ -1,11 +1,11 @@
 # Validation
 
-## 0.3.0 distribution and rename validation
+## 0.3.1 distribution and rename validation
 
 Ubuntu 24.04 (GTK 4.14 / Adw 1.5), Ubuntu 26.04 (GTK 4.22 / Adw 1.9),
 Deepin 25 (GTK 4.18 / Adw 1.5), Fedora 44 and current Arch (GTK 4.24 / Adw 1.10)
 are checked in isolated containers and private Weston sessions. DEB jobs run
-215 tests without GUI skips; Fedora/Arch skip only the dpkg-deb-specific build
+216 tests without GUI skips; Fedora/Arch skip only the dpkg-deb-specific build
 test. Every installed package opens all six native views and verifies SVG
 decoding. Zorin 18 is covered through its Ubuntu 24.04 base, not a separately
 installed Zorin desktop. Debian 13 and other derivatives require the declared
@@ -95,3 +95,5 @@ The source packager uses an explicit allowlist and excludes working directories,
 The isolated GTK suite has 180 tests. New cases cover finite card entrance callbacks, expanded/collapsed content with unsaved entry values, cancellation on reduced motion and close, diagnostic-card animation ownership, CSS parsing and desktop animation-preference changes while the window is open. The supported-size layout check covers both 960 × 620 and 1280 × 900.
 
 The original minimum-size test also failed on the unchanged 0.1.0 source in this Fedora test environment. Reducing sidebar spacing restored the supported minimum size; the assertion was preserved. Shared animations do not interpolate wheel telemetry or execute hardware writes.
+
+Release source is generated once and reused byte-for-byte across distributions. Each builder checks the public file list, file permissions and source contents before accepting it. This avoids zlib/zlib-ng compressed-stream differences without weakening source consistency checks.

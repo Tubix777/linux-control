@@ -16,3 +16,4 @@
 
 - Ana uygulama adı Uzeyir Control, teşhis modülünün adı Uzeyir Doctor; kurulum paketleri ve ana komut uzeyir-control. Eski Python modülü, ayar dizini, masaüstü kimliği ve linux-control komutu uyumluluk için korunur.
 - Yayınlar Fedora RPM/kaynak RPM, Ubuntu/Deepin/Zorin DEB, Arch pacman ve sabit checksumlu PKGBUILD/kaynak paketini içerir. CI her dağıtımda kurulu altı görünümü ve SVG yükleyicisini doğrular; gerçek masaüstü/donanım testini konteyner doğrulamasından ayırın.
+- Sürüm artırıldığında pyproject.toml içindeki source-date-epoch değerini de yayın zamanına ilerletin; sabit kaynak zamanı yeniden üretilebilirliği ve Python önbelleğinin sürümler arasında yenilenmesini sağlar.

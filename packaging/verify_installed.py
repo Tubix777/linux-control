@@ -3,12 +3,13 @@ from pathlib import Path
 import sys
 import tempfile
 import time
+import tomllib
 sys.path.insert(0, "/usr/share/uzeyir-control/src")
 import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 from gi.repository import Adw, Gdk, Gio, GLib, Gtk
-from linux_control import APP_NAME
+from linux_control import APP_NAME, __version__
 from linux_control.app import CSS, MainWindow
 from linux_control.downloads import system_format
 from linux_control.settings import Settings
@@ -16,6 +17,7 @@ from linux_control.settings import Settings
 assert Gtk.get_major_version() == 4 and Gtk.get_minor_version() >= 12
 assert (Adw.get_major_version(), Adw.get_minor_version()) >= (1, 5)
 assert Path(sys.modules["linux_control"].__file__).is_relative_to("/usr/share/uzeyir-control/src")
+assert __version__ == tomllib.loads(Path('pyproject.toml').read_text())['project']['version']
 for source in Path('src').rglob('*'):
     if source.is_file() and '__pycache__' not in source.parts and source.suffix not in ('.pyc', '.pyo'):
         installed = Path('/usr/share/uzeyir-control/src') / source.relative_to('src')

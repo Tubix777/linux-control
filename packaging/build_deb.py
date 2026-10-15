@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 import subprocess
 import tempfile
-from payload import ROOT, stage, version
+from payload import ROOT, source_epoch, stage, version
 
 DEPENDENCIES = ("python3 (>= 3.11), python3-gi, python3-cairo, python3-gi-cairo, "
                 "python3-pyudev, gir1.2-gtk-4.0 (>= 4.12), gir1.2-adw-1 (>= 1.5), fontconfig, librsvg2-common")
@@ -53,7 +53,7 @@ Description: Native hardware, racing wheel and diagnostics control center
             str(p.relative_to(payload)) + "\n" for p in files))
         result = destination / f"uzeyir-control_{version()}-1_all.deb"
         subprocess.run(["dpkg-deb", "--root-owner-group", "-Zxz", "--build", str(payload), str(result)],
-                       env={**os.environ, "SOURCE_DATE_EPOCH": os.environ.get("SOURCE_DATE_EPOCH", "0")}, check=True)
+                       env={**os.environ, "SOURCE_DATE_EPOCH": str(source_epoch())}, check=True)
         return result
 
 
