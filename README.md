@@ -10,7 +10,7 @@ Anvil Control, Wheel Control ve Uzeyir Doctor aynı GTK 4 / libadwaita penceresi
 buluşur. Soldaki düğmelerle bölümler arasında geçiş yap; kullanımı ve sıcaklıkları
 izle, direksiyonunu ayarla veya sistemindeki bir sorunun nedenini incele.
 
-[İndir ve kur](#indir-ve-kur) · [0.4.0 sürüm notları](docs/release-notes.md) ·
+[İndir ve kur](https://github.com/Tubix777/linux-control/releases/latest) · [0.4.0 sürüm notları](docs/release-notes.md) ·
 [Kurulum rehberi](docs/install.md) · [Sorun bildir](https://github.com/Tubix777/linux-control/issues)
 
 ![Uzeyir Control arayüzü](docs/images/overview.png)
