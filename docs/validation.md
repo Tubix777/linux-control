@@ -1,5 +1,16 @@
 # Validation
 
+## 0.4.0 interaction validation
+
+The native test suite now checks exact rendered pixels before a transition and
+when it is interrupted, intermediate frames, transformed input picking, rapid
+retargeting, unsaved values, expanded evidence, copy-feedback timer cleanup,
+keyboard focus, resize, hide, close and both reduced-motion preferences.
+Public preview images use synthetic fixtures, not local diagnostic output.
+Private KWin/Wayland visual review covers compact and wide windows; package
+workflows repeat the checks and installed views on all five distro environments.
+
+
 ## 0.3.1 distribution and rename validation
 
 Ubuntu 24.04 (GTK 4.14 / Adw 1.5), Ubuntu 26.04 (GTK 4.22 / Adw 1.9),
@@ -97,3 +108,21 @@ The isolated GTK suite has 180 tests. New cases cover finite card entrance callb
 The original minimum-size test also failed on the unchanged 0.1.0 source in this Fedora test environment. Reducing sidebar spacing restored the supported minimum size; the assertion was preserved. Shared animations do not interpolate wheel telemetry or execute hardware writes.
 
 Release source is generated once and reused byte-for-byte across distributions. Each builder checks the public file list, file permissions and source contents before accepting it. This avoids zlib/zlib-ng compressed-stream differences without weakening source consistency checks.
+
+## Update coverage
+
+Update tests use synthetic release metadata and package bytes. They cover numeric
+version order, correct app/OS selection, untrusted URLs, missing digests, checksum
+and size failures, cancellation, retry, queued callbacks, explicit installation,
+PackageKit authorization flags, native installer results and installed-version
+verification. Real system authorization is not bypassed or exercised by GUI tests.
+The installed package smoke check opens the update dialog without network requests.
+
+## Release checks, 18 October 2026
+
+The 257-test suite passed in Ubuntu 24.04/26.04, Deepin 25, Fedora 44 and Arch.
+Fedora/Arch skip only the dpkg-deb-specific tool test; a separate full compositor
+run includes the GUI tests that the headless RPM build check skips. All installed
+views and the update dialog open from the native packages. An immediate dialog
+close regression covers libadwaita 1.5 as well as newer versions. These checks use
+isolated containers and do not claim physical hardware or system-authentication coverage.

@@ -1,16 +1,39 @@
 # Uzeyir Control
 
-Anvil Control, Wheel Control ve Uzeyir Doctor tek bir yerel GTK 4 / libadwaita penceresinde. Soldaki büyük düğmelerle **Donanım**, **Direksiyon** ve **Sorun Teşhisi** arasında geçiş yapın.
+[![Linux checks](https://github.com/Tubix777/linux-control/actions/workflows/tests.yml/badge.svg)](https://github.com/Tubix777/linux-control/actions/workflows/tests.yml)
+[![Release](https://img.shields.io/github/v/release/Tubix777/linux-control?include_prereleases&label=release)](https://github.com/Tubix777/linux-control/releases)
+[![License](https://img.shields.io/badge/license-GPL--3.0--or--later-lightgrey)](COPYING)
 
-Siyah, gri ve beyaz arayüz; akıcı bölüm geçişleri; tarama sonrası sonuçlara yumuşak kaydırma; ekrana giren bulgu kartlarında kademeli belirme. Türkçe ve İngilizce arasında uygulamayı yeniden başlatmadan geçiş yapılır. **Hareketi azalt** tercihi geçişleri ve kaydırma animasyonlarını kapatır; canlı giriş verileri anında güncellenir.
+**Donanım, direksiyon ve sistem teşhisi. Tek yerel Linux uygulamasında.**
 
-**0.2.1:** Bölüm ve indirme sayfaları yönüne göre kayar. Başlıklar, donanım kartları, paket satırları ve kurulum komutları kademeli hareketle belirir. Gerçek tarama boyunca çalışan sinyal, işlem bitince kısa bir halka gösterir; bulgu içerikleri yükselerek görünür. Gizli sayfalarda etkinlik durur ve hareket azaltma tercihi korunur.
+Anvil Control, Wheel Control ve Uzeyir Doctor aynı GTK 4 / libadwaita penceresinde
+buluşur. Soldaki düğmelerle bölümler arasında geçiş yap; kullanımı ve sıcaklıkları
+izle, direksiyonunu ayarla veya sistemindeki bir sorunun nedenini incele.
 
-**0.2.0:** Sayfalar, yerel Manrope yazı tipi, daha sakin kartlar ve ortak bilgi hiyerarşisiyle yeniden düzenlendi. Donanım kartları geniş pencerede dört, dar pencerede iki sütun kullanır. Direksiyon ayarları dar pencerede alt alta yerleşir. Sol menüde her uygulamanın yanındaki indirme düğmesi, o uygulamanın paket ve sürüm sayfasını açar.
+[İndir ve kur](#indir-ve-kur) · [0.4.0 sürüm notları](docs/release-notes.md) ·
+[Kurulum rehberi](docs/install.md) · [Sorun bildir](https://github.com/Tubix777/linux-control/issues)
 
-Teşhis ekranındaki özet, tamamlanan/dikkat gerektiren/doğrulanamayan kontrolleri ayrı gösterir. **Dikkat gerektirenler** filtresi doğrulanamayan bulguları da korur. Kart belirmeleri, ayrıntı açılışları, odak tepkileri ve masaüstünün hareket azaltma tercihi ortak şekilde çalışır.
+![Uzeyir Control arayüzü](docs/images/overview.png)
 
-Bu sürüm ön sürümdür. Donanım verileri gerçek yerel kaynaklardan okunur; demo direksiyon yalnızca kullanıcı açıkça seçtiğinde gösterilir. Desteklenmeyen veya erişilemeyen veri yerine uydurma sayı gösterilmez.
+*Arayüz örneği temsili veriler kullanır. Direksiyon önizlemesi açıkça demo olarak işaretlenir.*
+
+## 0.4.0 ile gelen deneyim
+
+- Kısa mesafeli, yumuşak sayfa geçişleri. Geçiş sırasında başka düğmeye basınca
+  hareket görünen kareden devam eder; son seçilen bölüm hemen açılır.
+- Bölümler arasında kayan sol menü göstergesi, kademeli kart girişleri,
+  düğmelerde fare/basma/odak tepkileri ve açılıp kapanan ayrıntılar.
+- Gerçek taramayı izleyen etkinlik sinyali, tamamlanınca kısa vurgu ve sonuçlara
+  otomatik kaydırma. Elle kaydırmak otomatik hareketi durdurur.
+- Kopyalamada düğme üzerinde onay. Dil/filtre değişiminde açık kanıtlar,
+  kaydedilmemiş ayarlar ve klavye odağı korunur.
+- Uygulama içinden GitHub sürüm kontrolü, doğrulanmış paket indirme ve kullanıcı tarafından başlatılan güncelleme.
+- Türkçe / English seçimi, yerel Manrope yazı tipi ve siyah/gri/beyaz görünüm.
+  **Hareketi azalt** ve masaüstünün animasyon tercihi anında uygulanır.
+
+![Sayfalar arasında geçiş önizlemesi](docs/images/navigation.gif)
+
+*Hareketli kayıt temsili verilerle uygulamanın gerçek GTK arayüzünden alınmıştır.*
 
 ## Özellikler
 
@@ -26,7 +49,7 @@ Donanım başlığında hareketli devre ışıkları ve fan etkinlik görseli va
 
 Kontrol ayarları açık bir **Uygula** eylemiyle gönderilir. Bölüm ve dil değişimi ayarları donanıma uygulamaz. Teşhis taraması sistem ayarlarını değiştirmez, uygulama başlatmaz, ayrıcalık istemez ve günlükleri dışarı göndermez.
 
-İndirme ekranları kayıtlı resmî paket bilgileriyle çevrimdışı açılır. **Güncel sürümü kontrol et** düğmesi yalnız ilgili GitHub deposunun herkese açık sürüm bilgilerini sorgular; arayüzü bekletmez. Ağ hatasında mevcut bağlantılar korunur. **İndir** ve sürüm bağlantıları varsayılan tarayıcıda açılır. Anvil ve Wheel bağlantıları bağımsız uygulamalara aittir; Uzeyir Doctor, birleşik Uzeyir Control paketiyle dağıtılır. Manrope uygulama içinde yüklenir; masaüstünün yazı tipi ayarı değiştirilmez.
+İndirme ekranları kayıtlı resmî paket bilgileriyle çevrimdışı açılır. **Güncel sürümü kontrol et** düğmesi yalnız ilgili GitHub deposunun herkese açık sürüm bilgilerini sorgular; arayüzü bekletmez. Ağ hatasında mevcut bağlantılar korunur. **İndir** ve sürüm bağlantıları varsayılan tarayıcıda açılır. Üç bölümün indirme ekranı da ilgili bağımsız uygulamanın resmî deposunu açar. Uzeyir Doctor ayrıca [kendi deposunda](https://github.com/Tubix777/uzeyir-doctor) yayımlanır. Manrope uygulama içinde yüklenir; masaüstünün yazı tipi ayarı değiştirilmez.
 
 ## İndir ve kur
 
@@ -35,14 +58,14 @@ profiller ve eski başlatıcı komutu korunur.
 
 | Sistem | GitHub Releases indirmesi |
 | --- | --- |
-| Ubuntu 24.04/26.04, Zorin 18, Deepin 25, Debian 13 | [DEB indir](https://github.com/Tubix777/linux-control/releases/download/v0.3.1/uzeyir-control_0.3.1-1_all.deb) |
-| Güncel Arch Linux | [pacman paketi](https://github.com/Tubix777/linux-control/releases/download/v0.3.1/uzeyir-control-0.3.1-1-any.pkg.tar.zst) · [PKGBUILD ve kaynak](https://github.com/Tubix777/linux-control/releases/download/v0.3.1/uzeyir-control-0.3.1-arch-build.tar.gz) |
-| Fedora 44 | [RPM indir](https://github.com/Tubix777/linux-control/releases/download/v0.3.1/uzeyir-control-0.3.1-1.fc44.noarch.rpm) |
-| Diğer Linux sistemleri | [Kaynak arşivi](https://github.com/Tubix777/linux-control/releases/download/v0.3.1/uzeyir-control-0.3.1.tar.gz) |
+| Ubuntu 24.04/26.04, Zorin 18, Deepin 25, Debian 13 | [DEB indir](https://github.com/Tubix777/linux-control/releases/download/v0.4.0/uzeyir-control_0.4.0-1_all.deb) |
+| Güncel Arch Linux | [pacman paketi](https://github.com/Tubix777/linux-control/releases/download/v0.4.0/uzeyir-control-0.4.0-1-any.pkg.tar.zst) · [PKGBUILD ve kaynak](https://github.com/Tubix777/linux-control/releases/download/v0.4.0/uzeyir-control-0.4.0-arch-build.tar.gz) |
+| Fedora 44 | [RPM indir](https://github.com/Tubix777/linux-control/releases/download/v0.4.0/uzeyir-control-0.4.0-1.fc44.noarch.rpm) |
+| Diğer Linux sistemleri | [Kaynak arşivi](https://github.com/Tubix777/linux-control/releases/download/v0.4.0/uzeyir-control-0.4.0.tar.gz) |
 
-[Tüm dosyalar ve SHA256SUMS](https://github.com/Tubix777/linux-control/releases/tag/v0.3.1) ·
+[Tüm dosyalar ve SHA256SUMS](https://github.com/Tubix777/linux-control/releases/tag/v0.4.0) ·
 [Dağıtıma göre kurulum, sürüm koşulları ve kaldırma](docs/install.md).
-DEB için `sudo apt install ./uzeyir-control_0.3.1-1_all.deb`; Arch ve Fedora
+DEB için `sudo apt install ./uzeyir-control_0.4.0-1_all.deb`; Arch ve Fedora
 komutları kurulum belgesindedir. Kurulumdan sonra menüden **Uzeyir Control**'ü açın.
 
 Asgari Python ≥ 3.11, GTK ≥ 4.12 ve libadwaita ≥ 1.5 gerekir. Kaynak koddan
@@ -57,6 +80,27 @@ Asgari Python ≥ 3.11, GTK ≥ 4.12 ve libadwaita ≥ 1.5 gerekir. Kaynak kodda
 ```
 
 `Ctrl+1`, `Ctrl+2`, `Ctrl+3` bölüm değiştirir; `Ctrl+L` mevcut bölümün indirme sayfasını açar. Başlıktaki klavye düğmesi kısayolları gösterir. Dil ve hareket tercihleri kullanıcı ayarlarında saklanır. Direksiyon profilleri mevcut Wheel Control profil dosyasını kullanır; mevcut uygulamalar ve depolar korunur.
+
+## Uygulama içinden güncelleme
+
+![Uygulama içinden güncelleme ekranı](docs/images/updates.png)
+
+Üst çubuktaki güncelleme düğmesi veya `Ctrl+U` ile açın. **Güncellemeleri kontrol et**
+yeni kararlı GitHub sürümünü bulur. Sürüm notlarını okuyup **Güncellemeyi indir**
+düğmesine basın; gerçek indirme ilerlemesi görünür ve indirme iptal edilebilir.
+Paketin boyutu, GitHub'ın SHA-256 özeti ve `SHA256SUMS` kaydı eşleşmeden kurulum açılmaz.
+
+**Kurulumu başlat**, mevcut PackageKit hizmetini kullanır ve sistemin normal
+yetkilendirmesini ister. Hizmet yoksa dağıtımın paket kurucusu açılır; o da yoksa
+doğrulanmış dosya için kopyalanabilir kurulum komutu gösterilir. **Kurulumu doğrula**
+kurulu paket sürümünü sorgular. Başarı doğrulandıktan sonra **Yeniden başlat** ile
+yeni sürüme geçin. İndirme/doğrulama hatası kurulum başlatmaz; kurulum hatası başarı
+olarak gösterilmez. Çalışan uygulama kendiliğinden kapatılmaz.
+
+**Açılışta güncellemeleri kontrol et** isteğe bağlıdır ve başlangıçta kapalıdır.
+Kontrol yalnız ilgili uygulamanın herkese açık GitHub sürüm bilgilerini alır;
+tanı sonuçları gönderilmez. Güncelleme otomatik kurulmaz. Bu özellik kurulduktan
+sonra, sonraki sürümler GitHub Releases üzerinden uygulamaya ulaşır.
 
 ## Donanım desteğinin sınırları
 
@@ -80,6 +124,12 @@ Arayüz testleri gerçek masaüstü yerine ayrı bir sanal compositor altında �
 
 [Uygulama planı](PLAN.md), [yayın notları](docs/release-notes.md), [katkı ve lisanslar](ATTRIBUTION.md).
 
+## Yardım ve katkı
+
+[Sık sorulan sorular / sorun giderme](docs/troubleshooting.md) ·
+[Katkı rehberi](docs/contributing.md) ·
+[Hata veya özellik bildir](https://github.com/Tubix777/linux-control/issues/new/choose)
+
 ## English
 
-Uzeyir Control combines hardware monitoring, racing-wheel controls and local system diagnostics in one native GTK 4 window, with a shared monochrome design, bundled Manrope typography, responsive layouts, smooth navigation, scan-result animations and live Turkish/English switching. Each sidebar module has its own official download page. Package links work from bundled metadata offline; checking for newer releases is an explicit action. Installation commands can be copied but are never executed by the app. Reduce Motion respects accessibility preferences. Device settings require explicit actions; diagnostics remain read-only. Unavailable hardware data is never replaced with invented readings. This initial combined version is a preview; physical force-feedback coverage and motherboard fan control remain limited to the support described above.
+Uzeyir Control combines hardware monitoring, racing-wheel controls and local system diagnostics in one native GTK 4 window, with a shared monochrome design, bundled Manrope typography, responsive layouts, smooth navigation, scan-result animations and live Turkish/English switching. Each sidebar module has its own official download page. Package links work from bundled metadata offline; checking for newer releases is an explicit action. Download-page commands can be copied manually. The built-in updater verifies release packages and starts native installation only on explicit user request. Reduce Motion respects accessibility preferences. Device settings require explicit actions; diagnostics remain read-only. Unavailable hardware data is never replaced with invented readings. Physical force-feedback coverage and motherboard fan control remain limited to the support described above.

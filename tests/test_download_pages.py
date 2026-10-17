@@ -140,10 +140,31 @@ class DownloadPageTests(unittest.TestCase):
 
     def test_transition_direction_tracks_module_order_and_download_return(self):
         self.window.select_page("doctor")
-        self.assertEqual(self.window.stack.get_transition_type(), Gtk.StackTransitionType.SLIDE_UP)
+        self.assertEqual(self.window.page_transition._direction, (0, 1))
         self.window.select_page("wheel")
-        self.assertEqual(self.window.stack.get_transition_type(), Gtk.StackTransitionType.SLIDE_DOWN)
+        self.assertEqual(self.window.page_transition._direction, (0, -1))
         self.window.select_downloads("wheel")
-        self.assertEqual(self.window.stack.get_transition_type(), Gtk.StackTransitionType.SLIDE_LEFT)
+        self.assertEqual(self.window.page_transition._direction, (1, 0))
         self.window.select_page("wheel")
-        self.assertEqual(self.window.stack.get_transition_type(), Gtk.StackTransitionType.SLIDE_RIGHT)
+        self.assertEqual(self.window.page_transition._direction, (-1, 0))
+
+    def test_copy_confirmation_is_local_to_button_and_cleared_on_navigation(self):
+        self.window.select_downloads("wheel")
+        page = self.window.downloads["wheel"]
+        key, button = next((key, button) for key, button in page._action_widgets.items() if key[1] == "copy")
+        button.emit("clicked")
+        self.assertEqual(button.get_label(), "Kopyalandı")
+        self.assertEqual(len(page._copy_feedback), 1)
+        button.emit("clicked")
+        self.assertEqual(len(page._copy_feedback), 1)
+        self.window.select_page("wheel")
+        self.assertEqual(button.get_label(), "Kopyala")
+        self.assertEqual(page._copy_feedback, {})
+
+    def test_rebuilding_format_removes_confirmation_timer(self):
+        page = self.window.downloads["hardware"]
+        button = next(button for key, button in page._action_widgets.items() if key[1] == "copy")
+        button.emit("clicked")
+        page.render_assets()
+        self.assertEqual(page._copy_feedback, {})
+        self.assertFalse(button.has_css_class("copy-confirmed"))

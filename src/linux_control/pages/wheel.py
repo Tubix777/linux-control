@@ -552,6 +552,7 @@ class WheelPage(WheelControlsMixin, Gtk.Box):
             desktop and not desktop.get_property("gtk-enable-animations")
         )
         self._sync_motion()
+        self.stack.set_transition_duration(0 if self.reduced_motion else 280)
 
     def set_active(self, active):
         self._active = bool(active) and not self._closed

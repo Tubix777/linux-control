@@ -31,10 +31,13 @@ class DistributionTests(unittest.TestCase):
             self.assertIn("rpm", release.formats)
             self.assertTrue(all(official_url(asset.url, repository, asset=True) for asset in release.assets))
 
-    def test_doctor_is_distributed_in_the_current_combined_package(self):
+    def test_doctor_downloads_the_independent_published_application(self):
         release = bundled_release("doctor")
-        self.assertEqual(release.tag, "v" + __version__)
-        self.assertTrue(all(asset.name.startswith(("uzeyir-control-" + __version__, "uzeyir-control_" + __version__)) for asset in release.assets))
+        self.assertEqual(release.repository, "Tubix777/uzeyir-doctor")
+        self.assertFalse(release.preview)
+        self.assertTrue(all(asset.name.startswith(("uzeyir-doctor-", "uzeyir-doctor_")) for asset in release.assets))
+        self.assertIn("deb", release.formats)
+        self.assertIn("arch", release.formats)
 
     def test_external_hosts_credentials_and_encoded_traversal_are_rejected(self):
         repository = REPOSITORIES["wheel"]

@@ -1,3 +1,74 @@
+# Uzeyir Control 0.4.0 — akıcı geçişler ve uygulama içinden güncelleme
+
+Bölüm ve indirme sayfaları artık bütün pencereyi kaydırmak yerine 360 ms içinde
+kısa mesafeyle hareket ederek karışır. Hızlı gezinmede geçiş son çizilen kareden
+başlar; sayfa değerleri ve etkin bölüm aynı anda güncellenir. Sol menüdeki tek
+seçim göstergesi hedef düğmeye kayar.
+
+## Uygulama içinden güncelleme
+
+Üst çubuk veya Ctrl+U yeni güncelleme penceresini açar. GitHub'daki kararlı sürüm
+sistem paketine göre seçilir; notlar gösterilir. İndirme gerçek byte ilerlemesi,
+iptal ve yeniden deneme sunar. Boyut, API SHA-256 ve SHA256SUMS doğrulanır;
+kurulumdan hemen önce dosya yeniden kontrol edilir.
+
+Kullanıcı başlattığında mevcut PackageKit hizmeti ve normal sistem yetkilendirmesi
+kullanılır. Hizmet yoksa yerel paket kurucusu/komut akışına geçilir. Kurulu sürüm
+sorgulanmadan başarı gösterilmez. Açılış kontrolü isteğe bağlı ve başlangıçta kapalıdır.
+Yeni ayrıcalıklı yardımcı veya geniş cihaz izni kurulmaz. İlk güncelleyici sürümünü
+kurduktan sonra sonraki sürümler uygulamadan alınabilir.
+
+
+## Deneyim ve düzeltmeler
+
+- Yeni sayfanın üstüne ikinci bir kart solması bindirilmez. Kart girişleri daha
+  kısa ve okunaklıdır; iç içe kartlar birbirini tekrar soluklaştırmaz.
+- Geçişin ilk karesinde kararmaya yol açan çizim yakalama durumu düzeltildi.
+  İlk geçiş ve yarıda yönlendirme aynı görüntüyü koruyan piksel testleriyle denetlenir.
+- Giriş alanlarının tıklama konumu hareketi takip eder. Hızlı seçimler son hedefi
+  açar; kaydedilmemiş direksiyon/profil değerleri korunur.
+- Tarama düğmesi işlem durumunu gösterir. Gerçek tamamlanmada kısa bir vurgu
+  oynar; başarısız tarama tamamlanan bir kontrol olarak sayılmaz.
+- Açık kanıt/çözüm ayrıntıları dil ve filtre değişiminde korunur.
+- Komut kopyalama düğmesinde kısa bir onay görünür. Liste yenilenince eski
+  onay zamanlayıcıları bırakılır; klavye odağı karşılık gelen eylemde kalır.
+- Uzeyir Doctor indirme ekranı artık bağımsız Doctor deposuna ve paketlerine gider.
+- Küçültme, gizleme, kapatma veya hareket azaltma devam eden hareketi sonlandırır.
+  Canlı giriş değerleri geciktirilmez.
+
+- Ubuntu 24.04 ve Deepin 25 üzerindeki eski libadwaita ile açılış anında
+  kapatılan güncelleme penceresinin yeniden açılması düzeltildi.
+- GitHub tanıtımı gerçek arayüz önizlemeleri, sık sorulan sorular, katkı rehberi
+  ve hata/özellik bildirim şablonlarıyla yenilendi.
+
+## Paketler
+
+| Sistem | Dosya |
+| --- | --- |
+| Ubuntu 24.04 / 26.04, Deepin 25, Zorin 18, Debian 13 | `uzeyir-control_0.4.0-1_all.deb` |
+| Fedora 44 | `uzeyir-control-0.4.0-1.fc44.noarch.rpm` |
+| Güncel Arch | `uzeyir-control-0.4.0-1-any.pkg.tar.zst` |
+| Arch çevrimdışı derleme | `uzeyir-control-0.4.0-arch-build.tar.gz` |
+| Kaynak / kaynak RPM | `uzeyir-control-0.4.0.tar.gz`, `uzeyir-control-0.4.0-1.fc44.src.rpm` |
+
+`SHA256SUMS` paketleri ve kaynak arşivlerini kapsar. Bütün dağıtımlar tek kanonik
+kaynak arşivini kullanır. Python ≥ 3.11, GTK ≥ 4.12 ve libadwaita ≥ 1.5 gerekir.
+Fedora, Ubuntu 24/26, Deepin ve Arch işlerinde test, kurulum ve kurulu altı görünüm
+kontrol edilir. Zorin desteği Ubuntu tabanını kullanır; fiziksel direksiyon ve fan
+uyumluluğu README'deki donanım desteğiyle sınırlıdır.
+
+## English
+
+Short frame-clock transitions retain the last painted frame when interrupted.
+A sliding sidebar indicator, calmer card entrances, real-operation completion
+feedback and copy confirmations make navigation more responsive. Expanded
+findings, unsaved values and keyboard focus survive rebuilds. Failed scans no
+longer count as successful checks. The Doctor download page now points to the
+standalone Uzeyir Doctor repository. Reduced motion, resize, hide and close
+settle transitions immediately. Device-control behavior is unchanged. The in-app updater verifies GitHub release packages and uses normal system package authorization only when requested.
+
+---
+
 # Uzeyir Control 0.3.1 — Linux kurulum paketleri ve ortak kaynak arşivi
 
 Yayın düzeltmesi: Fedora ve Arch artık bir kez üretilen aynı kaynak arşivini

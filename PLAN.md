@@ -84,8 +84,8 @@ indirilebilir kurulum seçenekleri ekle. Ortak çalışma klasörünü koru.
 2. [x] DEB ve Arch paketlerini güvenli ortak içerikle üret; lisans ve masaüstü girişini koru.
 3. [x] İndirme arayüzünü ve Türkçe/İngilizce kurulum yönergelerini güncelle.
 4. [x] Yalıtılmış Ubuntu/Deepin/Arch ortamlarında kurulum ve yerel arayüzü doğrula.
-5. [ ] GitHub otomatik test/yayın akışına yeni paketleri ekle; 0.3.0 olarak yayımla.
-6. [ ] Releases indirmelerini, sağlama toplamlarını ve paket içeriğini uzaktan doğrula.
+5. [x] GitHub otomatik test/yayın akışına yeni paketleri ekle; 0.3.0 olarak yayımla.
+6. [x] Releases indirmelerini, sağlama toplamlarını ve paket içeriğini uzaktan doğrula.
 
 Son adlandırma kararı: Ana uygulama Uzeyir Control; teşhis modülü Uzeyir Doctor. Paket ve başlatıcı adı uzeyir-control; eski komut, masaüstü kimliği ve kullanıcı ayarları uyumluluk için korunur.
 
@@ -93,5 +93,42 @@ Son adlandırma kararı: Ana uygulama Uzeyir Control; teşhis modülü Uzeyir Do
 
 1. [x] Fedora ve Arch kaynak içeriklerinin aynı, gzip akışlarının farklı olduğunu doğrula.
 2. [x] Kaynağı bir kez üret; her derlemede içerik/izin kontrolüyle aynı arşivi kullan.
-3. [ ] Beş dağıtım ve tam yayın toplama işlemini tekrar doğrula.
-4. [ ] 0.3.1 paketlerini yayımla; indirmeleri ve kullanıcı kurulumunu doğrula.
+3. [x] Beş dağıtım ve tam yayın toplama işlemini tekrar doğrula.
+4. [x] 0.3.1 paketlerini yayımla; indirmeleri ve kullanıcı kurulumunu doğrula.
+
+## 0.4.0 — kesintisiz geçişler ve kullanıcı deneyimi
+
+16 Ekim 2026: Kullanıcı hata düzeltmelerini, animasyon kalitesini ve bütün sayfalarda
+çok akıcı geçişleri önceliklendirdi. Geliştirme ayrı kopyada sürer; aynı davranışlar
+bağımsız Uzeyir Doctor'a da taşınır.
+
+1. [x] Geçişleri, yinelenen animasyonları ve mevcut test/yayın altyapısını incele.
+2. [x] Tam sayfa kaydırma yerine kısa mesafeli, kesilince devamlılığını koruyan ortak geçiş ekle.
+3. [x] Sol menü göstergesini, kart ritmini ve işlem geri bildirimlerini iyileştir.
+4. [x] Hızlı gezinme, pencere boyutu, klavye, dil ve hareket azaltma regresyonlarını doğrula.
+5. [x] İyileştirmeleri bağımsız Doctor'a taşı; iki uygulamanın görünümünü ve hareketini kontrol et.
+6. [ ] Sürümleri ve notları güncelle; dağıtım paketlerini üret ve GitHub CI'da doğrula.
+7. [ ] İki sürümü yayımla; indirmeleri ve sağlama toplamlarını uzaktan doğrula.
+
+17 Ekim 2026 ek isteği: Daha fazla animasyon; uygulama düzeni, GitHub tanıtımı
+ve detaylı sürüm yayını. Kullanıcı uzakta; rutin kararlar sorulmadan uygulanır.
+
+- [x] Temsili verilerle güncel ekran görüntüsü ve hareketli önizleme hazırla.
+- [x] İki README'yi, indirme bağlantılarını ve sürüm/kurulum belgelerini yenile.
+- [ ] Kaynağı ve paketleri yayımla, GitHub sayfalarını ve indirmeleri doğrula.
+
+## Uygulama içinden güncelleme — yayın öncesi ek kapsam
+
+17 Ekim 2026: GitHub Releases'ta yayımlanan sürümler uygulamadan bulunup
+kurulabilsin. Kullanıcı soru sorulmadan planı genişleterek tamamlamayı istedi.
+
+1. [x] Mevcut sürümle uzak sürümü karşılaştır; yalnız doğru uygulama/depo ve uygun paketi seç.
+2. [x] Güncelleme penceresine sürüm notları, isteğe bağlı açılış kontrolü ve yeni sürüm bildirimi ekle.
+3. [x] Paketi arka planda gerçek ilerleme, iptal ve yeniden deneme ile indir.
+4. [x] Boyutu, GitHub SHA-256 özetini ve SHA256SUMS dosyasını doğrulamadan kurulum açma.
+5. [x] Mevcut PackageKit hizmetiyle kullanıcı tarafından başlatılan kurulumu uygulamada izle;
+   hizmet yoksa dağıtımın paket kurucusuna açık geri bildirimle geç.
+6. [x] Kurulu sürümü doğrula; yalnız başarılı kurulumda yeniden başlatmayı teklif et.
+   Hata veya iptalde çalışan sürümü ve kullanıcı tercihlerini koru.
+7. [x] Ağ hatası, bozuk paket, eski/yanlış sürüm, hızlı tekrar, iptal ve pencere kapanışını test et.
+8. [ ] Güncelleme akışını iki uygulamaya taşı; belgeleri, paketleri ve yayın doğrulamasını yenile.

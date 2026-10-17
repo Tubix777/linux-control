@@ -23,3 +23,14 @@ Güç profilleri sistemdeki power-profiles-daemon hizmetinin sunduğu seçenekle
 ## SSD ve teşhis
 
 SSD taraması UDisks2'nin mevcut önbelleğini okur. SMART yenilemez, kendi kendini test komutu göndermez ve etkileşimli yetkilendirme istemez. Eksik, eski veya erişilemeyen verinin yerine sağlık yüzdesi tahmin etmez. Sistem ve Flatpak kontrolleri salt okunur komutlarla yapılır.
+
+## App update authorization
+
+Diagnostic checks remain read-only. App installation is a separate action in the
+Updates dialog. Only the app's official GitHub release is used; byte size, asset
+SHA-256 and SHA256SUMS are checked before the native installer receives a file.
+The existing PackageKit service uses the desktop's normal authorization. No
+privileged helper, password storage, global signature change or broad device
+permission is added. Without that service, the system package installer or an
+explicit manual command is offered. Startup release checks are optional and
+disabled by default. No diagnostic output is sent during a release check.

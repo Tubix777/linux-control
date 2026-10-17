@@ -4,12 +4,13 @@ pacman -Syu --noconfirm --needed base-devel python python-gobject python-cairo p
 packaging/run_checks.sh
 # makepkg must run without root; its build directory is isolated from checkout.
 id -u builder >/dev/null 2>&1 || useradd -m builder
-mkdir -p /tmp/uzeyir-build
-cp -a . /tmp/uzeyir-build/
-chown -R builder:builder /tmp/uzeyir-build
-runuser -u builder -- bash -euc 'cd /tmp/uzeyir-build; python3 packaging/build_arch.py --output dist'
+arch_build="$(mktemp -d /tmp/uzeyir-build.XXXXXX)"
+trap 'rm -rf "$arch_build"' EXIT
+cp -a . "$arch_build/"
+chown -R builder:builder "$arch_build"
+runuser -u builder -- bash -euc 'cd "$1"; python3 packaging/build_arch.py --output dist' arch-build "$arch_build"
 mkdir -p dist
-cp /tmp/uzeyir-build/dist/uzeyir-control-* dist/
+cp "$arch_build"/dist/uzeyir-control-* dist/
 pacman -U --noconfirm dist/uzeyir-control-*.pkg.tar.zst
 desktop-file-validate /usr/share/applications/io.github.Tubix777.LinuxControl.desktop
 bash packaging/verify_installed.sh

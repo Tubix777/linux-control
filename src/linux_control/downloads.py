@@ -14,9 +14,9 @@ from . import APP_NAME, __version__
 REPOSITORIES = {
     "hardware": "Tubix777/anvil-control",
     "wheel": "Tubix777/wheel-control",
-    "doctor": "Tubix777/linux-control",
+    "doctor": "Tubix777/uzeyir-doctor",
 }
-APPLICATIONS = {"hardware": "Anvil Control", "wheel": "Wheel Control", "doctor": APP_NAME}
+APPLICATIONS = {"hardware": "Anvil Control", "wheel": "Wheel Control", "doctor": "Uzeyir Doctor"}
 MAX_RESPONSE = 2_000_000
 SAFE_FILENAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9._+\-]{0,159}\Z")
 
@@ -138,18 +138,6 @@ def parse_release(data, repository):
 
 def bundled_release(module):
     repository = REPOSITORIES[module]
-    if module == "doctor":
-        tag = "v" + __version__
-        names = (f"uzeyir-control-{__version__}-1.fc44.noarch.rpm",
-                 f"uzeyir-control_{__version__}-1_all.deb",
-                 f"uzeyir-control-{__version__}-1-any.pkg.tar.zst",
-                 f"uzeyir-control-{__version__}.tar.gz",
-                 f"uzeyir-control-{__version__}-arch-build.tar.gz",
-                 f"uzeyir-control-{__version__}-1.fc44.src.rpm")
-        return parse_release({"tag_name": tag, "html_url": f"https://github.com/{repository}/releases/tag/{tag}",
-                              "prerelease": True, "assets": [
-                                  {"name": name, "browser_download_url": f"https://github.com/{repository}/releases/download/{tag}/{name}"}
-                                  for name in names]}, repository)
     path = Path(__file__).parent / "resources" / "downloads.json"
     data = json.loads(path.read_text(encoding="utf-8"))
     return parse_release(data[module], repository)

@@ -103,6 +103,9 @@ expander title { font-size: 12px; color: #c0c0c0; padding: 5px 0; }
 .text-action { background: transparent; border: none; color: #bdbdbd; font-size: 11px; padding: 7px 0; }
 .text-action:hover { color: #ffffff; background: transparent; }
 .command-panel { background: #101010; border: 1px solid #333333; border-radius: 10px; padding: 13px; }
+.copy-action { min-width: 82px; }
+.soft.copy-confirmed { background: #343434; border-color: #a6a6a6; color: #ffffff; }
+.doctor-page .primary { min-width: 140px; }
 .download-notice { font-size: 11px; line-height: 1.55; color: #a3a3a3; }
 .wheel-page .device-hero, .wheel-page .panel, .wheel-page .profile-row { padding: 20px; }
 .wheel-page .badge { border: 1px solid #454545; border-radius: 6px; font-size: 10px; }
