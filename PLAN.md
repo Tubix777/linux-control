@@ -107,15 +107,15 @@ bağımsız Uzeyir Doctor'a da taşınır.
 3. [x] Sol menü göstergesini, kart ritmini ve işlem geri bildirimlerini iyileştir.
 4. [x] Hızlı gezinme, pencere boyutu, klavye, dil ve hareket azaltma regresyonlarını doğrula.
 5. [x] İyileştirmeleri bağımsız Doctor'a taşı; iki uygulamanın görünümünü ve hareketini kontrol et.
-6. [ ] Sürümleri ve notları güncelle; dağıtım paketlerini üret ve GitHub CI'da doğrula.
-7. [ ] İki sürümü yayımla; indirmeleri ve sağlama toplamlarını uzaktan doğrula.
+6. [x] Sürümleri ve notları güncelle; dağıtım paketlerini üret ve GitHub CI'da doğrula.
+7. [x] İki sürümü yayımla; indirmeleri ve sağlama toplamlarını uzaktan doğrula.
 
 17 Ekim 2026 ek isteği: Daha fazla animasyon; uygulama düzeni, GitHub tanıtımı
 ve detaylı sürüm yayını. Kullanıcı uzakta; rutin kararlar sorulmadan uygulanır.
 
 - [x] Temsili verilerle güncel ekran görüntüsü ve hareketli önizleme hazırla.
 - [x] İki README'yi, indirme bağlantılarını ve sürüm/kurulum belgelerini yenile.
-- [ ] Kaynağı ve paketleri yayımla, GitHub sayfalarını ve indirmeleri doğrula.
+- [x] Kaynağı ve paketleri yayımla, GitHub sayfalarını ve indirmeleri doğrula.
 
 ## Uygulama içinden güncelleme — yayın öncesi ek kapsam
 
@@ -131,4 +131,21 @@ kurulabilsin. Kullanıcı soru sorulmadan planı genişleterek tamamlamayı iste
 6. [x] Kurulu sürümü doğrula; yalnız başarılı kurulumda yeniden başlatmayı teklif et.
    Hata veya iptalde çalışan sürümü ve kullanıcı tercihlerini koru.
 7. [x] Ağ hatası, bozuk paket, eski/yanlış sürüm, hızlı tekrar, iptal ve pencere kapanışını test et.
-8. [ ] Güncelleme akışını iki uygulamaya taşı; belgeleri, paketleri ve yayın doğrulamasını yenile.
+8. [x] Güncelleme akışını iki uygulamaya taşı; belgeleri, paketleri ve yayın doğrulamasını yenile.
+
+## 0.4.0 yayını tamamlandı — 18 Ekim 2026
+
+[Uzeyir Control 0.4.0](https://github.com/Tubix777/linux-control/releases/tag/v0.4.0)
+ve [Uzeyir Doctor 0.2.0](https://github.com/Tubix777/uzeyir-doctor/releases/tag/v0.2.0)
+yayımlandı. İki uygulamanın ana dal ve etiket yayın işleri beş dağıtımda başarılı.
+Control 257, Doctor 111 test içeriyor; Fedora/Arch yalnız dpkg-deb araç testini atlıyor.
+
+Her sürümün yedi dosyası halka açık bağlantılardan yeniden indirildi. Boyutlar,
+GitHub SHA-256 özetleri ve SHA256SUMS eşleşiyor. Control kaynak arşivindeki 133,
+Doctor arşivindeki 81 dosya etiketlenen kaynakla birebir aynı. Arch derleme tarifi
+ve kaynak RPM aynı kanonik arşivi içeriyor. Canlı güncelleyici eski sürüm numarasıyla
+DEB/RPM/Arch paketlerini seçip indirerek yeniden doğruladı. Gerçek sistem
+yetkilendirmesi bu testlerde uygulanmadı.
+
+[Makine tarafından okunabilir yayın doğrulaması](docs/release-verification.json)
+etiketlenen sürümü kaydeder; bu planın tamamlanma kaydı sürüm etiketinden sonra eklenmiştir.

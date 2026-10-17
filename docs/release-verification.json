@@ -1,0 +1,64 @@
+{
+  "product": "uzeyir-control",
+  "version": "0.4.0",
+  "url": "https://github.com/Tubix777/linux-control/releases/tag/v0.4.0",
+  "assets": [
+    {
+      "name": "SHA256SUMS",
+      "size": 608,
+      "sha256": "874e06d2b4b61a600e40921e8be73af415d5b4461f3ff9669d2d9751192d8790"
+    },
+    {
+      "name": "uzeyir-control-0.4.0-1-any.pkg.tar.zst",
+      "size": 212790,
+      "sha256": "d882405db1ecd7717c49f27badacac71af79d325c66fc21c474e04fb6b624e45"
+    },
+    {
+      "name": "uzeyir-control-0.4.0-1.fc44.noarch.rpm",
+      "size": 193111,
+      "sha256": "a4a7c98b61c1c3c5aec7d7acfc8401d765ecb467443d317545a9fec45b4799f5"
+    },
+    {
+      "name": "uzeyir-control-0.4.0-1.fc44.src.rpm",
+      "size": 3689398,
+      "sha256": "6ba50660aada9319c10f355b32e4293c2f6d95bbb20ce014a01efe120d0ebd85"
+    },
+    {
+      "name": "uzeyir-control-0.4.0-arch-build.tar.gz",
+      "size": 3674291,
+      "sha256": "d76ba013684b71cba720ea2d565bbc5800575c047dc75628ab08601b5247486c"
+    },
+    {
+      "name": "uzeyir-control-0.4.0.tar.gz",
+      "size": 3676892,
+      "sha256": "87217fc776f2f426c534a85892d466e9f506dea5e2e26cc88698b81e8473adea"
+    },
+    {
+      "name": "uzeyir-control_0.4.0-1_all.deb",
+      "size": 169112,
+      "sha256": "ba5b3c7e51685a33ba141ecf0c760521c89b16902b200a882841c8330e5f4176"
+    }
+  ],
+  "source_files_verified": 133,
+  "canonical_arch_and_srpm": true,
+  "live_update_downloads": [
+    {
+      "format": "deb",
+      "version": "0.4.0",
+      "verified": true
+    },
+    {
+      "format": "rpm",
+      "version": "0.4.0",
+      "verified": true
+    },
+    {
+      "format": "arch",
+      "version": "0.4.0",
+      "verified": true
+    }
+  ],
+  "release_commit": "ac59671beabe179e6ef9aa91adc6a439aaacd2ee",
+  "verified_at_utc": "2026-10-17T22:13:41.379989+00:00",
+  "native_authorization_tested": false
+}
