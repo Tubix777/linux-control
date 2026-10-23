@@ -149,3 +149,18 @@ yetkilendirmesi bu testlerde uygulanmadı.
 
 [Makine tarafından okunabilir yayın doğrulaması](docs/release-verification.json)
 etiketlenen sürümü kaydeder; bu planın tamamlanma kaydı sürüm etiketinden sonra eklenmiştir.
+
+## 0.5.0 — Graphite / Inter, premium kullanım deneyimi
+
+24 Ekim 2026: Kullanıcı Graphite yönünü seçti; daha özenli ve premium bir
+uygulama istedi. Siyah/gri/beyaz palet, indirme sayfaları, dil seçimi, gerçek
+veri ve güncelleyici korunur. Geliştirme ayrı dalda yapılır.
+
+1. [x] Inter fontunu lisansı ve sabit kaynak kaydıyla uygulamaya dahil et.
+2. [x] Okunaklı yazı ölçeği, sakin başlıklar, ortak boşluk ve kontrol ölçüleri uygula.
+3. [x] Sol menü, sayfalar, sonuçlar, indirmeler ve güncelleme penceresini birlikte düzenle.
+4. [x] Geçişleri ve gerçek işlem geri bildirimlerini ortak ritme getir; hareket azaltmayı koru.
+5. [x] Türkçe/İngilizce, dar/geniş pencere, klavye ve mevcut davranış testlerini doğrula.
+6. [x] Gerçek GTK arayüzünden kişisel veri içermeyen güncel görüntüler ve hareketli önizleme hazırla.
+7. [ ] Sürüm, belgeler ve dağıtım paketlerini yenile; kaynakları ve sürümü GitHub'da yayımla.
+8. [ ] Herkese açık paketleri, kaynak tutarlılığını ve güncelleyici indirmelerini doğrula.

@@ -44,8 +44,8 @@ class PackageTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory)
             stage(target)
-            self.assertTrue((target / "usr/share/uzeyir-control/src/linux_control/resources/Manrope.ttf").is_file())
-            self.assertTrue((target / "usr/share/licenses/uzeyir-control/Manrope-OFL.txt").is_file())
+            self.assertTrue((target / "usr/share/uzeyir-control/src/linux_control/resources/Inter.ttf").is_file())
+            self.assertTrue((target / "usr/share/licenses/uzeyir-control/Inter-OFL.txt").is_file())
             desktop = (target / "usr/share/applications/io.github.Tubix777.LinuxControl.desktop").read_text()
             self.assertIn("Name=" + APP_NAME, desktop)
             self.assertIn("Exec=uzeyir-control", desktop)

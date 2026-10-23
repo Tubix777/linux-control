@@ -115,7 +115,7 @@ class WheelPage(WheelControlsMixin, Gtk.Box):
     def _page_header(self):
         header = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=18,
                          margin_top=26, margin_bottom=18, margin_start=28, margin_end=28)
-        header.append(heading(self.tr, "WHEEL CONTROL", "Sürüşü kendine uyarla.",
+        header.append(heading(self.tr, "Wheel Control", "Direksiyon",
                               "Canlı direksiyon girişi, hassas ayarlar ve oyun profillerin."))
         row = Gtk.Box(spacing=12)
         status = text(self.tr, "USB ile bağla. Ayarlarını seç. Hazır olduğunda uygula.", "muted")
@@ -226,7 +226,10 @@ class WheelPage(WheelControlsMixin, Gtk.Box):
                     widget.set_paintable(image.get_paintable())
         pairs = []
         if isinstance(widget, Gtk.Label):
-            pairs.append(("get_label", "set_label"))
+            # Live numbers are not translation sources: rebinding their initial
+            # text would reset the readout while the actual slider stays put.
+            if not widget.has_css_class("numeric") and widget is not self.angle_label:
+                pairs.append(("get_label", "set_label"))
         elif isinstance(widget, Gtk.Button):
             pairs.append(("get_label", "set_label"))
         elif isinstance(widget, Gtk.Expander):
@@ -533,6 +536,12 @@ class WheelPage(WheelControlsMixin, Gtk.Box):
             self.connection_badge.set_label(self._tr("Loading"))
         device = self.current_device
         if device:
+            if not self._device_loading:
+                node = str(device.event_node) if device.event_node else self._tr("simulated input")
+                firmware = f"  •  fw {device.firmware_revision}" if device.firmware_revision else ""
+                self.device_status.set_label(
+                    f"{device.vendor_id}:{device.product_id}  •  {device.driver}{firmware}  •  {node}"
+                )
             if device.demo:
                 state = "Demo"
             elif self.telemetry_reader and not (self.telemetry_reader._thread and self.telemetry_reader._thread.is_alive()):

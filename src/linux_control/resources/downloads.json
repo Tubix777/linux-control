@@ -79,33 +79,33 @@
     ]
   },
   "doctor": {
-    "tag_name": "v0.2.0",
-    "html_url": "https://github.com/Tubix777/uzeyir-doctor/releases/tag/v0.2.0",
+    "tag_name": "v0.3.0",
+    "html_url": "https://github.com/Tubix777/uzeyir-doctor/releases/tag/v0.3.0",
     "prerelease": false,
     "assets": [
       {
-        "name": "uzeyir-doctor-0.2.0-1.fc44.noarch.rpm",
-        "browser_download_url": "https://github.com/Tubix777/uzeyir-doctor/releases/download/v0.2.0/uzeyir-doctor-0.2.0-1.fc44.noarch.rpm"
+        "name": "uzeyir-doctor-0.3.0-1.fc44.noarch.rpm",
+        "browser_download_url": "https://github.com/Tubix777/uzeyir-doctor/releases/download/v0.3.0/uzeyir-doctor-0.3.0-1.fc44.noarch.rpm"
       },
       {
-        "name": "uzeyir-doctor_0.2.0-1_all.deb",
-        "browser_download_url": "https://github.com/Tubix777/uzeyir-doctor/releases/download/v0.2.0/uzeyir-doctor_0.2.0-1_all.deb"
+        "name": "uzeyir-doctor_0.3.0-1_all.deb",
+        "browser_download_url": "https://github.com/Tubix777/uzeyir-doctor/releases/download/v0.3.0/uzeyir-doctor_0.3.0-1_all.deb"
       },
       {
-        "name": "uzeyir-doctor-0.2.0-1-any.pkg.tar.zst",
-        "browser_download_url": "https://github.com/Tubix777/uzeyir-doctor/releases/download/v0.2.0/uzeyir-doctor-0.2.0-1-any.pkg.tar.zst"
+        "name": "uzeyir-doctor-0.3.0-1-any.pkg.tar.zst",
+        "browser_download_url": "https://github.com/Tubix777/uzeyir-doctor/releases/download/v0.3.0/uzeyir-doctor-0.3.0-1-any.pkg.tar.zst"
       },
       {
-        "name": "uzeyir-doctor-0.2.0.tar.gz",
-        "browser_download_url": "https://github.com/Tubix777/uzeyir-doctor/releases/download/v0.2.0/uzeyir-doctor-0.2.0.tar.gz"
+        "name": "uzeyir-doctor-0.3.0.tar.gz",
+        "browser_download_url": "https://github.com/Tubix777/uzeyir-doctor/releases/download/v0.3.0/uzeyir-doctor-0.3.0.tar.gz"
       },
       {
-        "name": "uzeyir-doctor-0.2.0-arch-build.tar.gz",
-        "browser_download_url": "https://github.com/Tubix777/uzeyir-doctor/releases/download/v0.2.0/uzeyir-doctor-0.2.0-arch-build.tar.gz"
+        "name": "uzeyir-doctor-0.3.0-arch-build.tar.gz",
+        "browser_download_url": "https://github.com/Tubix777/uzeyir-doctor/releases/download/v0.3.0/uzeyir-doctor-0.3.0-arch-build.tar.gz"
       },
       {
-        "name": "uzeyir-doctor-0.2.0-1.fc44.src.rpm",
-        "browser_download_url": "https://github.com/Tubix777/uzeyir-doctor/releases/download/v0.2.0/uzeyir-doctor-0.2.0-1.fc44.src.rpm"
+        "name": "uzeyir-doctor-0.3.0-1.fc44.src.rpm",
+        "browser_download_url": "https://github.com/Tubix777/uzeyir-doctor/releases/download/v0.3.0/uzeyir-doctor-0.3.0-1.fc44.src.rpm"
       }
     ]
   }

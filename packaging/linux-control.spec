@@ -1,5 +1,5 @@
 Name:           uzeyir-control
-Version:        0.4.0
+Version:        0.5.0
 Release:        1%{?dist}
 Summary:        Native hardware, racing wheel and diagnostics control center
 License:        GPL-3.0-or-later AND MIT AND OFL-1.1
@@ -59,6 +59,10 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/io.github.Tubix777.Li
 %{_datadir}/icons/hicolor/scalable/apps/io.github.Tubix777.LinuxControl.svg
 
 %changelog
+* Sat Oct 24 2026 Uzeyir Control contributors - 0.5.0-1
+- Introduce Graphite surfaces, bundled Inter and readable shared typography
+- Refine interruptible navigation, control feedback and compact layouts
+
 * Sat Oct 17 2026 Uzeyir Control contributors - 0.4.0-1
 - Add interruptible frame-clock navigation and a sliding selection indicator
 - Preserve diagnostic details and keyboard focus, improve operation feedback

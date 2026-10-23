@@ -141,8 +141,8 @@ class HistoryChart(Gtk.DrawingArea):
         self.queue_draw()
 
     def _draw(self, area, cr, width, height):
-        cr.select_font_face("Manrope")
-        left, top, bottom = 34, 10, height - 23
+        cr.select_font_face("Inter")
+        left, top, bottom = 38, 12, height - 27
         right = width - 12
         cr.set_line_width(1)
         for value in (0, 25, 50, 75, 100):
@@ -152,7 +152,7 @@ class HistoryChart(Gtk.DrawingArea):
             cr.line_to(right, y)
             cr.stroke()
             cr.set_source_rgb(.56, .56, .56)
-            cr.set_font_size(10)
+            cr.set_font_size(12)
             cr.move_to(2, y + 3)
             cr.show_text(str(value))
         rows = list(self.samples)
@@ -173,7 +173,7 @@ class HistoryChart(Gtk.DrawingArea):
                 pen_down = True
             cr.stroke()
         cr.set_source_rgb(.68, .68, .68)
-        cr.set_font_size(11)
+        cr.set_font_size(12)
         cr.move_to(left, height - 5)
         cr.show_text(self.tr("Son 120 ölçüm · CPU / GPU kullanımı (%)"))
 
@@ -252,7 +252,7 @@ class HardwarePage(Gtk.Box):
         self.signal = HardwareSignal(self._animations_enabled)
         self.signal.set_hexpand(False)
         self.signal.set_tooltip_text(self.tr("Devre hareketi görseldir; fan yalnız pozitif, güncel RPM okumasında döner. Hızı ölçekli değildir."))
-        self.content.append(heading(self.tr, "ANVIL CONTROL", "Sistemin, canlı.",
+        self.content.append(heading(self.tr, "Anvil Control", "Donanım",
                                    "Kullanımı, sıcaklıkları ve fanları tek bakışta takip et.", self.signal))
         self.identity_label = self.label("Donanım bilgileri okunuyor…", "machine-identity")
         self.content.append(self.identity_label)
